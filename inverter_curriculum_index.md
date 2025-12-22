@@ -11,6 +11,7 @@
 | `inverter_curriculum_part1.md` | Step 1: Fundamentals (12 projects, 4 phases) |
 | `inverter_curriculum_part2.md` | Step 2: CD4047 (150W) + Step 3: SG3525 (500W) |
 | `inverter_curriculum_part3.md` | Step 4: EG8010 (1kW) + Step 5: OzInverter (6-15kW) |
+| `inverter_curriculum_upgrade_smart.md` | **UPGRADE:** Smart monitoring (ESP32/SmartBob) |
 
 ---
 
@@ -143,9 +144,32 @@ Total: ~$1,264
 
 ---
 
+---
+
+## Smart Upgrade Module (Victron-Like Features)
+
+After completing Step 5, add smart monitoring:
+
+| Feature | With ESP32/SmartBob |
+|---------|---------------------|
+| Remote monitoring | Home Assistant app |
+| Voltage/Current display | OLED + Web dashboard |
+| Temperature monitoring | Multi-point sensors |
+| Data logging | InfluxDB / Grafana |
+| Alerts | Telegram / Push notifications |
+| Remote ON/OFF | WiFi control |
+| ATS (Auto Transfer) | Grid backup switching |
+
+**Cost:** +$130-175 (vs $1,500+ for Victron equivalent features)
+
+---
+
 ## Resources
 
 - **OzInverter Official:** https://www.bryanhorology.com/ozinverter.php
+- **SmartBob Controllers:** https://smartbob.pl
+- **ESPHome:** https://esphome.io
+- **Home Assistant:** https://home-assistant.io
 - **YouTube:** GreatScott!, EEVBlog, ElectroBOOM
 - **Free Textbook:** AllAboutCircuits.com
 - **Simulator:** Falstad Circuit Simulator
@@ -153,4 +177,4 @@ Total: ~$1,264
 ---
 
 *Created: December 2024*
-*Goal: Build OzInverter 6-15kW Pure Sine Wave Inverter*
+*Goal: Build Smart OzInverter 6-15kW Pure Sine Wave Inverter with Victron-like monitoring*
