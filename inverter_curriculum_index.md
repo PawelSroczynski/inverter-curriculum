@@ -13,6 +13,7 @@
 | `inverter_curriculum_part3.md` | Step 4: EG8010 (1kW) + Step 5: OzInverter (6-15kW) |
 | `inverter_curriculum_upgrade_smart.md` | **UPGRADE:** Smart monitoring (ESP32/SmartBob) |
 | `inverter_curriculum_microgrid.md` | **Step 7:** DC Microgrid with AC Tie (4 units) |
+| `inverter_curriculum_libre_solar.md` | **BONUS:** Open source MPPT & BMS (Libre Solar) |
 
 ---
 
@@ -189,9 +190,32 @@ After completing Step 5, add smart monitoring:
 
 ---
 
+## Libre Solar Integration (100% Open Source Stack)
+
+Replace commercial charge controllers and BMS with open source alternatives:
+
+| Component | Commercial | Libre Solar DIY | Savings |
+|-----------|------------|-----------------|---------|
+| MPPT Controller | $150-300 | ~$43 | 70-85% |
+| BMS (8S LiFePO4) | $100-200 | ~$52 | 50-75% |
+| **Total** | $250-500 | **~$95** | **60-80%** |
+
+**Key Features:**
+- CAN bus networking with ThingSet protocol
+- ESP32 gateway for Home Assistant integration
+- Full schematics and firmware (open source)
+- Compatible with 48V microgrid architecture
+
+**Designs:**
+- MPPT 2420 HC (20A, 12V/24V - use with DC-DC boost for 48V)
+- BMS C1 (supports 3-16S, LiFePO4/Li-ion)
+
+---
+
 ## Resources
 
 - **OzInverter Official:** https://www.bryanhorology.com/ozinverter.php
+- **Libre Solar Hardware:** https://libre.solar/hardware/
 - **SmartBob Controllers:** https://smartbob.pl
 - **ESPHome:** https://esphome.io
 - **Home Assistant:** https://home-assistant.io
