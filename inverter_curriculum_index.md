@@ -44,7 +44,7 @@ Total: ~$1,264
 
 ---
 
-## Step 1: Fundamentals (Part 1)
+## Part 1: Fundamentals (12 Projects)
 
 ### Phase 1: No ICs
 - 1.1 LED + Resistor (Ohm's Law)
@@ -68,46 +68,53 @@ Total: ~$1,264
 
 ---
 
-## Step 2: CD4047 Square Wave (Part 2)
+## Part 2: From Oscillator to Modified Sine (4 Phases)
 
+### Phase 1: Oscillator Mastery
+- CD4047 theory & testing
+- Frequency calculation
+- Complementary outputs
+
+### Phase 2: First Inverter Build (150W)
 - Push-pull topology
-- 2 MOSFETs (IRF3205)
+- MOSFET fundamentals
 - Center-tap transformer
-- 150W output
-- Square wave
+
+### Phase 3: H-Bridge & Gate Drivers
+- IR2110 bootstrap circuit
+- Dead-time concepts
+- Shoot-through prevention
+
+### Phase 4: Modified Sine Build (500W)
+- SG3525 PWM controller
+- H-bridge power stage
+- Output filtering
 
 ---
 
-## Step 3: SG3525 Modified Sine (Part 2)
+## Part 3: From SPWM to OzInverter (4 Phases)
 
-- H-bridge topology
-- 4 MOSFETs
-- IR2110 gate drivers
-- Dead-time control
-- 500W output
-- Modified sine wave
+### Phase 1: SPWM Theory & EG8010
+- Digital SPWM concept
+- EG8010/EGS002/003
+- LC filter design
 
----
-
-## Step 4: EG8010 Pure Sine (Part 3)
-
-- SPWM generation
-- Same IC as OzInverter
-- LC output filter
+### Phase 2: 1kW Pure Sine Build
+- Complete inverter build
 - Voltage feedback
-- 1kW output
-- Pure sine wave (<5% THD)
+- THD <3%
 
----
+### Phase 3: High-Power Design
+- MOSFET paralleling
+- Transformer winding
+- Thermal management
+- Bus bar design
 
-## Step 5: OzInverter (Part 3)
-
-- Full OzInverter build
-- Hand-wound toroidal transformer
-- 16-32 paralleled MOSFETs
-- Advanced cooling system
-- 6-15kW output
-- Production quality
+### Phase 4: OzInverter Build (6-15kW)
+- Full production build
+- Hand-wound toroidal
+- 16+ paralleled MOSFETs
+- Comprehensive testing
 
 ---
 

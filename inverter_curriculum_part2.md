@@ -1,40 +1,60 @@
 # Inverter Curriculum Part 2
-## Step 2: CD4047 Square Wave Inverter (150W)
-## Step 3: SG3525 Modified Sine Wave (500W)
+## From First Oscillator to Modified Sine Wave Inverter
+
+**Output:** 12V DC → 220V AC
+**Power Range:** 150W → 500W
+**Time:** 5-7 weekends
 
 ---
 
-# STEP 2: CD4047 SQUARE WAVE INVERTER
-
-**Output:** 12V DC → 220V AC (square wave)
-**Power:** 50-150W
-**Time:** 2-3 weekends
-
----
-
-## Step 2 Overview
+## Part 2 Overview
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                                                             │
-│  12V Battery → CD4047 → MOSFETs → Transformer → 220V AC    │
-│                  │          │                               │
-│              Oscillator  Push-Pull                          │
-│               (50Hz)     Switching                          │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+Phase 1              Phase 2              Phase 3              Phase 4
+Oscillator           First Inverter       H-Bridge &           Modified Sine
+Mastery              Build (150W)         Gate Drivers         Build (500W)
+   │                     │                    │                    │
+   ▼                     ▼                    ▼                    ▼
+┌─────────┐         ┌─────────┐         ┌─────────┐         ┌─────────┐
+│ CD4047  │────────►│ 2 FETs  │────────►│ IR2110  │────────►│ SG3525  │
+│ Theory  │         │ Push-   │         │ 4 FETs  │         │ 500W    │
+│ Testing │         │ Pull    │         │ H-Bridge│         │ Output  │
+└─────────┘         └─────────┘         └─────────┘         └─────────┘
 ```
 
 ---
 
-## Phase 2.1: Understanding the CD4047
+# PHASE 1: OSCILLATOR MASTERY
+
+**Goal:** Understand and build the timing circuit that creates AC from DC
+**Time:** 1 weekend
+**Cost:** ~$5
+
+---
+
+## 1.1 Why Oscillators Matter
+
+```
+DC (Battery):        AC (What we need):
+───────────          ┌──┐  ┌──┐  ┌──┐
+   +12V              │  │  │  │  │  │
+───────────      ────┘  └──┘  └──┘  └──
+   constant          alternating!
+
+Oscillator = The "heartbeat" that switches DC on/off to create AC
+```
+
+---
+
+## 1.2 Understanding CD4047
 
 ### What is CD4047?
 
-- CMOS astable/monostable multivibrator
+- CMOS astable/monostable multivibrator IC
 - Generates 50% duty cycle square wave
 - Has complementary outputs (Q and Q̄)
 - Perfect for push-pull inverter
+- Low power consumption (~1mA)
 
 ### CD4047 Pinout
 
@@ -48,25 +68,187 @@
    -TR  │6             9│ NC
    GND  │7             8│ VCC
         └────────────────┘
+
+Key pins:
+- Pin 1 (C): Timing capacitor
+- Pin 2 (RC): Timing resistor
+- Pin 10 (Q): Output - goes HIGH, then LOW
+- Pin 11 (Q̄): Inverted output - opposite of Q
+- Pin 13 (AST): Connect to VCC for astable mode
 ```
 
-### Frequency Formula
+### Why Complementary Outputs?
 
 ```
-f = 1 / (4.4 × R × C)
+Time:    0   T/2   T   3T/2   2T
+         │    │    │    │     │
+Q:       ┌────┐    ┌────┐    ┌──
+         │    │    │    │    │
+      ───┘    └────┘    └────┘
 
-For 50Hz:
-R × C = 1 / (4.4 × 50) = 0.00454
+Q̄:    ──┐    ┌────┐    ┌────┐
+         │    │    │    │    │
+         └────┘    └────┘    └──
 
-Options:
-- R = 68kΩ, C = 68nF → 49.6 Hz ✓
-- R = 47kΩ, C = 100nF → 48.3 Hz ✓
-- R = 100kΩ, C = 47nF → 48.5 Hz ✓
+Q and Q̄ are NEVER high at the same time!
+This is critical for push-pull inverter safety.
 ```
 
 ---
 
-## Phase 2.2: MOSFET Selection
+## 1.3 Frequency Calculation
+
+### The Formula
+
+```
+f = 1 / (4.4 × R × C)
+
+Where:
+- f = frequency in Hz
+- R = resistance in Ohms
+- C = capacitance in Farads
+```
+
+### Calculating for 50Hz
+
+```
+Need: f = 50Hz
+
+Rearranging: R × C = 1 / (4.4 × 50) = 0.00454
+
+Options that work:
+┌─────────┬─────────┬──────────┐
+│ R       │ C       │ Actual f │
+├─────────┼─────────┼──────────┤
+│ 68kΩ    │ 68nF    │ 49.6 Hz  │ ← Recommended
+│ 47kΩ    │ 100nF   │ 48.3 Hz  │
+│ 100kΩ   │ 47nF    │ 48.5 Hz  │
+│ 56kΩ    │ 82nF    │ 49.5 Hz  │
+└─────────┴─────────┴──────────┘
+```
+
+### Fine-Tuning Frequency
+
+```
+Use a potentiometer in series with fixed resistor:
+
+     ┌───[47kΩ]───┬───[20kΩ pot]───┐
+     │            │                 │
+  Pin 2          adjust            GND
+  (RC)           here
+
+This allows 45-55Hz adjustment range
+```
+
+---
+
+## 1.4 Breadboard Test Circuit
+
+### Components Needed
+
+| Qty | Component | Value | Purpose |
+|-----|-----------|-------|---------|
+| 1 | CD4047 | - | Oscillator IC |
+| 1 | Resistor | 68kΩ | Timing |
+| 1 | Capacitor | 68nF | Timing |
+| 1 | Capacitor | 100nF | Power bypass |
+| 2 | LED | Red, Green | Output indicators |
+| 2 | Resistor | 1kΩ | LED current limit |
+| 1 | Breadboard | - | Assembly |
+| - | Wire | 22 AWG | Connections |
+
+### Test Circuit Schematic
+
+```
+                        +12V
+                          │
+            ┌─────────────┼─────────────┐
+            │             │             │
+            │     ┌───────┴───────┐     │
+            │     │    CD4047     │     │
+            │     │               │     │
+            │     │ 8(VCC)   13(AST)────┘
+            │     │               │
+      68nF ═╧═ 1(C)          10(Q)────[1kΩ]───► LED1 (Green)
+            │     │               │                 │
+            │     │          11(Q̄)────[1kΩ]───► LED2 (Red)
+            │     │               │                 │
+       68kΩ ─┬─ 2(RC)        7(GND)──┬──────────────┘
+            │     │               │  │
+            │     └───────────────┘  │
+            │                        │
+            └────────────────────────┴──── GND
+                                     │
+                               [100nF]
+                                     │
+                                    GND
+```
+
+### What You Should See
+
+```
+LEDs alternate on/off at ~1 second each (visible blinking)
+Wait... 50Hz would be too fast to see!
+
+For TESTING, use slower values first:
+- R = 680kΩ, C = 1µF → ~0.3Hz (visible!)
+- Then switch to 68kΩ + 68nF for real 50Hz
+
+At 50Hz, both LEDs appear continuously on
+(switching too fast for eyes to see)
+```
+
+---
+
+## 1.5 Measuring with Multimeter
+
+### Frequency Check (if meter has Hz function)
+
+```
+1. Set multimeter to Hz (frequency)
+2. Connect probe to Pin 10 (Q)
+3. Connect ground to circuit GND
+4. Should read ~50Hz (±2Hz is OK)
+```
+
+### Duty Cycle Check
+
+```
+If you have oscilloscope:
+1. Set to 50ms/div timebase
+2. Probe Pin 10
+3. Should see perfect 50% duty cycle square wave
+
+      ┌─────┐     ┌─────┐     ┌─────┐
+      │     │     │     │     │     │
+  ────┘     └─────┘     └─────┘     └────
+      |←10ms→|←10ms→|
+
+      50% on, 50% off = perfect for push-pull!
+```
+
+---
+
+## 1.6 Phase 1 Learning Outcomes
+
+After completing Phase 1:
+- [ ] Understand RC timing circuits
+- [ ] Can calculate frequency from R and C values
+- [ ] Know CD4047 pinout and operation
+- [ ] Understand complementary outputs
+- [ ] Have working 50Hz oscillator
+
+---
+
+# PHASE 2: FIRST INVERTER BUILD (150W)
+
+**Goal:** Build your first working DC→AC inverter
+**Time:** 2 weekends
+**Cost:** ~$35
+
+---
+
+## 2.1 MOSFET Fundamentals
 
 ### Why MOSFETs?
 
@@ -76,17 +258,19 @@ Options:
 | Speed | Slower | Faster |
 | Efficiency | ~90% | ~97% |
 | Heat | More | Less |
-| Cost | Cheaper | Slightly more |
+| On resistance | Higher | 8mΩ (very low) |
 
 ### IRF3205 Specifications
 
 ```
-IRF3205:
-- Vds: 55V (max drain-source voltage)
-- Id: 110A (continuous drain current)
-- Rds(on): 8mΩ (very low = less heat)
-- Vgs(th): 2-4V (gate threshold)
-- Package: TO-220
+IRF3205 - "The workhorse MOSFET":
+┌────────────────────────────────┐
+│ Vds (max):     55V             │
+│ Id (max):      110A            │
+│ Rds(on):       8mΩ             │ ← Very low = less heat
+│ Vgs(th):       2-4V            │ ← Easy to drive
+│ Package:       TO-220          │
+└────────────────────────────────┘
 ```
 
 ### MOSFET Pinout (TO-220)
@@ -98,7 +282,7 @@ IRF3205:
     │             │
     │   (metal    │
     │    tab =    │
-    │    Drain)   │
+    │    Drain)   │  ← Tab is connected to Drain!
     │             │
     └──┬──┬──┬────┘
        │  │  │
@@ -106,43 +290,99 @@ IRF3205:
       Gate Drain Source
        │  │  │
        1  2  3
+
+IMPORTANT: Metal tab is electrically connected to Drain!
+Use insulator when mounting multiple MOSFETs on same heatsink.
+```
+
+### Gate Resistor - Why 100Ω?
+
+```
+CD4047 output → [100Ω] → MOSFET Gate
+
+Purpose:
+1. Limits current spike when gate charges
+2. Reduces ringing/oscillation
+3. Slows switching slightly (reduces EMI)
+4. Protects CD4047 output
+
+Without gate resistor: Risk of CD4047 damage!
 ```
 
 ---
 
-## Phase 2.3: Transformer Selection
+## 2.2 Transformer Basics
 
 ### Center-Tap Transformer
 
 ```
-Primary (12V side):          Secondary (220V side):
+Primary (12V side):           Secondary (220V side):
 
-     ┌────────┐              ┌────────┐
-  ───┤        │              │        ├───  220V
-     │        │              │        │     Hot
-  CT─┤   ○○   ├──────────────┤   ○○   │
-     │   ○○   │              │   ○○   │
-  ───┤        │              │        ├───  220V
-     └────────┘              └────────┘     Neutral
+     ┌────────┐               ┌────────┐
+  A ─┤        │               │        ├─── Live (220V)
+     │   ○○   │               │   ○○   │
+ CT ─┤   ○○   ├───────────────┤   ○○   │
+     │   ○○   │   magnetic    │   ○○   │
+  B ─┤        │    coupling   │        ├─── Neutral
+     └────────┘               └────────┘
 
-  End 1 ─┐
-         ├─ Primary windings
-    CT ──┤   (center-tap to +12V)
-         ├─
-  End 2 ─┘
+CT = Center Tap (connects to +12V)
+A and B = ends (connect to MOSFET drains)
 ```
 
-### Transformer Specifications
+### How Push-Pull Works
 
-For 100W inverter:
-- Primary: 12-0-12V (center tap), 10A rating
-- Secondary: 220V (or 230V)
-- VA rating: ≥100VA (get 150VA for margin)
-- Type: Toroidal preferred (more efficient)
+```
+Half-cycle 1 (Q1 ON, Q2 OFF):
+    +12V
+      │
+    ──┼── CT
+   ┌──┴──┐
+   │     │
+   ▼
+  Q1    Q2
+  ON    OFF
+   │
+  GND
+
+Current flows: +12V → CT → A → Q1 → GND
+
+Half-cycle 2 (Q1 OFF, Q2 ON):
+    +12V
+      │
+    ──┼── CT
+   ┌──┴──┐
+        │
+        ▼
+  Q1    Q2
+  OFF   ON
+         │
+        GND
+
+Current flows: +12V → CT → B → Q2 → GND
+
+Result: Alternating current in transformer = AC output!
+```
+
+### Transformer Selection
+
+```
+For 100-150W inverter:
+┌────────────────────────────────────┐
+│ Primary:   12-0-12V (center tap)   │
+│ Current:   10A minimum             │
+│ Secondary: 220V (or 230V)          │
+│ VA rating: 150VA or more           │
+│ Type:      EI core or toroidal     │
+└────────────────────────────────────┘
+
+Note: "12-0-12V" means 12V from center to each end
+Total primary = 24V end-to-end
+```
 
 ---
 
-## Phase 2.4: Complete Schematic
+## 2.3 Complete 150W Inverter Schematic
 
 ```
                               +12V (from battery)
@@ -156,7 +396,7 @@ For 100W inverter:
          │                      │                          │
          │         ┌────────────┴────────────┐             │
          │         │                         │             │
-         │       Pri.1                     Pri.2           │
+         │       Pri.A                     Pri.B           │
          │         │                         │             │
          │         D                         D             │
          │        ╱                         ╱              │
@@ -191,11 +431,24 @@ For 100W inverter:
          │  └────────────────────────────────────┘
          │
          └──────── Fuse (15A) ──────── Battery +
+
+
+SECONDARY SIDE (220V OUTPUT):
+
+         ┌──────────────────────┐
+         │    TRANSFORMER       │
+         │    SECONDARY         │
+         └──────┬───────┬───────┘
+                │       │
+               Live   Neutral
+                │       │
+            AC OUTPUT 220V
+            (DANGEROUS!)
 ```
 
 ---
 
-## Phase 2.5: Bill of Materials
+## 2.4 Bill of Materials - 150W Inverter
 
 ### Main Components
 
@@ -204,8 +457,8 @@ For 100W inverter:
 | 1 | CD4047 | IC | Oscillator | $0.50 |
 | 1 | IC Socket | 14-pin DIP | Protection | $0.30 |
 | 2 | IRF3205 | MOSFET 55V/110A | Power switching | $1.50 ea |
-| 1 | Transformer | 12-0-12V CT / 220V, 100VA | Voltage step-up | $15 |
-| 2 | Heatsink | TO-220 compatible | Cooling | $2 |
+| 1 | Transformer | 12-0-12V CT / 220V, 150VA | Voltage step-up | $15 |
+| 2 | Heatsink | TO-220 compatible | Cooling | $2 ea |
 | 1 | Resistor | 68kΩ 1/4W | Frequency set | $0.05 |
 | 2 | Resistor | 100Ω 1/4W | Gate current limit | $0.10 |
 | 1 | Capacitor | 68nF ceramic/film | Frequency set | $0.20 |
@@ -218,314 +471,573 @@ For 100W inverter:
 |-----|-----------|------------|---------|------------|
 | 1 | Fuse holder | Blade type | Safety | $1 |
 | 3 | Fuse | 15A blade | Overcurrent | $1 |
-| 1 | LED + resistor | Indicator | Power on | $0.20 |
+| 1 | LED + resistor | Green | Power on | $0.20 |
 | 1 | Switch | SPST 15A | Main power | $2 |
 | - | Wire | 14 AWG red/black | Power | $3 |
 | - | Wire | 22 AWG | Signal | $1 |
 | 2 | Terminal block | 2-way, 15A | Connections | $2 |
 | 1 | Perfboard | 10×15cm | Assembly | $2 |
 
-### Optional but Recommended
-
-| Qty | Component | Value/Spec | Purpose | Est. Price |
-|-----|-----------|------------|---------|------------|
-| 2 | TVS Diode | P6KE36A | Spike protection | $1 |
-| 1 | Thermal paste | - | Heatsink contact | $2 |
-| 4 | Screw + nut | M3 | Mounting | $0.50 |
-| 1 | Enclosure | Ventilated | Housing | $10 |
+**Phase 2 Total: ~$35-40**
 
 ---
 
-## Step 2 BOM Summary
-
-| Category | Est. Total |
-|----------|------------|
-| ICs & semiconductors | $5 |
-| Transformer | $15 |
-| Passive components | $3 |
-| Protection & safety | $5 |
-| Mechanical & wire | $8 |
-| Enclosure (optional) | $10 |
-
-**Step 2 Total: ~$36-46**
-
----
-
-## Phase 2.6: Build Sequence
+## 2.5 Build Sequence
 
 ### Day 1: Oscillator Board
-1. Test CD4047 on breadboard first
-2. Verify 50Hz output with multimeter/scope
-3. Solder oscillator section to perfboard
+
+```
+Step 1: Test on breadboard
+   - Build CD4047 circuit from Phase 1
+   - Verify 50Hz output
+   - Confirm both outputs working
+
+Step 2: Transfer to perfboard
+   - Solder IC socket first (never solder IC directly!)
+   - Add timing components (R, C)
+   - Add bypass capacitor
+   - Add gate resistors (100Ω × 2)
+```
 
 ### Day 2: Power Stage
-1. Mount MOSFETs on heatsink (with thermal paste)
-2. Wire gates to oscillator outputs
-3. Connect transformer primary
+
+```
+Step 1: Prepare heatsinks
+   - Clean mounting surface
+   - Apply thermal paste (thin layer)
+   - Mount MOSFETs with insulating washers (if sharing heatsink)
+   - Torque screws evenly
+
+Step 2: Wire MOSFETs
+   - Gate ← oscillator through 100Ω
+   - Drain ← transformer primary ends
+   - Source ← common GND
+   - Keep high-current wires short!
+
+Step 3: Connect transformer
+   - Center tap ← +12V through fuse
+   - Ends ← MOSFET drains
+   - Secondary ← output terminals (CAREFUL - 220V!)
+```
 
 ### Day 3: Testing
-1. Test WITHOUT load first
-2. Measure output voltage (should be ~220V AC)
-3. Test with small load (25W bulb)
-4. Gradually increase load
+
+```
+⚠️ SAFETY FIRST:
+□ Double-check all connections
+□ Ensure no shorts on secondary
+□ Have fire extinguisher ready
+□ DO NOT touch output!
+
+Test sequence:
+1. Power on (no load) - should hear faint hum
+2. Measure output voltage: expect 200-240V AC
+3. Test with 25W incandescent bulb
+4. Check MOSFET temperature (should be warm, not hot)
+5. Test with 60W bulb
+6. Run for 10 minutes, monitor temperature
+```
 
 ---
 
-## Phase 2.7: Safety Checklist
-
-- [ ] Fuse installed on battery positive
-- [ ] Heatsinks properly mounted
-- [ ] No exposed 220V connections
-- [ ] Wire gauge adequate (14 AWG for 12V side)
-- [ ] Keep fingers away from output!
-- [ ] Test with incandescent bulb first (not electronics)
-
----
-
-## Phase 2.8: Testing & Troubleshooting
+## 2.6 Troubleshooting
 
 | Symptom | Likely Cause | Solution |
 |---------|--------------|----------|
-| No output | CD4047 not oscillating | Check power, timing RC |
-| Low voltage | Weak battery | Charge/replace battery |
-| MOSFETs hot | High load / poor heatsink | Reduce load, improve cooling |
-| Buzzing sound | Loose transformer | Tighten mounting |
-| Fuse blows | Short circuit | Check wiring, MOSFET shorts |
+| No output at all | CD4047 not oscillating | Check power, timing R/C |
+| Low voltage (<180V) | Weak battery / wrong transformer | Charge battery, check ratio |
+| MOSFETs very hot | Load too high / poor heatsink | Reduce load, improve cooling |
+| Buzzing/humming | Normal at light load | Add small load if annoying |
+| Fuse blows | Short circuit / MOSFET failure | Check wiring, replace MOSFET |
+| Output unstable | Battery voltage dropping | Use bigger battery |
 
 ---
 
-## Phase 2.9: Learning Outcomes
+## 2.7 Phase 2 Learning Outcomes
 
-After completing Step 2:
+After completing Phase 2:
+- [ ] Built working 150W inverter!
 - [ ] Understand push-pull topology
-- [ ] Can calculate oscillator frequency
-- [ ] Know MOSFET basics (gate, drain, source)
-- [ ] Understand transformer operation
-- [ ] Safety with high voltage
+- [ ] Know MOSFET operation and mounting
+- [ ] Can work with transformers safely
+- [ ] Understand basic inverter troubleshooting
 
 ---
 
-# STEP 3: SG3525 MODIFIED SINE WAVE INVERTER
+# PHASE 3: H-BRIDGE & GATE DRIVERS
 
-**Output:** 12V/24V DC → 220V AC (modified sine)
-**Power:** 200-500W
-**Time:** 3-4 weekends
+**Goal:** Master the 4-MOSFET H-bridge with proper gate driving
+**Time:** 1-2 weekends
+**Cost:** ~$25 (components for experimentation)
 
 ---
 
-## Step 3 Overview
+## 3.1 Why H-Bridge?
+
+### Push-Pull vs H-Bridge
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                                                                     │
-│  Battery → SG3525 → IR2110 → H-Bridge → Transformer → Filter → AC │
-│              │         │        │                                   │
-│            PWM     Gate      4 MOSFETs                              │
-│           Control  Driver                                           │
-│                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
+Push-Pull (Phase 2):              H-Bridge (Phase 3):
+- 2 MOSFETs                       - 4 MOSFETs
+- Needs center-tap transformer    - Works with ANY transformer
+- Simpler                         - More flexible
+- Less efficient at high power    - Better for high power
+- Limited to ~500W practically    - Scales to 15kW+
 ```
 
-### What's New in Step 3?
+### H-Bridge Topology
 
-| Step 2 | Step 3 |
-|--------|--------|
-| Push-pull (2 MOSFETs) | H-bridge (4 MOSFETs) |
-| CD4047 (simple) | SG3525 (PWM capable) |
-| No gate driver | IR2110 gate driver |
-| Square wave | Modified sine wave |
-| 150W | 500W |
+```
+              +Vdc
+                │
+     ┌──────────┼──────────┐
+     │          │          │
+    Q1          │         Q3     ← High-side MOSFETs
+     │          │          │
+     ├────── LOAD ─────────┤     ← Transformer primary
+     │                     │
+    Q2                    Q4     ← Low-side MOSFETs
+     │                     │
+     └──────────┬──────────┘
+                │
+               GND
+
+Switching patterns:
+- Q1+Q4 ON, Q2+Q3 OFF: Current flows LEFT → RIGHT
+- Q3+Q2 ON, Q1+Q4 OFF: Current flows RIGHT → LEFT
+- NEVER Q1+Q2 or Q3+Q4 simultaneously! (shoot-through = explosion)
+```
 
 ---
 
-## Phase 3.1: Understanding SG3525
+## 3.2 The Shoot-Through Problem
+
+### What is Shoot-Through?
+
+```
+DANGER - If Q1 and Q2 turn on together:
+
+     +Vdc
+       │
+      Q1 (ON)
+       │
+       ├──── (load bypassed!)
+       │
+      Q2 (ON)
+       │
+      GND
+
+Current path: +Vdc → Q1 → Q2 → GND
+= DIRECT SHORT CIRCUIT!
+= Hundreds of amps!
+= Explosion, fire, destroyed MOSFETs!
+```
+
+### Solution: Dead-Time
+
+```
+Dead-time = small gap where BOTH MOSFETs are OFF
+
+Q1 gate:  ┌────────┐          ┌────────┐
+          │        │          │        │
+      ────┘        └──────────┘        └────
+
+Q2 gate:            ┌────────┐          ┌────
+                    │        │          │
+      ──────────────┘        └──────────┘
+
+              │←─►│ Dead-time (1-2µs)
+
+During dead-time: Both OFF = safe!
+```
+
+---
+
+## 3.3 Understanding IR2110
+
+### Why Gate Driver?
+
+```
+Problem with high-side MOSFETs:
+
+     +48V ──────┬──────
+                │
+            Q1 (high-side)
+          G ──?── Need Vgs = +10V above Source
+                │
+             Source (floating at ~48V!)
+                │
+              LOAD
+
+To turn on Q1: Gate needs 48V + 10V = 58V!
+CD4047 output is only 0-12V... won't work!
+
+Solution: IR2110 with bootstrap circuit
+```
+
+### IR2110 Pinout and Function
+
+```
+        ┌────────────────────┐
+    LO  │1    IR2110     14│ Vcc (12-20V)
+   COM  │2               13│ HIN (high-side input)
+   Vss  │3               12│ LIN (low-side input)
+   NC   │4               11│ SD (shutdown)
+   Vs   │5               10│ Vb (bootstrap supply)
+   HO   │6                9│ NC
+   NC   │7                8│ NC
+        └────────────────────┘
+
+Inputs (from controller):
+- HIN: Logic signal for high-side MOSFET
+- LIN: Logic signal for low-side MOSFET
+- SD: Shutdown (active high) - tie to GND normally
+
+Outputs (to MOSFETs):
+- HO: High-side gate drive (referenced to Vs)
+- LO: Low-side gate drive (referenced to COM)
+
+Power:
+- Vcc: 12-20V supply
+- Vb: Bootstrap voltage (created by bootstrap circuit)
+- Vs: High-side return (connects to MOSFET source)
+```
+
+### Bootstrap Circuit Explained
+
+```
+How bootstrap creates high voltage:
+
+Phase 1: Low-side ON (Q2 conducting)
+
+    +12V ──[D1]──┬── Vb            Vs is at ~0V (Q2 on)
+                 │
+              [Cboot]              Cboot charges to 12V!
+                 │
+    Vs ──────────┴── (near GND)
+
+Phase 2: High-side ON (Q1 conducting)
+
+    Vb ────┬── now at ~60V!        Vs rises to ~48V
+           │
+        [Cboot] (still 12V)        Vb = Vs + 12V = 60V!
+           │
+    Vs ────┴── (at ~48V)           Enough to drive Q1 gate!
+
+Bootstrap components:
+- D1: Fast diode (UF4007) - charges Cboot when low-side on
+- Cboot: 10µF/25V - stores charge for high-side drive
+```
+
+---
+
+## 3.4 IR2110 Test Circuit
+
+### Build This on Breadboard First!
+
+```
+                              +12V
+                                │
+              ┌─────────────────┼─────────────────┐
+              │                 │                 │
+              │    ┌────[D1]────┤ UF4007         │
+              │    │            │                 │
+              │   ═╧═ 10µF     ─┴─ 100nF         │
+              │    │ Cboot      │                 │
+              │    │            │                 │
+              │    └─── Vb(10) ─┤                 │
+              │                 │                 │
+              │    ┌─── Vs(5) ──┤                 │
+              │    │            │                 │
+              │   ═╧═ Test      │                 │
+              │    │  LED       │   IR2110        │
+              │    │  +1kΩ      │                 │
+              │    │            │                 │
+         ┌────┴────┴── HO(6) ───┤              ───┤ Vcc(14)
+         │                      │                 │
+         │         ┌── LO(1) ───┤              ───┤ HIN(13) ← Test signal
+         │         │            │                 │
+         │        ═╧═ Test      │              ───┤ LIN(12) ← Test signal
+         │         │  LED       │                 │
+         │         │  +1kΩ      │              ───┤ SD(11) → GND
+         │         │            │                 │
+         │         └── COM(2) ──┴──────┬──────────┘
+         │                             │
+         └─────────────────────────────┴─── GND
+
+Test procedure:
+1. Apply 12V power
+2. Toggle HIN high → HO LED lights
+3. Toggle LIN high → LO LED lights
+4. Never both at same time!
+```
+
+---
+
+## 3.5 Complete H-Bridge Test Setup
+
+### Schematic (Low Power Test)
+
+```
+                                    +12V
+                                      │
+                    ┌─────────────────┼─────────────────┐
+                    │                 │                 │
+         IR2110 #1  │      ┌─────────┴─────────┐      │ IR2110 #2
+         (Left leg) │      │                   │      │ (Right leg)
+              ┌─────┴──────┤                   ├──────┴─────┐
+              │            │                   │            │
+           HO1 ─[10Ω]─ G   │                   │   G ─[10Ω]─ HO2
+              │        │   │                   │   │        │
+              │       Q1   │      12V BULB     │  Q3        │
+              │        │   │    (test load)    │   │        │
+              │        └───┤         │         ├───┘        │
+              │            │        ═══        │            │
+           LO1 ─[10Ω]─ G   │         │         │   G ─[10Ω]─ LO2
+              │        │   │                   │   │        │
+              │       Q2   │                   │  Q4        │
+              │        │   │                   │   │        │
+              └────────┴───┤                   ├───┴────────┘
+                           │                   │
+                           └─────────┬─────────┘
+                                     │
+                                    GND
+
+Control signals from CD4047:
+- Q output → HIN1 and LIN2 (diagonal pair)
+- Q̄ output → LIN1 and HIN2 (other diagonal)
+
+This creates alternating current through bulb!
+```
+
+---
+
+## 3.6 Phase 3 Bill of Materials
+
+| Qty | Component | Value | Purpose | Price |
+|-----|-----------|-------|---------|-------|
+| 2 | IR2110 | Gate driver IC | MOSFET drive | $2 ea |
+| 2 | IC Socket | 14-pin DIP | Protection | $0.30 ea |
+| 4 | IRF3205 | MOSFET | H-bridge | $1.50 ea |
+| 2 | Diode | UF4007 | Bootstrap | $0.20 ea |
+| 2 | Capacitor | 10µF/25V | Bootstrap | $0.20 ea |
+| 4 | Capacitor | 100nF | Bypass | $0.20 |
+| 4 | Resistor | 10Ω 1W | Gate resistors | $0.20 |
+| 1 | Perfboard | 15×10cm | Assembly | $3 |
+| - | Wire | 18 AWG | Signal | $2 |
+| 1 | 12V bulb | 10-20W | Test load | $2 |
+
+**Phase 3 Total: ~$25**
+
+---
+
+## 3.7 Phase 3 Learning Outcomes
+
+After completing Phase 3:
+- [ ] Understand H-bridge topology
+- [ ] Know why shoot-through is dangerous
+- [ ] Understand dead-time concept
+- [ ] Can use IR2110 gate driver
+- [ ] Understand bootstrap circuit
+- [ ] Have working H-bridge test circuit
+
+---
+
+# PHASE 4: MODIFIED SINE INVERTER (500W)
+
+**Goal:** Build a 500W modified sine wave inverter with SG3525
+**Time:** 2 weekends
+**Cost:** ~$50
+
+---
+
+## 4.1 Understanding SG3525
 
 ### What is SG3525?
 
-- PWM controller IC
+- PWM (Pulse Width Modulation) controller IC
 - Adjustable frequency and duty cycle
+- Built-in dead-time control
 - Soft-start capability
 - Dual complementary outputs
-- Dead-time control (prevents shoot-through)
+- Professional-grade inverter control
 
 ### SG3525 Pinout
 
 ```
         ┌────────────────────┐
-   INV  │1    SG3525     16│ Vref (5V out)
-   N.I. │2               15│ Vcc (supply)
+   INV  │1    SG3525     16│ Vref (5V internal reference)
+   N.I. │2               15│ Vcc (supply 8-35V)
    SYNC │3               14│ OUT A
   OSC   │4               13│ Vc (output stage supply)
     Ct  │5               12│ GND
     Rt  │6               11│ OUT B
   DISCH │7               10│ SHUTDOWN
-  SOFTST│8                9│ COMP
+  SOFTST│8                9│ COMP (error amp output)
         └────────────────────┘
+
+Key pins:
+- Rt, Ct (6,5): Set oscillator frequency
+- OUT A, OUT B (14,11): Complementary PWM outputs
+- DISCH (7): Dead-time adjust
+- SOFTST (8): Soft-start (add capacitor)
 ```
 
 ### Frequency Calculation
 
 ```
-f = 1 / (Ct × (0.7×Rt + 3×Rd))
+Oscillator frequency:
+fosc = 1 / (Ct × (0.7×Rt + 3×Rd))
 
-Simplified (Rd = 0):
-f = 1 / (Ct × 0.7 × Rt)
+Where Rd = dead-time resistor (pin 7)
 
-For 50Hz (output is half of oscillator):
-Oscillator = 100Hz
-Rt = 10kΩ, Ct = 1.4µF → ~100Hz osc → 50Hz output
+For simplified calculation (Rd small):
+fosc ≈ 1 / (0.7 × Rt × Ct)
+
+Output frequency = fosc / 2 (outputs toggle alternately)
+
+Example for 50Hz output:
+- Need fosc = 100Hz
+- Rt = 10kΩ, Ct = 1.4µF
+- fosc = 1 / (0.7 × 10000 × 0.0000014) = 102Hz ✓
+```
+
+### Dead-Time Adjustment
+
+```
+Dead-time pin (7) sets gap between OUT A and OUT B
+
+        OUTA: ┌────┐      ┌────┐
+              │    │      │    │
+          ────┘    └──────┘    └──
+
+        OUTB:       ┌────┐      ┌────┐
+                    │    │      │    │
+          ──────────┘    └──────┘    └──
+
+              │←→│ Dead-time (set by Rd resistor)
+
+Typical: 1-2µs dead-time
+Rd ≈ 100Ω gives ~1µs dead-time
 ```
 
 ---
 
-## Phase 3.2: Understanding IR2110 Gate Driver
+## 4.2 Modified Sine Wave
 
-### Why Gate Driver?
-
-```
-Problem:
-- High-side MOSFET needs gate voltage ABOVE drain
-- If drain is at +12V, gate needs +22V to turn on!
-- SG3525 can't provide this
-
-Solution: IR2110
-- Bootstrap circuit creates high voltage
-- Drives both high and low side MOSFETs
-- Fast switching (nanoseconds)
-```
-
-### IR2110 Pinout
+### What is Modified Sine Wave?
 
 ```
-        ┌────────────────────┐
-    LO  │1    IR2110     14│ Vcc
-   COM  │2               13│ HIN
-   Vss  │3               12│ LIN
-   NC   │4               11│ SD
-   Vs   │5               10│ Vb
-   HO   │6                9│ NC
-   NC   │7                8│ NC
-        └────────────────────┘
+Pure Sine:              Modified Sine:
+       ╱╲                    ┌──┐    ┌──┐
+      ╱  ╲               ┌───┘  └────┘  └───┐
+─────╱    ╲─────     ────┘                  └────
+      ╲  ╱               └───┐      ┌───┘
+       ╲╱                    └──┘    └──┘
 
-HIN = High side input       HO = High side output
-LIN = Low side input        LO = Low side output
-Vb  = Bootstrap supply      Vs = High side return
+Modified sine = "staircase" approximation
+- Better than square wave
+- OK for most loads (motors, tools, lights)
+- NOT ideal for sensitive electronics
 ```
 
-### Bootstrap Circuit
+### How SG3525 Creates Modified Sine
 
 ```
-     +12V
-       │
-    [D1]  Fast diode (UF4007)
-       │
-       ├──────── Vb (pin 10)
-       │
-     [C] 10µF bootstrap capacitor
-       │
-       └──────── Vs (pin 5) ── High side MOSFET source
+SG3525 can vary pulse width based on feedback:
+
+Narrow pulses near zero-crossing:
+    ┌┐    ┌┐
+    ││    ││
+────┘└────┘└────
+
+Wide pulses at peak:
+  ┌────┐  ┌────┐
+  │    │  │    │
+──┘    └──┘    └──
+
+Result after filter: stepped approximation of sine
 ```
 
 ---
 
-## Phase 3.3: H-Bridge Topology
-
-### What is H-Bridge?
+## 4.3 Complete 500W Inverter Schematic
 
 ```
-         +Vdc
-           │
-     ┌─────┴─────┐
-     │           │
-    Q1          Q3
-     │           │
-     ├─── Load ──┤
-     │           │
-    Q2          Q4
-     │           │
-     └─────┬─────┘
-           │
-          GND
+                                    +12V (or 24V)
+                                        │
+            ┌───────────────────────────┼───────────────────────────┐
+            │                           │                           │
+            │            ┌──────────────┼──────────────┐            │
+            │            │   IR2110 #1  │  IR2110 #2   │            │
+            │            │              │              │            │
+            │      Vb ───┤10           │         10├─── Vb         │
+            │       │    │          Vcc│Vcc          │    │        │
+            │      [C]   │           ──┼──           │   [C]       │
+            │       │    │             │             │    │        │
+            │      Vs ───┤5            │          5├─── Vs        │
+            │            │             │             │            │
+            │      HO ───┤6    ┌───────┼───────┐  6├─── HO        │
+            │            │     │       │       │     │            │
+            │            │    Q1       │      Q3     │            │
+            │            │     │       │       │     │            │
+            │            │     └───[TRANSFORMER]───┘     │            │
+            │            │             │ PRIMARY         │            │
+            │            │     ┌───────┴───────┐     │            │
+            │      LO ───┤1    │               │  1├─── LO        │
+            │            │    Q2               Q4    │            │
+            │            │     │               │     │            │
+            │     COM ───┤2    │               │  2├─── COM       │
+            │            │     │               │     │            │
+            │     HIN ───┤13   │               │ 13├─── HIN       │
+            │            │     │               │     │            │
+            │     LIN ───┤12   │               │ 12├─── LIN       │
+            │            │     │               │     │            │
+            │      SD ───┤11   │               │ 11├─── SD        │
+            │            │     │               │     │            │
+            │            └─────┴───────────────┴─────┘            │
+            │                          │                           │
+            │                         GND                          │
+            │                                                      │
+            │  ┌───────────────────────────────────────────────┐   │
+            │  │                   SG3525                       │   │
+            │  │                                                │   │
+            │  │  OUT A (14) ─────────────► IR2110 #1 HIN/LIN  │   │
+            │  │                                                │   │
+            │  │  OUT B (11) ─────────────► IR2110 #2 HIN/LIN  │   │
+            │  │                                                │   │
+       +12V─┼──┤  Vcc (15)                                     │   │
+            │  │                                                │   │
+            │  │  Vref (16) ───[voltage divider]──► Feedback   │   │
+            │  │                                                │   │
+            │  │  Ct (5) ────── 1µF                            │   │
+            │  │                                                │   │
+            │  │  Rt (6) ────── 15kΩ                           │   │
+            │  │                                                │   │
+            │  │  DISCH (7) ─── 100Ω ─── GND (dead-time)      │   │
+            │  │                                                │   │
+            │  │  SOFTST (8) ── 10µF ── GND (soft start)      │   │
+            │  │                                                │   │
+       GND──┼──┤  GND (12)                                     │   │
+            │  │                                                │   │
+            │  └───────────────────────────────────────────────┘   │
+            │                                                      │
+            └───────────── Fuse (40A) ─────────── Battery +        │
 
-Switching pattern:
-- Q1+Q4 ON: Current flows LEFT→RIGHT
-- Q3+Q2 ON: Current flows RIGHT→LEFT
-- NEVER Q1+Q2 or Q3+Q4 (shoot-through = explosion!)
-```
 
-### Modified Sine Wave
+OUTPUT SECTION:
 
-```
-Square wave:          Modified sine:
-    ┌────┐               ┌──┐    ┌──┐
-    │    │            ┌──┘  └────┘  └──┐
-────┘    └────    ────┘                └────
-                      Zero-crossing gaps
-                      (less harsh on equipment)
-```
-
----
-
-## Phase 3.4: Complete Schematic (Simplified)
-
-```
-                                    +12V
-                                      │
-        ┌─────────────────────────────┼──────────────────────┐
-        │                             │                      │
-        │            ┌────────────────┼───────────┐          │
-        │            │   IR2110 (×2)  │           │          │
-        │            │                │           │          │
-        │      Vb ───┤10             │           │          │
-        │       │    │          Vcc ─┤14        │          │
-        │      [C]   │               │           │          │
-        │       │    │    ┌─────────┐│           │          │
-        │      Vs ───┤5   │         ││           │          │
-        │            │    │ HIGH    ││    ┌──────┴──────┐   │
-        │      HO ───┤6───┼─SIDE────┼┼────┤     Q1      │   │
-        │            │    │ MOSFET  ││    │   IRF3205   │   │
-        │            │    └─────────┘│    └──────┬──────┘   │
-        │            │               │           │          │
-        │            │    ┌─────────┐│           │ LOAD     │
-        │      LO ───┤1───┼─LOW─────┼┼──────────┬┤(XFMR)    │
-        │            │    │ SIDE    ││          ││          │
-        │            │    │ MOSFET  ││    ┌─────┴┴─────┐    │
-        │            │    └─────────┘│    │     Q2     │    │
-        │     COM ───┤2              │    │   IRF3205  │    │
-        │            │               │    └──────┬─────┘    │
-        │     HIN ───┤13             │           │          │
-        │            │               │          GND         │
-        │     LIN ───┤12             │                      │
-        │            │               │    (Same for Q3, Q4  │
-        │      SD ───┤11             │     with 2nd IR2110) │
-        │            │               │                      │
-        │            └───────────────┘                      │
-        │                                                   │
-        │  ┌─────────────────────────────────────────────┐  │
-        │  │              SG3525                         │  │
-        │  │                                             │  │
-        │  │  OUT A (14) ────────────────► IR2110 #1    │  │
-        │  │                                             │  │
-        │  │  OUT B (11) ────────────────► IR2110 #2    │  │
-        │  │                                             │  │
-   +12V─┼──┤  Vcc (15)                                  │  │
-        │  │                                             │  │
-        │  │  Vref (16) ───[voltage divider]──► Feedback│  │
-        │  │                                             │  │
-        │  │  Ct (5) ────── 1µF                         │  │
-        │  │                                             │  │
-        │  │  Rt (6) ────── 15kΩ                        │  │
-        │  │                                             │  │
-   GND──┼──┤  GND (12)                                  │  │
-        │  │                                             │  │
-        │  └─────────────────────────────────────────────┘  │
-        │                                                   │
-        └───────────────────────────────────────────────────┘
+TRANSFORMER SECONDARY ─────┬───[L = 1mH]───┬─── 220V AC Live
+                           │               │
+                          ═╧═ 2.2µF       ═╧═ Load
+                           │  400V         │
+                           │               │
+                           └───────────────┴─── 220V AC Neutral
 ```
 
 ---
 
-## Phase 3.5: Bill of Materials
+## 4.4 Bill of Materials - 500W Inverter
 
 ### Control Section
 
@@ -537,10 +1049,12 @@ Square wave:          Modified sine:
 | 2 | IC Socket | 14-pin DIP | Protection | $0.30 ea |
 | 1 | Resistor | 15kΩ 1/4W | Rt (timing) | $0.05 |
 | 1 | Capacitor | 1µF film | Ct (timing) | $0.30 |
-| 2 | Capacitor | 10µF/25V | Bootstrap | $0.30 |
-| 2 | Diode | UF4007 (fast) | Bootstrap | $0.30 |
-| 4 | Resistor | 10Ω 1/2W | Gate resistors | $0.20 |
-| 2 | Capacitor | 100nF ceramic | Bypass | $0.10 |
+| 1 | Resistor | 100Ω | Dead-time | $0.05 |
+| 2 | Capacitor | 10µF/25V | Bootstrap | $0.30 ea |
+| 2 | Diode | UF4007 (fast) | Bootstrap | $0.20 ea |
+| 4 | Resistor | 10Ω 1W | Gate resistors | $0.20 |
+| 4 | Capacitor | 100nF ceramic | Bypass | $0.20 |
+| 1 | Capacitor | 10µF | Soft-start | $0.20 |
 
 ### Power Section
 
@@ -552,137 +1066,191 @@ Square wave:          Modified sine:
 | 4 | Capacitor | 1000µF/25V | Input filter | $1 ea |
 | 4 | Diode | MUR860 (fast recovery) | Freewheeling | $0.50 ea |
 
-### Protection & Output
+### Output Filter
 
 | Qty | Component | Value/Spec | Purpose | Est. Price |
 |-----|-----------|------------|---------|------------|
-| 1 | Fuse holder | ANL type | High current | $3 |
-| 2 | Fuse | 40A ANL | Protection | $2 ea |
-| 1 | Varistor | 275V MOV | Surge protection | $1 |
 | 1 | Inductor | 1mH / 5A | Output filter | $3 |
-| 1 | Capacitor | 2.2µF/400V | Output filter | $2 |
-| 1 | Relay | 12V / 30A | Output disconnect | $5 |
+| 1 | Capacitor | 2.2µF/400V film | Output filter | $2 |
+| 1 | Varistor | 275V MOV | Surge protection | $1 |
 
-### Mechanical & Wiring
+### Mechanical
 
 | Qty | Component | Value/Spec | Purpose | Est. Price |
 |-----|-----------|------------|---------|------------|
 | - | Wire | 10 AWG red/black | Power (2m) | $5 |
 | - | Wire | 18 AWG | Signal | $2 |
 | 1 | Fan | 80mm 12V | Cooling | $5 |
-| 1 | PCB/Perfboard | 15×20cm | Assembly | $5 |
-| 1 | Enclosure | Metal, ventilated | Housing | $20 |
-| - | Terminals | Ring, spade, etc. | Connections | $3 |
-| 1 | Thermal paste | - | Heatsink | $2 |
+| 1 | Perfboard/PCB | 15×20cm | Assembly | $5 |
+| - | Terminals | Ring, spade | Connections | $3 |
+| 1 | Fuse holder | ANL type | Protection | $3 |
+| 2 | Fuse | 40A ANL | Overcurrent | $2 ea |
 
 ---
 
-## Step 3 BOM Summary
+## 4.5 BOM Summary
 
 | Category | Est. Total |
 |----------|------------|
-| Control ICs | $7 |
-| Gate drivers | $5 |
+| Control ICs (SG3525, IR2110) | $8 |
+| Passive components | $5 |
 | MOSFETs | $6 |
 | Transformer | $25 |
-| Capacitors | $8 |
-| Diodes | $3 |
-| Protection | $10 |
+| Input capacitors | $4 |
+| Output filter | $6 |
 | Heatsinks & cooling | $15 |
-| Mechanical | $30 |
+| Protection | $8 |
+| Wiring & mechanical | $15 |
 
-**Step 3 Total: ~$109**
+**Phase 4 Total: ~$92**
 
 ---
 
-## Phase 3.6: Build Sequence
+## 4.6 Build Sequence
 
 ### Weekend 1: Control Board
-1. Build SG3525 oscillator section
-2. Test output frequency (should be 50Hz)
-3. Test dead-time (both outputs never HIGH together)
 
-### Weekend 2: Driver Board
-1. Build IR2110 circuits (one at a time)
-2. Test bootstrap operation
-3. Verify gate signals with oscilloscope
-
-### Weekend 3: Power Stage
-1. Mount MOSFETs on heatsink
-2. Wire H-bridge (carefully!)
-3. Connect transformer
-4. Add freewheeling diodes
-
-### Weekend 4: Integration & Testing
-1. Connect all boards
-2. Test with light load (40W bulb)
-3. Add output filter
-4. Test with higher loads gradually
-
----
-
-## Phase 3.7: Critical Safety Notes
-
-### Shoot-Through Prevention
 ```
-NEVER allow Q1+Q2 or Q3+Q4 to be ON simultaneously!
-This creates direct short: +Vdc → Q1 → Q2 → GND = BOOM!
+Day 1 - SG3525 Section:
+□ Build oscillator (Rt, Ct)
+□ Add dead-time resistor
+□ Add soft-start capacitor
+□ Test: verify output frequency (~100Hz oscillator)
+□ Test: verify dead-time on scope
 
-SG3525 has built-in dead-time, but verify with scope!
+Day 2 - Driver Section:
+□ Build IR2110 circuits
+□ Add bootstrap diodes and capacitors
+□ Connect SG3525 outputs to drivers
+□ Test: verify gate drive signals
 ```
 
-### Dead-Time Check
+### Weekend 2: Power Stage
+
 ```
-Using oscilloscope:
-1. Probe OUT A and OUT B
-2. Both should go LOW before either goes HIGH
-3. Gap should be ~1-2µs minimum
+Day 1 - H-Bridge Assembly:
+□ Mount MOSFETs on heatsinks
+□ Wire H-bridge configuration
+□ Add freewheeling diodes
+□ Connect transformer primary
+□ Triple-check wiring!
+
+Day 2 - Integration & Testing:
+□ Connect control board to power board
+□ Add input capacitors
+□ Test with LOW voltage first (12V)
+□ Measure output with light load
+□ Build output filter
+□ Full voltage test with 100W load
+□ Gradually increase load
 ```
 
 ---
 
-## Phase 3.8: Learning Outcomes
+## 4.7 Testing & Safety
 
-After completing Step 3:
-- [ ] Understand H-bridge operation
-- [ ] Know PWM control basics
-- [ ] Can use gate drivers (IR2110)
-- [ ] Understand dead-time importance
-- [ ] Know modified sine vs square wave
-- [ ] Can build 500W power stage
+### Critical Checks Before Power-On
+
+```
+□ No shorts between +V and GND
+□ All MOSFETs oriented correctly (check pinout!)
+□ Gate resistors installed
+□ Fuse installed
+□ Heatsinks properly mounted
+□ No exposed 220V connections
+```
+
+### Test Sequence
+
+```
+Stage 1: Control only (no power stage connected)
+- Verify SG3525 oscillating
+- Check dead-time between outputs
+- Verify IR2110 outputs
+
+Stage 2: Low voltage (12V input)
+- Connect small transformer
+- Light bulb load (40W)
+- Check output voltage
+- Monitor temperatures
+
+Stage 3: Full voltage (24V input)
+- Use proper transformer
+- Start with 100W load
+- Check waveform if possible
+- Run for 30 minutes
+- Monitor all temperatures
+
+Stage 4: Load testing
+- 200W for 30 minutes
+- 400W for 15 minutes
+- 500W for 5 minutes
+- Note maximum temperature
+```
 
 ---
 
-## Step 2 & 3 Combined Shopping Strategy
+## 4.8 Phase 4 Learning Outcomes
 
-### Buy Together (Saves Shipping)
-
-**From one supplier (AliExpress/LCSC/Mouser):**
-
-| Component | Step 2 | Step 3 | Total |
-|-----------|--------|--------|-------|
-| IRF3205 | 2 | 4 | 6 + spares = 10 |
-| IR2110 | 0 | 2 | 2 + spares = 4 |
-| CD4047 | 1 | 0 | 1 + spare = 2 |
-| SG3525 | 0 | 1 | 1 + spare = 2 |
-| 1N4007 | 5 | 0 | 5 |
-| UF4007 | 0 | 4 | 4 + spares = 6 |
-| MUR860 | 0 | 4 | 4 + spares = 6 |
-| Heatsinks | 2 small | 2 large | 4 total |
+After completing Phase 4:
+- [ ] Understand SG3525 PWM controller
+- [ ] Can set frequency and dead-time
+- [ ] Know soft-start operation
+- [ ] Built 500W modified sine inverter!
+- [ ] Understand output filtering
+- [ ] Ready for pure sine wave (Part 3)!
 
 ---
 
-## Progression Check
+# PART 2 SUMMARY
 
-After Steps 2 & 3, you can:
+## What You've Achieved
 
-| Skill | Step 2 | Step 3 |
-|-------|--------|--------|
-| MOSFET switching | ✓ | ✓✓ |
-| Oscillator design | Basic | PWM |
-| Topology | Push-pull | H-bridge |
-| Gate driving | Direct | IR2110 |
-| Power level | 150W | 500W |
-| Waveform | Square | Modified sine |
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    YOUR PROGRESSION                          │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Phase 1: CD4047 oscillator theory & testing                │
+│     ↓                                                        │
+│  Phase 2: 150W push-pull inverter (working!)                │
+│     ↓                                                        │
+│  Phase 3: H-bridge & IR2110 gate drivers                    │
+│     ↓                                                        │
+│  Phase 4: 500W modified sine inverter (working!)            │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
 
-**Ready for Step 4: Pure Sine Wave!**
+## Skills Acquired
+
+| Skill | Phase |
+|-------|-------|
+| RC oscillator calculation | 1 |
+| MOSFET fundamentals | 2 |
+| Push-pull topology | 2 |
+| Transformer operation | 2 |
+| H-bridge topology | 3 |
+| Gate driver circuits | 3 |
+| Bootstrap operation | 3 |
+| PWM control (SG3525) | 4 |
+| Dead-time control | 4 |
+| Output filtering | 4 |
+
+## Investment
+
+| Item | Cost |
+|------|------|
+| Phase 1 components | $5 |
+| Phase 2 (150W inverter) | $35 |
+| Phase 3 (H-bridge practice) | $25 |
+| Phase 4 (500W inverter) | $50 |
+| **Part 2 Total** | **~$115** |
+
+## Ready for Part 3!
+
+You now have the foundation for:
+- **SPWM (Sinusoidal PWM)** - digital pure sine generation
+- **EG8010** - dedicated pure sine controller
+- **1kW+ power levels**
+- **Eventually: OzInverter 6-15kW!**
