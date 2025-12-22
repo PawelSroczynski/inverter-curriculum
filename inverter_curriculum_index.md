@@ -12,6 +12,7 @@
 | `inverter_curriculum_part2.md` | Step 2: CD4047 (150W) + Step 3: SG3525 (500W) |
 | `inverter_curriculum_part3.md` | Step 4: EG8010 (1kW) + Step 5: OzInverter (6-15kW) |
 | `inverter_curriculum_upgrade_smart.md` | **UPGRADE:** Smart monitoring (ESP32/SmartBob) |
+| `inverter_curriculum_microgrid.md` | **Step 7:** DC Microgrid with AC Tie (4 units) |
 
 ---
 
@@ -143,6 +144,30 @@ Total: ~$1,264
 5. **Ask for help** - Use forums, this assistant, YouTube
 
 ---
+
+---
+
+## Step 7: Microgrid Expansion (Community Scale)
+
+After completing smart upgrade, scale to 4-unit community:
+
+```
+Architecture: Hybrid DC/AC
+├── Cluster A (Houses 1-2): 48V DC bus
+├── Cluster B (Houses 3-4): 48V DC bus
+└── AC Tie (230V): Connects clusters, grid-ready
+```
+
+| Metric | Value |
+|--------|-------|
+| Total capacity | 12kW (4× 3kW inverters) |
+| Solar | 8kW (4× 2kW per house) |
+| Battery | 30kWh (2× 15kWh clusters) |
+| Households | 4 |
+| Total cost | ~$14,300 |
+| Per household | ~$3,578 |
+
+**Savings vs commercial: 60-75%**
 
 ---
 
