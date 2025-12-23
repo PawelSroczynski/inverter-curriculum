@@ -1,8 +1,85 @@
 # Inverter Building Curriculum
 
-**From LED Blinker to 6-15kW Pure Sine Wave Inverter & Community Microgrid**
+**From LED Blinker to Swarm-Networked Community Microgrid**
 
-A complete, open-source electronics curriculum that takes you from zero knowledge to building production-quality power inverters and community-scale microgrids.
+Build your own 6-15kW pure sine wave inverters that talk to each other, share power automatically, and create resilient off-grid communities—without utility grid dependence.
+
+---
+
+## The Goal: Swarm-Networked Microgrids
+
+```
+        ┌─────────────────────────────────────────────────────────────┐
+        │                    COMMUNITY MICROGRID                      │
+        │                                                             │
+        │   Cluster A (48V DC)              Cluster B (48V DC)        │
+        │   ┌─────────┐ ┌─────────┐         ┌─────────┐ ┌─────────┐   │
+        │   │ House 1 │ │ House 2 │         │ House 3 │ │ House 4 │   │
+        │   │  Solar  │ │  Solar  │         │  Solar  │ │  Solar  │   │
+        │   │   BMS   │ │   BMS   │         │   BMS   │ │   BMS   │   │
+        │   │ Inverter│ │ Inverter│         │ Inverter│ │ Inverter│   │
+        │   └────┬────┘ └────┬────┘         └────┬────┘ └────┬────┘   │
+        │        │           │                   │           │        │
+        │        └─────┬─────┘                   └─────┬─────┘        │
+        │              │                               │              │
+        │         ┌────▼────┐    230V AC Tie     ┌────▼────┐          │
+        │         │ TIE INV │◄──────────────────►│ TIE INV │          │
+        │         │ (Master)│   Bi-directional   │ (Slave) │          │
+        │         └─────────┘    Power Flow      └─────────┘          │
+        │                                                             │
+        │   ✓ No utility grid connection required                     │
+        │   ✓ Automatic power balancing via droop control             │
+        │   ✓ Any inverter can become master                          │
+        │   ✓ Resilient: system works if units fail                   │
+        └─────────────────────────────────────────────────────────────┘
+```
+
+**Swarm Architecture:** Inverters communicate via CAN bus or use droop control (no wires needed) to automatically balance power between clusters. When Cluster A has excess solar, power flows to Cluster B. At night, batteries share load. No central controller—each unit makes local decisions based on voltage/frequency.
+
+---
+
+## Learning Path
+
+```
+Step 1          Step 2-3        Step 4-5         Step 6           Step 7
+────────────────────────────────────────────────────────────────────────────►
+
+┌─────────┐   ┌─────────┐   ┌───────────┐   ┌───────────┐   ┌──────────────┐
+│   LED   │   │  150W   │   │   6-15kW  │   │   Smart   │   │    Swarm     │
+│ Blinker │──►│Inverter │──►│ OzInverter│──►│  Monitor  │──►│  Microgrid   │
+│ (basics)│   │(H-bridge│   │(pure sine)│   │  (ESP32)  │   │(bi-direction)│
+└─────────┘   └─────────┘   └───────────┘   └───────────┘   └──────────────┘
+   12 projects    500W          Toroid         Home Asst      4 households
+   Ohm's Law    gate drivers    winding        MQTT/CAN       droop control
+```
+
+---
+
+## What You'll Build
+
+| Step | Project | Power | Key Skills |
+|------|---------|-------|------------|
+| 1 | 12 fundamental projects | — | Soldering, Ohm's Law, transistors, 555, PWM |
+| 2 | CD4047 Square Wave | 150W | MOSFETs, transformers, push-pull |
+| 3 | SG3525 Modified Sine | 500W | H-bridge, gate drivers, dead-time |
+| 4 | EG8010 Pure Sine | 1kW | SPWM, LC filters, voltage feedback |
+| 5 | OzInverter | 6-15kW | Toroid winding, thermal management |
+| 6 | Smart Upgrade | — | ESP32, CAN bus, Home Assistant |
+| **7** | **Swarm Microgrid** | **12kW+** | **Bi-directional tie, droop control** |
+
+---
+
+## Why Swarm Networking?
+
+| Traditional Microgrid | Swarm Microgrid |
+|-----------------------|-----------------|
+| Central controller (single point of failure) | No central controller |
+| Complex wiring between all units | Simple AC tie between clusters |
+| Requires programming each unit | Self-organizing via droop control |
+| Expensive commercial inverters | DIY inverters (~$775 each) |
+| Proprietary protocols | Open CAN bus / ThingSet |
+
+**Key Innovation:** Replace EG8010 with ESP32 for bi-directional control. Each inverter senses AC bus voltage/frequency and adjusts output automatically—like a flock of birds, no leader needed.
 
 ---
 
@@ -10,63 +87,19 @@ A complete, open-source electronics curriculum that takes you from zero knowledg
 
 ```
 inverter-curriculum/
-├── README.md                    # You are here
+├── curriculum/                  # Learning materials (7 steps)
+│   ├── index.md                 # Start here
+│   ├── part1_fundamentals.md    # 12 basic projects
+│   ├── part2_modified_sine.md   # 150W → 500W
+│   ├── part3_pure_sine.md       # 1kW → 6-15kW OzInverter
+│   ├── upgrade_smart.md         # ESP32 + CAN bus
+│   ├── microgrid.md             # Swarm architecture
+│   └── libre_solar.md           # Open source MPPT & BMS
 │
-├── curriculum/                  # Learning materials
-│   ├── index.md                 # Master overview & quick reference
-│   ├── part1_fundamentals.md    # Step 1: 12 basic projects (4 phases)
-│   ├── part2_modified_sine.md   # Steps 2-3: 150W → 500W inverters
-│   ├── part3_pure_sine.md       # Steps 4-5: 1kW → 6-15kW OzInverter
-│   ├── upgrade_smart.md         # Step 6: ESP32 monitoring
-│   ├── microgrid.md             # Step 7: 4-household DC/AC system
-│   └── libre_solar.md           # Bonus: Open source MPPT & BMS
-│
-└── hardware/                    # KiCad designs & firmware
-    ├── ozinverter/              # OzInverter PCB designs (jdevine82)
-    │   ├── original/            # Base 6kW+ main board
-    │   ├── modded/              # SMPS power supply version
-    │   ├── controller/          # EG8010 controller board
-    │   ├── output_stage/        # LC filter & relay board
-    │   ├── battery_monitor/     # Arduino Modbus BMS
-    │   └── powerhouse_controller/  # Central system controller
-    │
-    └── libre_solar/             # Libre Solar open hardware
-        ├── bms-c1/              # 16S/100A BMS (KiCad)
-        ├── mppt-2420-hc/        # 20A MPPT controller (KiCad)
-        ├── bms-firmware/        # BMS Zephyr firmware
-        ├── charge-controller-firmware/  # MPPT firmware
-        └── esp32-edge-firmware/ # CAN→WiFi gateway
+└── hardware/                    # Production-ready designs
+    ├── ozinverter/              # 6kW+ inverter (KiCad + Gerbers)
+    └── libre_solar/             # MPPT, BMS, ESP32 gateway
 ```
-
----
-
-## Learning Path
-
-```
-You are here                                                    Your goal
-     │                                                              │
-     ▼                                                              ▼
-┌─────────┐   ┌─────────┐   ┌─────────┐   ┌─────────┐   ┌─────────────────┐
-│   LED   │──▶│  555    │──▶│ 150W    │──▶│  6kW    │──▶│   Community     │
-│ Blinker │   │ Timer   │   │Inverter │   │OzInverter│  │   Microgrid     │
-└─────────┘   └─────────┘   └─────────┘   └─────────┘   └─────────────────┘
-   Step 1        Step 1       Step 2        Step 5          Step 7
-  (basics)      (timing)    (first inv)   (full power)    (4 households)
-```
-
----
-
-## What You'll Build
-
-| Step | Project | Power | Skills |
-|------|---------|-------|--------|
-| 1 | 12 fundamental projects | — | Soldering, Ohm's Law, transistors, 555, PWM |
-| 2 | CD4047 Square Wave | 150W | MOSFETs, transformers, push-pull |
-| 3 | SG3525 Modified Sine | 500W | H-bridge, gate drivers, dead-time |
-| 4 | EG8010 Pure Sine | 1kW | SPWM, LC filters, voltage feedback |
-| 5 | OzInverter | 6-15kW | Toroid winding, thermal, high power |
-| 6 | Smart Upgrade | — | ESP32, Home Assistant, monitoring |
-| 7 | Community Microgrid | 12kW | DC bus, AC tie, swarm architecture |
 
 ---
 
@@ -74,39 +107,38 @@ You are here                                                    Your goal
 
 | Path | Time | Cost |
 |------|------|------|
-| Single 6kW Smart Inverter (Steps 1-6) | 6-12 months | ~$1,139 |
-| Community Microgrid (Steps 1-7) | 12-24 months | ~$14,300 ($3,575/household) |
+| Single Smart Inverter | 6-12 months | ~$775 |
+| 4-Household Swarm Microgrid | 12-24 months | ~$14,300 (~$3,575/house) |
+
+**Savings vs Commercial:** 60-75% less than Victron/SMA equivalent
 
 ---
 
-## vs Commercial
+## Hardware Included
 
-| Feature | Victron 5kW | Your OzInverter |
-|---------|-------------|-----------------|
-| Power | 5kW | 6-15kW |
-| Monitoring | VRM app | Home Assistant |
-| **Price** | **$2,200** | **$775** |
-| Repairable | ❌ | ✅ |
-| Learning | None | Immense |
+| Component | Source | Description |
+|-----------|--------|-------------|
+| OzInverter PCB | jdevine82 | 6kW+ main board, controller, output stage |
+| BMS-C1 | Libre Solar | 16S/100A battery management |
+| MPPT-2420-HC | Libre Solar | 20A solar charge controller |
+| ESP32 Gateway | Libre Solar | CAN bus → WiFi → Home Assistant |
+
+All designs are open source with KiCad files and Gerbers ready for fabrication.
 
 ---
 
 ## Getting Started
 
 1. **Read** → `curriculum/index.md`
-2. **Build** → Start with Step 1 fundamentals
-3. **Hardware** → Use designs in `hardware/` folder
+2. **Build** → Complete Steps 1-5 (single inverter)
+3. **Upgrade** → Add ESP32 smart monitoring (Step 6)
+4. **Scale** → Connect multiple units (Step 7)
 
 ---
 
 ## Safety
 
-⚠️ **This curriculum involves dangerous voltages and currents.**
-
-- 48V DC at high current can cause fires
-- 220V AC can kill
-- Never work on live circuits
-- Keep fire extinguisher nearby
+⚠️ **High voltage warning.** 48V DC can cause fires. 230V AC can kill. Never work on live circuits.
 
 ---
 
@@ -114,17 +146,20 @@ You are here                                                    Your goal
 
 | Resource | URL |
 |----------|-----|
-| OzInverter Official | bryanhorology.com/ozinverter.php |
+| OzInverter | bryanhorology.com/ozinverter.php |
 | Libre Solar | libre.solar |
-| ESPHome | esphome.io |
 | Home Assistant | home-assistant.io |
+| ThingSet Protocol | thingset.io |
 
 ---
 
 ## License
 
-Open source. Use for personal learning, teaching, community building.
+Open source. Build for yourself, your community, or teach others.
 
 ---
 
-<p align="center"><b>From LED blinker to powering communities.</b></p>
+<p align="center">
+<b>From LED blinker to swarm-powered communities.</b><br>
+<i>No utility grid required.</i>
+</p>
