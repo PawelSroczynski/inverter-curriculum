@@ -8,12 +8,12 @@
 
 | File | Contents |
 |------|----------|
-| `part1_fundamentals.md` | Step 1: 12 projects (4 phases) |
+| `part1_fundamentals.md` | Step 1: 26 projects (5 phases) |
 | `part2_modified_sine.md` | Steps 2-3: CD4047 → SG3525 |
 | `part3_pure_sine.md` | Steps 4-5: EG8010 → OzInverter |
-| `upgrade_smart.md` | Step 6: ESP32 monitoring |
-| `microgrid.md` | Step 7: 4-unit DC/AC microgrid |
-| `libre_solar.md` | Bonus: Open source MPPT & BMS |
+| `part4_smart_upgrade.md` | Step 6: ESP32 monitoring |
+| `part5_microgrid.md` | Step 7: 4-unit DC/AC microgrid |
+| `part6_libre_solar.md` | Bonus: Open source MPPT & BMS |
 
 **Hardware:** See `../hardware/` for KiCad designs & firmware
 
