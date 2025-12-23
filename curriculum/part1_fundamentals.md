@@ -1212,12 +1212,12 @@ Same principle, bigger scale!
     Inverter A ──[ACS712]──┬── AC Bus
                            │
                      Signal to
-                     Arduino/ESP
+                     ESP32
                      (count pulses
                       over time)
 ```
 
-**Arduino sketch concept:**
+**ESP32 sketch concept:**
 ```cpp
 float current = readACS712();  // Amps
 float power = 9.0 * current;   // Watts (V × I)
@@ -1248,7 +1248,7 @@ if (current > 0) {
 **BOM:**
 | Qty | Component | Price |
 |-----|-----------|-------|
-| 1 | Arduino Nano | $3 |
+| 1 | ESP32 DevKit | $5 |
 | 1 | OLED 0.96" I2C | $3 |
 | 1 | ACS712 5A module | (have from 2.5) |
 
@@ -1366,7 +1366,7 @@ Other:
 - 2× Speaker 8Ω 0.5W
 - 2× Small transformer 9V
 - 2× ACS712 5A current sensor
-- 1× Arduino Nano (or clone)
+- 1× ESP32 DevKit (or SmartBob)
 - 1× OLED 0.96" I2C
 - 2× Breadboard 830 points
 - 1× Jumper wire kit
@@ -1382,7 +1382,7 @@ Other:
 
 **AliExpress (cheapest, 2-4 week shipping):**
 - Component kits
-- Arduino clones
+- ESP32 boards
 - Sensors
 
 **Amazon/Local (faster):**
