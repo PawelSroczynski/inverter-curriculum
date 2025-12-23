@@ -1,167 +1,304 @@
 # Step 1: Fundamentals Course
 
-## From Zero to Swarm Microgrid Principles
+## From Zero to Mini Swarm Microgrid
 
-**Goal:** Build foundation skills AND understand bi-directional power flow early—the core principle behind your swarm microgrid.
+**Goal:** Build foundation skills with every project pointing toward the swarm microgrid. By the end, you'll have TWO mini inverters sharing power automatically—the full concept working at safe 9V before scaling to 48V/230V.
 
 ---
 
-## Overview
+## Learning Path
 
 ```
-Phase 1: Pure Basics (no ICs)           ~2-3 weekends
-         → Ohm's Law, switches, transistors
-         → POWER FLOW: diodes, direction control
+PHASE 1: DC Fundamentals                    → Foundation for everything
+PHASE 2: Power Flow & Direction             → Core microgrid concept
+PHASE 3: Oscillation & AC                   → What IS an inverter?
+PHASE 4: Build the Inverter                 → H-bridge in your hands
+PHASE 5: Mini Swarm Microgrid              → THE GOAL working at 9V!
 
-Phase 2: 555 Timer                      ~2-3 weekends
-         → Timing, oscillation, relay control
-
-Phase 3: Control & H-Bridge             ~2-3 weekends
-         → PWM, sequential switching
-         → MINI INVERTER: H-bridge principle!
-
-Phase 4: Measurement                    ~1-2 weekends
-         → Build your own test tools
-
-Total: 8-12 weekends, ~$70 components
+Each phase builds directly on the previous.
+No wasted projects. Every circuit matters.
 ```
 
 ---
 
-## Why This Order?
+## Milestone Preview
 
-```
-Project 1.1 (LED)          → You learn: current flows ONE direction
-Project 1.4 (Diode)        → You learn: diodes ENFORCE one-way flow
-Project 1.5 (Bi-dir)       → You learn: transistors allow CONTROL of direction
-Project 1.9 (H-bridge)     → You learn: H-bridge = REVERSIBLE power flow
-Project 1.10 (Auto-sense)  → You learn: automatic direction = DROOP CONTROL!
-
-By end of Step 1, you understand the swarm microgrid principle
-before touching any dangerous voltages.
-```
+| After Phase | You Can Do |
+|-------------|------------|
+| 1 | Understand any DC circuit schematic |
+| 2 | Explain why power flows and how to control direction |
+| 3 | Build oscillators, understand AC and frequency |
+| 4 | Build a working H-bridge inverter |
+| **5** | **Run two inverters sharing power automatically** |
 
 ---
 
-# MASTER TOOL LIST (Buy Once)
+# TOOLS (Buy Once)
 
-| Tool | Purpose | Est. Price |
-|------|---------|------------|
-| Soldering iron 30-60W | Assembly | $20-40 |
-| Solder 0.8mm (60/40) | Joints | $8 |
+## Essential Tools (~$80)
+
+| Tool | Purpose | Price |
+|------|---------|-------|
+| Soldering iron 30-60W | Assembly | $25 |
+| Solder 0.8mm 60/40 | Joints | $8 |
 | Desoldering pump | Fix mistakes | $8 |
-| Digital multimeter | Measurement | $20-40 |
-| Breadboard 830 points | Prototyping | $5 |
+| Digital multimeter | Measurement | $25 |
+| Breadboard 830pts | Prototyping | $5 |
 | Jumper wire kit | Connections | $5 |
-| Wire stripper/cutter | Prep wire | $10 |
-| Safety glasses | Protection | $5 |
+| Wire stripper | Prep wire | $8 |
 
-**Minimum tools: ~$80-120**
+## Recommended Additions (~$50)
 
-Optional but recommended:
-| Tool | Purpose | Est. Price |
-|------|---------|------------|
-| Soldering station (temp control) | Better control | $50-80 |
-| Oscilloscope (or DSO138 kit) | See waveforms | $25-150 |
+| Tool | Purpose | Price |
+|------|---------|-------|
+| DSO138 oscilloscope kit | See waveforms | $25 |
 | Helping hands | Hold work | $15 |
+| Component tester (TC1) | Identify parts | $10 |
 
 ---
 
-# PHASE 1: Pure Basics + Power Flow Principles
+# PHASE 1: DC Fundamentals
 
-**Time:** 2-3 weekends
-**Cost:** ~$30
-**Key Learning:** Current direction, one-way vs bi-directional flow
+**Time:** 2 weekends | **Cost:** ~$18 | **Projects:** 6
+
+**Why this phase:** Every inverter circuit uses these concepts. Skip nothing.
 
 ---
 
-## Project 1.1: LED + Resistor (Ohm's Law)
+## 1.1 LED + Resistor (Ohm's Law)
 
-**Goal:** Understand V = I × R, current flows in ONE direction
+**The most important law in electronics: V = I × R**
 
-**Schematic:**
 ```
     +9V
      │
-    [R] 330Ω
+    [R] 330Ω  ← Limits current
      │
-    LED  ← Current flows THIS way only
-     │       (long leg = +, short leg = -)
+    LED       ← Long leg = positive
+     │
     GND
 ```
 
-**Bill of Materials:**
-| Qty | Component | Value | Est. Price |
-|-----|-----------|-------|------------|
-| 5 | LED Red | 5mm | $1 |
-| 5 | LED Green | 5mm | $1 |
-| 5 | LED Yellow | 5mm | $1 |
-| 10 | Resistor | 100Ω 1/4W | $0.50 |
-| 10 | Resistor | 220Ω 1/4W | $0.50 |
-| 10 | Resistor | 330Ω 1/4W | $0.50 |
-| 10 | Resistor | 1kΩ 1/4W | $0.50 |
-| 10 | Resistor | 10kΩ 1/4W | $0.50 |
-| 1 | 9V battery clip | - | $1 |
-| 1 | 9V battery | - | $3 |
-| 1 | Breadboard | 400pts | $3 |
+**Build it:**
+1. Insert 330Ω resistor (orange-orange-brown)
+2. Connect LED long leg to resistor
+3. Connect LED short leg to GND
+4. Connect resistor to +9V
+5. LED lights!
 
-**Subtotal: ~$12**
+**Measure:**
+- Voltage across LED: ~2V
+- Voltage across resistor: ~7V
+- Current: 7V ÷ 330Ω = 21mA
 
-**Exercises:**
-1. Calculate R for 9V supply, red LED (Vf=2V), 15mA → R = 467Ω
-2. Build circuit, measure current with multimeter
-3. Reverse LED → no light (wrong direction!)
-4. Remove resistor → LED burns ($0.10 lesson)
+**Experiments:**
+| Resistor | Current | Brightness |
+|----------|---------|------------|
+| 220Ω | 32mA | Bright |
+| 330Ω | 21mA | Normal |
+| 1kΩ | 7mA | Dim |
+| 10kΩ | 0.7mA | Barely visible |
 
-**Connection to Microgrid:** LEDs only work one way. Inverters have the same issue—standard ones only push power OUT, not pull power IN.
+**Key insight:** Resistor controls current. In inverters, we control HUGE currents (100A+) with the same principle.
+
+**BOM:**
+| Qty | Component | Price |
+|-----|-----------|-------|
+| 5 | LED Red 5mm | $0.50 |
+| 5 | LED Green 5mm | $0.50 |
+| 5 | LED Yellow 5mm | $0.50 |
+| 1 | Resistor kit (100Ω-1MΩ) | $3 |
+| 1 | 9V battery + clip | $3 |
+| 1 | Breadboard 400pts | $3 |
 
 ---
 
-## Project 1.2: Switch Circuits
+## 1.2 Voltage Divider (CRITICAL for Sensing!)
 
-**Goal:** Mechanical control of current flow
+**Every sensor circuit in your inverter uses this.**
 
-**Schematics:**
-
-**1.2a: Simple ON/OFF**
 ```
-    +9V ── Switch ── R ── LED ── GND
+    +9V
+     │
+    [R1] 10kΩ
+     │
+     ├──── Vout (measure here)
+     │
+    [R2] 10kΩ
+     │
+    GND
+
+    Vout = Vin × R2/(R1+R2) = 9V × 10k/(10k+10k) = 4.5V
 ```
 
-**1.2b: AND Gate (Series switches)**
+**Why this matters:**
+```
+Real inverter problem:
+- Battery is 48V
+- ESP32 ADC max is 3.3V
+- How to measure 48V safely?
+
+Solution: Voltage divider!
+48V × 10k/(100k+10k) = 4.36V → add protection → 3.3V safe
+```
+
+**Build it:**
+1. Two 10kΩ resistors in series
+2. Measure voltage at middle point
+3. Should read ~4.5V (half of 9V)
+
+**Experiments:**
+| R1 | R2 | Vout |
+|----|----|----- |
+| 10kΩ | 10kΩ | 4.5V |
+| 10kΩ | 20kΩ | 6V |
+| 20kΩ | 10kΩ | 3V |
+| 10kΩ | 1kΩ | 0.82V |
+
+**Key insight:** You can scale ANY voltage down to safe levels. This is how you'll measure 48V battery and 230V AC in your real inverter.
+
+---
+
+## 1.3 Capacitor Basics (Energy Storage)
+
+**Capacitors are EVERYWHERE in inverters. Understand them now.**
+
+```
+    +9V ──[Switch]──┬── +
+                    │
+                   [C] 1000µF
+                    │
+    GND ────────────┴── -
+```
+
+**Experiment 1: Charging**
+1. Connect capacitor (observe polarity! stripe = negative)
+2. Close switch briefly
+3. Open switch
+4. Connect LED across capacitor
+5. LED lights then fades (capacitor discharging)
+
+**Experiment 2: Timing**
+| Capacitor | LED fade time |
+|-----------|---------------|
+| 100µF | ~0.5 sec |
+| 1000µF | ~5 sec |
+| 2200µF | ~10 sec |
+
+**Why this matters:**
+```
+In your inverter:
+- DC bus capacitors (smooth the power)
+- Filter capacitors (clean the output)
+- Timing capacitors (control frequency)
+- Decoupling capacitors (prevent noise)
+
+Without capacitors = noisy, unstable inverter
+```
+
+**BOM:**
+| Qty | Component | Price |
+|-----|-----------|-------|
+| 5 | Capacitor 100µF 25V | $0.50 |
+| 5 | Capacitor 1000µF 25V | $1 |
+| 2 | Capacitor 2200µF 25V | $1 |
+| 10 | Capacitor 100nF ceramic | $0.50 |
+
+---
+
+## 1.4 Diode - One Way Flow
+
+**This explains why standard inverters can't charge batteries.**
+
+```
+    +9V ────►├──── LED ──── GND
+           Diode
+         (1N4007)
+
+    Current flows → LED lights
+
+
+    +9V ────├◄──── LED ──── GND
+           Diode
+         reversed
+
+    Current blocked → LED off
+```
+
+**Band on diode = cathode (negative) side**
+
+**Experiment: Power flow direction**
+```
+    Battery A (9V)         Battery B (6V)
+        +                      +
+        │                      │
+        └────►├────LED────┬────┘
+             Diode        │
+                         [R]
+                          │
+        -                 -
+        └─────────────────┘
+
+    9V > 6V → Current flows A to B → LED lights
+    Swap batteries → Diode blocks → LED off
+```
+
+**Key insight:**
+```
+MOSFETs have built-in "body diodes"
+Standard inverter: power can only flow OUT
+This is why you need ACTIVE CONTROL for bi-directional!
+```
+
+**BOM:**
+| Qty | Component | Price |
+|-----|-----------|-------|
+| 20 | Diode 1N4007 | $1 |
+| 10 | Diode 1N4001 | $0.50 |
+
+---
+
+## 1.5 Switch Circuits
+
+**Manual control of current flow**
+
+**Simple ON/OFF:**
+```
+    +9V ──[Switch]── R ── LED ── GND
+```
+
+**AND logic (series):**
 ```
     +9V ── Sw.A ── Sw.B ── R ── LED ── GND
-    (Both needed to light LED)
+
+    Both switches must be ON for LED to light
 ```
 
-**1.2c: OR Gate (Parallel switches)**
+**OR logic (parallel):**
 ```
-         ┌─ Sw.A ─┐
-    +9V ─┤        ├─ R ── LED ── GND
-         └─ Sw.B ─┘
-    (Either switch lights LED)
+         ┌── Sw.A ──┐
+    +9V ─┤          ├── R ── LED ── GND
+         └── Sw.B ──┘
+
+    Either switch lights LED
 ```
 
-**Bill of Materials:**
-| Qty | Component | Value | Est. Price |
-|-----|-----------|-------|------------|
-| 5 | Tactile switch | 6×6mm | $1 |
-| 2 | Toggle switch | SPST | $2 |
-| 2 | Toggle switch | SPDT | $3 |
-
-**Subtotal: ~$6**
+**BOM:**
+| Qty | Component | Price |
+|-----|-----------|-------|
+| 10 | Tactile button 6×6mm | $1 |
+| 4 | Toggle switch SPST | $2 |
 
 ---
 
-## Project 1.3: Transistor as Switch
+## 1.6 Transistor as Switch
 
-**Goal:** Electronic switching (foundation for MOSFETs and H-bridge)
+**Electronic switching - foundation for MOSFETs**
 
-**Schematic:**
 ```
         +9V
          │
-        [R1] 330Ω
+        [R] 330Ω
          │
         LED
          │
@@ -173,290 +310,381 @@ Optional but recommended:
          │
         GND
 
-   Base connects via 10kΩ to button
+   B connects via 10kΩ to button/signal
 ```
 
-**Bill of Materials:**
-| Qty | Component | Value | Est. Price |
-|-----|-----------|-------|------------|
-| 10 | NPN Transistor | BC547 | $1 |
-| 5 | NPN Transistor | 2N2222 | $1 |
-| 5 | PNP Transistor | BC557 | $1 |
-| 5 | Resistor | 10kΩ | $0.30 |
-| 5 | Resistor | 100kΩ | $0.30 |
-| 2 | LDR photoresistor | 5mm | $1 |
-| 2 | Thermistor | 10kΩ NTC | $1 |
-
-**Subtotal: ~$6**
+**How it works:**
+- Button pressed → small current into Base (~1mA)
+- Transistor turns ON → large current through LED (~20mA)
+- Current gain: 20mA ÷ 1mA = 20× amplification
 
 **Experiments:**
-1. Button-controlled LED
-2. Light-controlled LED (LDR + transistor)
-3. Touch-activated switch (skin resistance)
-4. Temperature switch (thermistor)
+1. Button control → LED follows button
+2. LDR control → LED responds to light
+3. Touch control → your skin resistance triggers it
+4. Thermistor → LED responds to temperature
 
-**Connection to Microgrid:** Transistors let you control HIGH power with LOW power signals. This is exactly how inverters work—small control signal switches big currents.
+**Key insight:**
+```
+This is EXACTLY how inverters work:
+- Small signal (5V from controller)
+- Controls BIG current (100A through MOSFETs)
+- Same principle, bigger scale
+```
+
+**BOM:**
+| Qty | Component | Price |
+|-----|-----------|-------|
+| 10 | BC547 NPN | $1 |
+| 5 | BC557 PNP | $1 |
+| 5 | 2N2222 NPN | $1 |
+| 2 | LDR photoresistor | $0.50 |
+| 2 | Thermistor 10kΩ NTC | $0.50 |
 
 ---
 
-## Project 1.4: Diode - One-Way Power Flow
+## Phase 1 Summary
 
-**Goal:** Understand why standard inverters can't charge batteries backwards
+| Project | Key Concept | Inverter Application |
+|---------|-------------|---------------------|
+| 1.1 LED | Ohm's Law | Current limiting, protection |
+| 1.2 Voltage Divider | Scaling voltage | ALL sensor circuits |
+| 1.3 Capacitor | Energy storage | DC bus, filtering |
+| 1.4 Diode | One-way flow | Why bi-directional needs active control |
+| 1.5 Switches | Manual control | Understanding logic |
+| 1.6 Transistor | Electronic switch | Gate drivers, power stage |
 
-> **THIS IS THE KEY INSIGHT FOR BI-DIRECTIONAL SYSTEMS**
+**Phase 1 Cost: ~$18**
 
-**Schematic:**
+---
+
+# PHASE 2: Power Flow & Direction
+
+**Time:** 2 weekends | **Cost:** ~$15 | **Projects:** 5
+
+**Why this phase:** This IS the core concept of your swarm microgrid—controlling power direction.
+
+---
+
+## 2.1 Two-Battery Power Flow
+
+**Power flows from HIGH to LOW - like water**
+
 ```
     Battery A (9V)              Battery B (6V)
         (+)                         (+)
          │                           │
-         │      ┌───────┐            │
-         └──────┤►  D1  ├────────────┘
-                │ 1N4007│
-                └───┬───┘
-                    │
-                   LED  ← Shows current direction
-                    │
-                   [R] 330Ω
-                    │
-    GND ────────────┴──────────────── GND
+         └───────┬───────────────────┘
+                 │
+                LED  (with 330Ω)
+                 │
+         ┌───────┴───────────────────┐
+         │                           │
+        (-)                         (-)
+        GND ─────────────────────── GND
 ```
 
-**What happens:**
-- A (9V) is higher than B (6V)
-- Current flows A → B through diode
-- LED lights up
-- **Reverse batteries:** Diode blocks! No current. LED off.
+**Observation:**
+- Current flows from 9V to 6V naturally
+- LED lights, showing power transfer
+- A is "discharging", B is "charging" (in theory)
 
-**Bill of Materials:**
-| Qty | Component | Value | Est. Price |
-|-----|-----------|-------|------------|
-| 10 | Diode | 1N4007 | $1 |
-| 10 | Diode | 1N4001 | $0.50 |
-| 1 | 4×AA battery holder | 6V | $1 |
-| 4 | AA batteries | - | $2 |
+**Swap batteries:**
+- Now 6V is on left, 9V on right
+- Current reverses direction
+- Same physics, opposite flow
 
-**Subtotal: ~$5**
-
-**Experiments:**
-1. Build circuit → LED lights (9V powers 6V side)
-2. Swap battery positions → LED off (diode blocks)
-3. Remove diode, use wire → current flows both ways (dangerous in real circuits!)
-4. Add second LED reversed → shows which direction current flows
-
-**Connection to Microgrid:**
+**Key insight:**
 ```
-Standard OzInverter = has "diodes" in the MOSFETs (body diodes)
-                    = power can only flow OUT
-                    = cannot charge battery from AC bus
+This is EXACTLY what happens in your microgrid:
 
-This is why you need BI-DIRECTIONAL control!
+House 1: Battery full (higher voltage)  ─→ exports power
+House 2: Battery low (lower voltage)    ←─ imports power
+
+No controller needed for basic sharing!
+Just voltage difference drives current.
+```
+
+**BOM:**
+| Qty | Component | Price |
+|-----|-----------|-------|
+| 1 | 4×AA holder | $1 |
+| 4 | AA batteries | $2 |
+| 1 | Extra 9V battery | $2 |
+
+---
+
+## 2.2 Diode Enforces Direction
+
+**Add diode to PREVENT reverse flow**
+
+```
+    9V ────►├────┬──── 6V
+          Diode │
+                LED
+                │
+    GND ────────┴──── GND
+
+    Current flows 9V → 6V (diode allows)
+
+    If you swap batteries:
+    6V ────►├────┬──── 9V
+          Diode │
+                LED (OFF!)
+                │
+    GND ────────┴──── GND
+
+    Diode BLOCKS reverse flow (9V can't push back)
+```
+
+**Key insight:**
+```
+Standard inverter = has body diodes in MOSFETs
+Power can only flow ONE direction (battery → AC output)
+Battery CANNOT be charged from AC bus
+
+This is the LIMITATION you'll overcome with bi-directional control!
 ```
 
 ---
 
-## Project 1.5: Transistor Bi-Directional Control
+## 2.3 Transistor Bi-Directional Control
 
-**Goal:** Control power direction with transistors (foundation for bi-directional inverter)
+**Now YOU control which direction power flows**
 
-**Schematic:**
 ```
-                 MODE SELECT
-           ┌────────┴────────┐
-        Button A          Button B
-        (A→B)             (B→A)
-           │                 │
-         [10k]             [10k]
-           │                 │
-    9V ────┼────┐     ┌──────┼──── 6V
-    Bat A  │   B│     │B     │     Bat B
-           │  ╱ │     │ ╲    │
-           │ ●Q1│     │Q2●   │
-           │  ╲ │     │ ╱    │
-           │   E│     │E     │
-           │    └──┬──┘      │
-           │       │         │
-           │    LED + R      │
-           │    (shows       │
-           │     flow)       │
-           │       │         │
-    GND ───┴───────┴─────────┴──── GND
+        EXPORT Button         IMPORT Button
+             │                     │
+           [10k]                 [10k]
+             │                     │
+    9V ──────┼─────┐       ┌───────┼────── 6V
+    (A)      │    B│       │B      │       (B)
+             │   ╱ │       │ ╲     │
+             │  ●Q1│       │Q2●    │
+             │   ╲ │       │ ╱     │
+             │    E│       │E      │
+             │     └───┬───┘       │
+             │         │           │
+             │    LED + 330Ω       │
+             │         │           │
+    GND ─────┴─────────┴───────────┴────── GND
 ```
 
 **Operation:**
-- Press Button A → Q1 ON → Current flows A→B → LED lights
-- Press Button B → Q2 ON → Current flows B→A → LED lights
-- **YOU control the direction!**
+| Button | Q1 | Q2 | Current Flow | LED |
+|--------|----|----|--------------|-----|
+| None | OFF | OFF | None | Off |
+| EXPORT | ON | OFF | A → B | On (one direction) |
+| IMPORT | OFF | ON | B → A | On (reversed!) |
+| Both | ON | ON | SHORT CIRCUIT! | Danger! |
 
-**Bill of Materials:**
-*(Uses transistors from 1.3)*
-| Qty | Component | Value | Est. Price |
-|-----|-----------|-------|------------|
-| 2 | Push button | 6×6mm | (have) |
-| 2 | Resistor | 10kΩ | (have) |
+**This IS the bi-directional inverter principle!**
 
-**Subtotal: ~$0** (already have parts)
-
-**Experiments:**
-1. Press A button → verify current A→B
-2. Press B button → verify current B→A
-3. Press both → what happens? (short circuit - be quick!)
-4. Try with motors instead of LED → motor spins both directions!
-
-**Connection to Microgrid:**
 ```
-This IS the bi-directional principle!
-
-Button A = "EXPORT mode" (send power to grid)
-Button B = "IMPORT mode" (receive power, charge battery)
-
-Real inverter uses MOSFETs instead of BC547,
-and ESP32 instead of buttons.
+Real inverter:
+- EXPORT button = ESP32 sets "grid-forming" mode
+- IMPORT button = ESP32 sets "grid-following" mode
+- Q1/Q2 = MOSFET H-bridge
+- Same concept, higher power
 ```
 
 ---
 
-## Project 1.6: Voltage Auto-Sensing (Droop Control Principle!)
+## 2.4 Voltage Auto-Sensing (DROOP CONTROL!)
 
-**Goal:** Automatic direction control based on voltage difference
+**Automatic direction based on voltage difference - NO BUTTONS!**
 
-> **THIS IS DROOP CONTROL IN MINIATURE**
-
-**Schematic:**
 ```
-    Higher Voltage                    Lower Voltage
-    (has excess)                      (needs power)
-         │                                 │
-    9V ──┼───[1kΩ]────┬────────────────────┼── 6V
-         │            │                    │
-         │           B│                    │
-         │          ╱ │                    │
-         └──[10k]──●  │   LED (direction)  │
-                    ╲ │        │           │
-                     E├────────┼───────────┤
-                      │       [R]          │
-                      │      330Ω          │
-                      │        │           │
-    GND ──────────────┴────────┴───────────┴── GND
+    Comparator using transistors:
+
+    9V ──[10k]──┬──[10k]── 6V
+                │
+                │ Voltage at this point depends
+                │ on which battery is stronger
+                │
+               B│
+              ╱ │
+             ●  │──── LED (shows which way power flows)
+              ╲ │
+               E│
+                │
+    GND ────────┴────────── GND
 ```
 
 **How it works:**
-- 9V > 6V → Base voltage is HIGH → Transistor ON
-- Current automatically flows from HIGH to LOW
-- **No buttons needed!** Voltage difference controls direction.
+- If 9V battery is stronger → middle voltage is higher → transistor conducts more → power flows A→B
+- If 6V battery were replaced with 12V → middle voltage shifts → transistor behavior changes
 
-**Swap batteries:**
-- Now 6V side is "A" and 9V side is "B"
-- Transistor turns OFF (base voltage too low)
-- Current stops (or reverses if you add second transistor)
-
-**Bill of Materials:**
-*(Uses parts from previous projects)*
-
-**Subtotal: ~$0**
-
-**Experiments:**
-1. Build with 9V and 6V → LED lights (auto-flow high→low)
-2. Swap batteries → LED off or reversed
-3. Use potentiometer to simulate "variable solar" → watch LED respond
-4. Add second transistor for reverse path → full bi-directional!
-
-**Connection to Microgrid:**
+**Better version with two transistors:**
 ```
-This IS droop control!
+    9V ──┬────────────────────────┬── 6V
+         │                        │
+        [R]                      [R]
+         │    ┌──── LED A ────┐   │
+         └────┤               ├───┘
+              │    Q1    Q2   │
+              └──── LED B ────┘
+
+    Whichever battery is HIGHER lights its LED
+    Automatic sensing! No buttons!
+```
+
+**Key insight:**
+```
+THIS IS DROOP CONTROL!
 
 Real system:
-- Battery FULL = higher voltage → pushes power OUT
-- Battery LOW = lower voltage → pulls power IN
-- No communication needed between inverters!
-- Just physics: power flows high→low automatically
+- Battery full → voltage slightly higher → exports
+- Battery empty → voltage slightly lower → imports
+- No communication between inverters needed
+- Physics handles the coordination
 
-Your 9V/6V batteries = two houses in the microgrid
-Transistor = the bi-directional inverter
-LED = power flowing between them
+Your swarm microgrid will use this principle.
 ```
 
 ---
 
-## Phase 1 Complete BOM
+## 2.5 Current Sensing Introduction
 
-| Category | Items | Est. Total |
-|----------|-------|------------|
-| LEDs | 15 pcs various | $3 |
-| Resistors | 50+ pcs various | $3 |
-| Switches | 10 pcs | $6 |
-| Transistors | 20 pcs (NPN+PNP) | $3 |
-| Diodes | 20 pcs | $2 |
-| Sensors | LDR, thermistor | $2 |
-| 9V battery + clip | 1 set | $4 |
-| 6V (4×AA) + holder | 1 set | $3 |
-| Breadboard | 1 pc | $3 |
+**Know HOW MUCH power flows, not just direction**
 
-**Phase 1 Total: ~$30**
-
----
-
-# PHASE 2: 555 Timer
-
-**Time:** 2-3 weekends
-**Cost:** ~$18
-**Key Learning:** Timing, oscillation, frequency control
-
----
-
-## Project 2.1: 555 Monostable (One-Shot Timer)
-
-**Goal:** Triggered timing, RC time constants
-
-**Schematic:**
 ```
-                +9V
-                 │
-          ┌──────┼──────┐
-          │      8      │
-       ┌──┤4    VCC    7├──────────┐
-       │  │   RESET     │          │
-       │  │             │         [R] 470kΩ
-       │  │    555      │          │
-       │  │             │          │
-       │  │     3       │          │
-       │  │    OUT──────┼──[1kΩ]──LED──GND
-       │  │             │          │
-       │  │  2      6   │         [C] 10µF
-       │  │  │      └───┼──────────┤
-       │  │  │     5    │          │
-       │  │  │    ─┴─   │          │
-       │  └──┼──100nF───┼──────────┤
-       │     1          │          │
-       └─────┴──────────┴──────────┴── GND
-             │
-          Button → +9V (trigger)
+    Simple current sense:
+
+    +9V ────[0.1Ω]────┬──── Load
+               │      │
+               └──Measure voltage here
+
+    V = I × R
+    If I = 1A, R = 0.1Ω → V = 0.1V = 100mV
 ```
 
-**Time = 1.1 × R × C = 1.1 × 470kΩ × 10µF = 5.17 seconds**
+**Better: Use dedicated sensor**
+```
+    +9V ───┬────[ACS712]────┬──── Load
+           │                │
+           │     ┌──────────┘
+           │     │ Signal out (66mV per Amp)
+           │     ▼
+           │  To voltmeter/ADC
+           │
+    GND ───┴─────────────────────── GND
+```
 
-**Bill of Materials:**
-| Qty | Component | Value | Est. Price |
-|-----|-----------|-------|------------|
-| 5 | 555 Timer IC | NE555 | $1 |
-| 5 | IC Socket | 8-pin DIP | $0.50 |
-| 5 | Resistor | 100kΩ | $0.30 |
-| 5 | Resistor | 470kΩ | $0.30 |
-| 5 | Resistor | 1MΩ | $0.30 |
-| 10 | Capacitor | 100nF ceramic | $0.50 |
-| 5 | Capacitor | 1µF electrolytic | $0.30 |
-| 5 | Capacitor | 10µF electrolytic | $0.30 |
-| 5 | Capacitor | 100µF electrolytic | $0.50 |
+**Why this matters:**
+```
+Energy metering needs:
+- Voltage (from voltage divider)
+- Current (from ACS712 or shunt)
+- Power = V × I
+- Energy = Power × Time (Wh)
 
-**Subtotal: ~$4**
+This is how you'll track kWh sent/received in your microgrid!
+```
+
+**BOM:**
+| Qty | Component | Price |
+|-----|-----------|-------|
+| 2 | ACS712 5A module | $3 |
+| 5 | Resistor 0.1Ω 1W | $1 |
 
 ---
 
-## Project 2.2: 555 Astable (Oscillator)
+## Phase 2 Summary
 
-**Goal:** Continuous oscillation—this generates the switching signal for inverters!
+| Project | Concept | Microgrid Application |
+|---------|---------|----------------------|
+| 2.1 Two-Battery | Power flows high→low | Basic sharing principle |
+| 2.2 Diode Direction | One-way enforcement | Why standard inverters can't import |
+| 2.3 Bi-Directional | Controlled direction | Import/Export mode switching |
+| 2.4 Auto-Sensing | Voltage-based control | DROOP CONTROL |
+| 2.5 Current Sensing | Measure flow amount | Energy metering |
 
-**Schematic:**
+**Phase 2 Cost: ~$15**
+
+---
+
+# PHASE 3: Oscillation & AC
+
+**Time:** 2 weekends | **Cost:** ~$12 | **Projects:** 5
+
+**Why this phase:** An inverter converts DC to AC. What IS AC? You need to deeply understand this.
+
+---
+
+## 3.1 What IS AC? (Manual Demo)
+
+**AC = Alternating Current. Let's make it by hand.**
+
+```
+    Step 1: Connect battery one way
+
+    +9V ────LED──── GND     LED lights
+
+
+    Step 2: Reverse the connections
+
+    GND ────LED──── +9V     LED lights (if bi-color)
+                            or use 2 LEDs opposite polarity
+```
+
+**Better demo with motor:**
+```
+    +9V ────[Motor]──── GND     Motor spins clockwise
+
+    (swap wires)
+
+    GND ────[Motor]──── +9V     Motor spins counter-clockwise
+
+    Swap back and forth rapidly = motor vibrates = AC!
+```
+
+**Key insight:**
+```
+AC is just DC that keeps reversing direction.
+- 50 times per second = 50Hz (Europe)
+- 60 times per second = 60Hz (USA)
+
+Your inverter's job: automate this reversal perfectly.
+```
+
+---
+
+## 3.2 RC Oscillator (Simplest Timing)
+
+**Before 555, understand the basic principle**
+
+```
+         +9V
+          │
+         [R] 100kΩ
+          │
+          ├───────┬──── Output (to LED via transistor)
+          │       │
+         [C]    [R2]
+        100µF   10kΩ
+          │       │
+         GND     GND
+```
+
+**Frequency ≈ 1/(R×C)**
+
+With 100kΩ and 100µF: f ≈ 0.1 Hz (very slow, ~10 seconds per cycle)
+
+**Experiment:** Change values, observe frequency change
+| R | C | Approximate f |
+|---|---|---------------|
+| 100kΩ | 100µF | 0.1 Hz |
+| 10kΩ | 100µF | 1 Hz |
+| 10kΩ | 10µF | 10 Hz |
+| 10kΩ | 1µF | 100 Hz |
+
+---
+
+## 3.3 555 Astable (Controlled Frequency)
+
+**Now proper oscillator with precise control**
+
 ```
                 +9V
                  │
@@ -467,99 +695,72 @@ LED = power flowing between them
        │  │      555        │ [R1] 10kΩ
        │  │                 │  │
        │  │       3         │  ├──┐
-       │  │      OUT────────┼──┤ [R2] 1kΩ
+       │  │      OUT────────┼──┤ [R2] 10kΩ
        │  │                 │  │  │
-       │  │    2       6    │  │ [C] 100µF
+       │  │    2       6    │  │ [C] 10µF
        │  │    └───────┴────┼──┴──┤
        │  │       5         │     │
        │  │      ─┴─ 100nF  │     │
        └──┴─────────────────┴─────┴── GND
 ```
 
-**Frequency ≈ 1.44 / ((R1 + 2×R2) × C)**
+**Frequency = 1.44 / ((R1 + 2×R2) × C)**
 
-**Bill of Materials:**
-| Qty | Component | Value | Est. Price |
-|-----|-----------|-------|------------|
-| 5 | Capacitor | 47µF | $0.30 |
-| 5 | Capacitor | 220µF | $0.50 |
-| 2 | Potentiometer | 10kΩ | $1 |
-| 2 | Potentiometer | 100kΩ | $1 |
+With values shown: f = 1.44 / ((10k + 20k) × 10µF) = 4.8 Hz
 
-**Subtotal: ~$3**
+**Make it adjustable:** Replace R2 with 100kΩ potentiometer
+- Full CCW: ~14 Hz
+- Full CW: ~0.7 Hz
 
-**Connection to Microgrid:** This oscillator is the "heartbeat" of an inverter. It determines the AC frequency (50Hz or 60Hz). In your swarm, matching frequencies = synchronized power sharing.
+**BOM:**
+| Qty | Component | Price |
+|-----|-----------|-------|
+| 5 | 555 Timer IC | $1 |
+| 5 | IC Socket 8-pin | $0.50 |
+| 4 | Potentiometer 100kΩ | $2 |
 
 ---
 
-## Project 2.3: 555 with Relay
+## 3.4 Frequency = Sound (Hear Your Oscillator!)
 
-**Goal:** Switch high-power loads, understand inductive protection
+**Connect 555 to speaker - HEAR the frequency**
 
-**Schematic:**
 ```
-        +9V                     LOAD CIRCUIT
-         │
-    555 OUT───[1kΩ]──┐         ┌─────────┐
-                    B│         │ RELAY   │
-                   ╱ │    ┌────┤ NO ● ───┼── Load+
-              NPN ●  │    │    │ COM● ───┼── Load-
-                   ╲ │    │    └─────────┘
-                    E│    │
-         ┌──────────┤    │
-    +9V ─┤  RELAY   ├────┘
-         │  COIL    │
-         └────┬─────┘
-           ┌──┴──┐
-           │ ◄── │ Flyback diode (1N4007)
-           └──┬──┘
-              │
-             GND
+    555 OUT ──[100µF]──┬── Speaker +
+                       │   (8Ω)
+                       │
+    GND ───────────────┴── Speaker -
 ```
 
-**Bill of Materials:**
-| Qty | Component | Value | Est. Price |
-|-----|-----------|-------|------------|
-| 2 | Relay | 5V coil, 10A | $3 |
-| 2 | Relay | 9V coil, 10A | $3 |
-| 5 | Transistor | BC337 | $1 |
-| 2 | Transistor | TIP120 | $1 |
+**Experiment:**
+| Component Change | Frequency | Sound |
+|------------------|-----------|-------|
+| C = 100µF | ~5 Hz | Clicks |
+| C = 10µF | ~50 Hz | Low hum (THIS IS 50Hz AC!) |
+| C = 1µF | ~500 Hz | Tone |
+| C = 100nF | ~5000 Hz | High pitch |
 
-**Subtotal: ~$8**
-
-**CRITICAL Learning:** Flyback diode protects against voltage spikes from inductors. Transformer = big inductor. **Every inverter needs flyback protection!**
-
----
-
-## Phase 2 Complete BOM
-
-| Category | Items | Est. Total |
-|----------|-------|------------|
-| 555 ICs + sockets | 5 each | $1.50 |
-| Resistors | Various | $2 |
-| Capacitors | Various | $3 |
-| Potentiometers | 4 pcs | $2 |
-| Relays | 4 pcs | $6 |
-| BC337, TIP120 | 7 pcs | $2 |
-
-**Phase 2 Total: ~$18**
-
----
-
-# PHASE 3: Control & Mini H-Bridge
-
-**Time:** 2-3 weekends
-**Cost:** ~$15
-**Key Learning:** PWM, H-bridge topology—the actual inverter circuit!
-
----
-
-## Project 3.1: 555 PWM (Brightness Control)
-
-**Goal:** Pulse Width Modulation—the basis of SPWM in pure sine inverters
-
-**Schematic:**
+**Key insight:**
 ```
+When you hear 50Hz hum from a transformer = that's the AC frequency!
+Your inverter will generate exactly 50.00Hz (or 60.00Hz).
+Too fast or slow = appliances malfunction.
+```
+
+**BOM:**
+| Qty | Component | Price |
+|-----|-----------|-------|
+| 2 | Speaker 8Ω 0.5W | $2 |
+
+---
+
+## 3.5 PWM - Pulse Width Modulation
+
+**Control AVERAGE voltage by switching fast**
+
+```
+    555 in PWM mode:
+
             +9V
              │
       ┌──────┼──────────┐
@@ -569,392 +770,675 @@ LED = power flowing between them
    │  │      555        │         [R] 1kΩ
    │  │                 │          │
    │  │       3         │          │
-   │  │      OUT────────┼──[220Ω]──LED
+   │  │      OUT────────┼──────── LED
    │  │                 │          │
-   │  │    2       6    │      ┌───┤
-   │  │    └───────┴────┼──────┤POT│ 10kΩ
-   │  │       5         │      └───┤
+   │  │    2       6    │      ┌───┴───┐
+   │  │    │       │    │      │  POT  │ 10kΩ
+   │  │    └───┴───┴────┼──────┤       │
+   │  │       5         │      └───┬───┘
    │  │      ─┴─ 100nF  │          │
    └──┴─────────────────┴──────────┴── GND
 ```
 
-**Bill of Materials:**
-| Qty | Component | Value | Est. Price |
-|-----|-----------|-------|------------|
-| 2 | Potentiometer | 10kΩ linear | $1 |
-| 1 | Potentiometer | 50kΩ linear | $0.50 |
+**Turn pot:**
+- One extreme: LED fully bright (100% duty)
+- Middle: LED medium (50% duty)
+- Other extreme: LED dim (near 0% duty)
 
-**Subtotal: ~$2**
+**Oscilloscope view:**
+```
+100% duty:  ████████████████████
+ 50% duty:  ████    ████    ████
+ 25% duty:  ██      ██      ██
+```
 
-**Connection to Microgrid:** SPWM (Sinusoidal PWM) varies the pulse width to create a sine wave average. This project teaches the principle.
+**Key insight:**
+```
+SPWM (Sinusoidal PWM) uses this principle:
+- Vary the duty cycle smoothly
+- Average follows a sine wave shape
+- This is how EG8010 creates pure sine output!
+```
 
 ---
 
-## Project 3.2: LED Chaser (4017 Counter)
+## Phase 3 Summary
 
-**Goal:** Sequential switching—H-bridge needs precise timing sequence
+| Project | Concept | Inverter Application |
+|---------|---------|---------------------|
+| 3.1 What is AC | Reversing polarity | The inverter's core job |
+| 3.2 RC Oscillator | Timing basics | Foundation of all control |
+| 3.3 555 Astable | Controlled frequency | Generate exact 50/60Hz |
+| 3.4 Frequency=Sound | Hear the frequency | Debug by ear! |
+| 3.5 PWM | Average voltage control | SPWM for pure sine |
 
-**Schematic:**
-```
-        +9V
-         │
-    ┌────┴────┐          ┌────┴────┐
-    │   555   │          │  4017   │
-    │         │   CLK    │         │
-    │    3────┼──────────┤14    Q0─┼──[330Ω]──LED0
-    │         │          │      Q1─┼──[330Ω]──LED1
-    │    8────┤──VCC VCC─┤16    Q2─┼──[330Ω]──LED2
-    │    1────┤──GND GND─┤8     Q3─┼──[330Ω]──LED3
-    │    4────┤──VCC RST─┤15       │
-    └─────────┘          └─────────┘
-```
-
-**Bill of Materials:**
-| Qty | Component | Value | Est. Price |
-|-----|-----------|-------|------------|
-| 3 | CD4017 | Decade counter | $1 |
-| 3 | IC Socket | 16-pin DIP | $0.60 |
-| 10 | LED | Various | $1 |
-
-**Subtotal: ~$3**
+**Phase 3 Cost: ~$12**
 
 ---
 
-## Project 3.3: Mini H-Bridge (THE INVERTER PRINCIPLE!)
+# PHASE 4: Build The Inverter
 
-**Goal:** Build the actual inverter topology with safe, low voltage
+**Time:** 2-3 weekends | **Cost:** ~$15 | **Projects:** 5
 
-> **THIS IS THE CORE OF EVERY INVERTER**
+**Why this phase:** You'll build an actual H-bridge inverter with your hands.
 
-**Schematic:**
+---
+
+## 4.1 Push-Pull (Two Transistors Alternating)
+
+**Simplest "inverter" - two transistors taking turns**
+
 ```
-                      +9V
-                       │
-            ┌──────────┼──────────┐
-            │                     │
-           Q1                    Q2
-          (PNP)                 (PNP)
-         BC557                 BC557
-            │                     │
-            ├─────── LOAD ────────┤
-            │      (Motor or      │
-            │       LED pair)     │
-           Q3                    Q4
-          (NPN)                 (NPN)
-         BC547                 BC547
-            │                     │
-            └──────────┼──────────┘
-                       │
-                      GND
-
-Control Logic:
-- Q1+Q4 ON (Q2+Q3 OFF): Current flows LEFT→RIGHT
-- Q2+Q3 ON (Q1+Q4 OFF): Current flows RIGHT→LEFT
-- Alternate = AC output!
-```
-
-**Detailed wiring:**
-```
-Control A (Q1+Q4):                Control B (Q2+Q3):
-
-  +9V──[10k]──●──Button A         +9V──[10k]──●──Button B
-              │                               │
-         Q1 Base                         Q2 Base
-              │                               │
-         Q4 Base (via inverter)          Q3 Base (via inverter)
+              +9V
+               │
+        ┌──────┼──────┐
+        │             │
+       [R]           [R]
+      330Ω          330Ω
+        │             │
+      LED A         LED B
+        │             │
+        C             C
+       ╱             ╱
+  B1──●    Q1   Q2  ●──B2
+       ╲             ╲
+        E             E
+        │             │
+        └──────┬──────┘
+               │
+              GND
 ```
 
-**Bill of Materials:**
-| Qty | Component | Value | Est. Price |
-|-----|-----------|-------|------------|
-| 4 | BC557 | PNP | (have from Phase 1) |
-| 4 | BC547 | NPN | (have from Phase 1) |
-| 2 | Small DC motor | 3-6V | $2 |
-| 4 | Resistor | 1kΩ | (have) |
-| 4 | Resistor | 10kΩ | (have) |
-
-**Subtotal: ~$2**
-
-**Experiments:**
-1. Manual control with 2 buttons → motor spins left/right
-2. Connect 555 oscillator → motor vibrates (AC!)
-3. Add second LED pair → shows alternating current direction
-4. Measure with multimeter → see voltage reversing
-
-**Connection to Microgrid:**
+**Control with 555:**
 ```
-This tiny circuit IS an inverter!
+    555 OUT ──────────┬──[10k]── Q1 Base
+                      │
+                     [Inverter]
+                      │
+                      └──[10k]── Q2 Base
+```
 
+**Result:** LEDs alternate. When one is ON, other is OFF. This IS AC conceptually!
+
+---
+
+## 4.2 H-Bridge Manual Control
+
+**Full H-bridge with 4 transistors**
+
+```
+                        +9V
+                         │
+              ┌──────────┼──────────┐
+              │                     │
+             Q1                    Q2
+            (PNP)                 (PNP)
+           BC557                 BC557
+              │                     │
+              ├──────[MOTOR]────────┤
+              │                     │
+             Q3                    Q4
+            (NPN)                 (NPN)
+           BC547                 BC547
+              │                     │
+              └──────────┼──────────┘
+                         │
+                        GND
+```
+
+**Control logic:**
+| State | Q1 | Q2 | Q3 | Q4 | Motor |
+|-------|----|----|----|----|-------|
+| Forward | ON | off | off | ON | Spins CW |
+| Reverse | off | ON | ON | off | Spins CCW |
+| Brake | off | off | ON | ON | Stopped |
+| Coast | off | off | off | off | Free spin |
+| **FORBIDDEN** | ON | ON | - | - | SHORT CIRCUIT! |
+
+**Build with buttons:**
+```
+    Button A: Activates Q1 + Q4 (forward)
+    Button B: Activates Q2 + Q3 (reverse)
+
+    Press A → motor spins one way
+    Press B → motor spins other way
+
+    NEVER press both! (shoot-through = dead transistors)
+```
+
+**BOM:**
+| Qty | Component | Price |
+|-----|-----------|-------|
+| 4 | BC547 NPN | (have) |
+| 4 | BC557 PNP | (have) |
+| 2 | Small DC motor 3-6V | $2 |
+
+---
+
+## 4.3 H-Bridge + Oscillator = INVERTER!
+
+**Combine 555 with H-bridge**
+
+```
+    555 Astable          NOT Gate         H-Bridge
+    (2 Hz)              (CD4069)
+         │                  │
+         │    ┌─────────────┼─────────────┐
+         │    │             │             │
+         └────┤ Q1+Q4       │  Q2+Q3      │
+              │ Control     │  Control    │
+              │             │             │
+              │      ┌──────┴──────┐      │
+              │      │    Motor    │      │
+              │      │    (Load)   │      │
+              │      └─────────────┘      │
+              │                           │
+              └───────────────────────────┘
+```
+
+**What happens:**
+1. 555 outputs HIGH → Q1+Q4 ON → current flows LEFT
+2. 555 outputs LOW → Q2+Q3 ON → current flows RIGHT
+3. Repeats at 2 Hz → motor vibrates back and forth
+
+**THIS IS AN INVERTER!**
+- DC input (9V battery)
+- AC output (alternating through motor)
+- Controlled frequency (555 timing)
+
+**BOM:**
+| Qty | Component | Price |
+|-----|-----------|-------|
+| 2 | CD4069 Hex Inverter | $1 |
+| 2 | IC Socket 14-pin | $0.50 |
+
+---
+
+## 4.4 Dead-Time (CRITICAL Safety Concept!)
+
+**Why you can't switch instantly**
+
+```
+    DANGER: Shoot-through
+
+              +9V
+               │
+              Q1 ← If Q1 and Q3 are BOTH ON
+               │    at the same time...
+               │
+              Q3 ← ...direct short circuit!
+               │    BOOM! Dead transistors.
+              GND
+```
+
+**Solution: Dead-time**
+```
+    Timing diagram:
+
+    Q1:  ████████________████████________
+    Q3:  ________████████________████████
+                ↑       ↑
+                Dead-time (both OFF)
+                ~1-5 microseconds
+```
+
+**Build dead-time circuit:**
+```
+    555 OUT ──┬──[R]──[C]──► Q1 control (delayed ON)
+              │
+              └──────────► Q3 control (immediate)
+
+    RC delay creates dead-time
+```
+
+**Experiment:**
+1. Without dead-time: transistors get HOT (shoot-through)
+2. With dead-time: transistors stay cool
+
+**Key insight:**
+```
+EG8010 chip handles dead-time automatically (2µs default)
+If you use ESP32, you must program dead-time yourself
+This is why MOSFET drivers (IR2110) have dead-time pins
+```
+
+**BOM:**
+| Qty | Component | Price |
+|-----|-----------|-------|
+| 5 | Capacitor 1nF | $0.30 |
+| 5 | Resistor 1kΩ | (have) |
+
+---
+
+## 4.5 Add Transformer (Step Up!)
+
+**Scale voltage with transformer**
+
+```
+    H-Bridge output          Transformer          Output
+    (9V AC-ish)
+         │                   ┌─────────┐
+         ├───────────────────┤ 1:2     ├──────── ~18V AC
+         │                   │         │
+         │                   │  ))))   │
+         │                   │  ((((   │
+         │                   │         │
+         └───────────────────┤         ├────────
+                             └─────────┘
+```
+
+**Experiment with small transformer:**
+- 9V in, measure output
+- Try different transformers (1:1, 1:2, 2:1)
+- Observe voltage scaling
+
+**Key insight:**
+```
 Real OzInverter:
-- BC547/BC557 → IRFP4668 MOSFETs (bigger)
-- 9V battery → 48V battery bank
-- Small motor → 230V transformer
-- Buttons → EG8010 controller (or ESP32)
+- 48V DC battery
+- H-bridge creates 48V AC (square-ish wave)
+- Transformer steps up to 230V AC
+- LC filter smooths to sine wave
 
-Same topology. Same principle. Just scaled up.
+Same principle, bigger scale!
 ```
+
+**BOM:**
+| Qty | Component | Price |
+|-----|-----------|-------|
+| 1 | Small transformer 9V:9V | $3 |
+| 1 | Small transformer 9V:18V | $3 |
 
 ---
 
-## Project 3.4: H-Bridge with 555 (Automatic AC!)
+## Phase 4 Summary
 
-**Goal:** Combine oscillator + H-bridge = working inverter!
+| Project | Concept | Real Inverter Application |
+|---------|---------|--------------------------|
+| 4.1 Push-Pull | Alternating outputs | Basic inverter topology |
+| 4.2 H-Bridge | Full bridge control | OzInverter power stage |
+| 4.3 + Oscillator | Automatic AC | Complete inverter |
+| 4.4 Dead-Time | Shoot-through prevention | CRITICAL for MOSFETs |
+| 4.5 Transformer | Voltage scaling | 48V → 230V |
 
-**Schematic:**
-```
-    555 Astable                    H-Bridge
-    (1-10 Hz)
-         │
-         │    ┌─────────────────────────┐
-         │    │                         │
-         └────┤ Q1+Q4 Control           │
-              │         ┌───────┐       │
-              │         │ Motor │       │
-              │         │  or   │       │
-         ┌────┤ Q2+Q3   │ LEDs  │       │
-         │    │ Control └───────┘       │
-         │    │                         │
-    NOT Gate  └─────────────────────────┘
-    (CD4069 or
-     transistor)
-```
-
-**Bill of Materials:**
-| Qty | Component | Value | Est. Price |
-|-----|-----------|-------|------------|
-| 2 | CD4069 | Hex inverter | $1 |
-| 2 | IC Socket | 14-pin | $0.40 |
-
-**Subtotal: ~$2**
-
-**What you'll see:**
-- Motor shakes back and forth (AC motion)
-- LEDs alternate (shows current reversal)
-- Adjust 555 pot → change "frequency"
-- **You built an inverter!**
+**Phase 4 Cost: ~$15**
 
 ---
 
-## Project 3.5: Power Stage (555 + TIP120)
+# PHASE 5: Mini Swarm Microgrid
 
-**Goal:** Drive real loads—motor, high-power LEDs
+**Time:** 2 weekends | **Cost:** ~$10 | **Projects:** 5
 
-**Schematic:**
-```
-        +12V
-         │
-      ┌──┴──┐
-      │MOTOR│
-      └──┬──┘
-         │
-      ┌──┴──┐
-      │ ◄── │ Flyback diode
-      └──┬──┘
-         │
-         C
-        ╱
-   ────●    TIP120
-        ╲
-         E
-         │
-        GND
-         │
-    [1kΩ]
-         │
-    555 OUT
-```
-
-**Bill of Materials:**
-| Qty | Component | Value | Est. Price |
-|-----|-----------|-------|------------|
-| 3 | TIP120 | Darlington NPN | $1.50 |
-| 3 | TIP125 | Darlington PNP | $1.50 |
-| 3 | Heatsink | TO-220 clip | $1 |
-| 5 | Diode | 1N5408 (3A) | $1 |
-
-**Subtotal: ~$5**
+**Why this phase:** Build THE GOAL in miniature. Two inverters sharing power automatically. If this works at 9V, the same principle works at 48V.
 
 ---
 
-## Phase 3 Complete BOM
+## 5.1 Two Inverters, One AC Bus
 
-| Category | Items | Est. Total |
-|----------|-------|------------|
-| 4017 ICs + sockets | 3+3 | $1.60 |
-| 4069 ICs + sockets | 2+2 | $1.40 |
-| Potentiometers | 3 pcs | $1.50 |
-| TIP120/125 | 6 pcs | $3 |
-| Motors | 2 pcs | $2 |
-| Heatsinks | 3 pcs | $1 |
-| Diodes | 5 pcs | $1 |
-| Misc LEDs/resistors | - | $1 |
-
-**Phase 3 Total: ~$15**
-
----
-
-# PHASE 4: Measurement Tools
-
-**Time:** 1-2 weekends
-**Cost:** ~$9
-**Key Learning:** Build tools you'll use throughout the curriculum
-
----
-
-## Project 4.1: Continuity Tester
+**Connect two H-bridge inverter outputs together**
 
 ```
-    +9V──[1kΩ]──┬──Probe A
-                │
-              Buzzer
-                │
-    GND─────────┴──Probe B
-```
-
-**Bill of Materials:**
-| Qty | Component | Value | Est. Price |
-|-----|-----------|-------|------------|
-| 2 | Piezo buzzer | 5V active | $1 |
-| 2 | Probe tips | - | $2 |
-| 1 | Project box | Small | $2 |
-
-**Subtotal: ~$5**
-
----
-
-## Project 4.2: Voltage Indicator (LED Ladder)
-
-| Qty | Component | Value | Est. Price |
-|-----|-----------|-------|------------|
-| 5 | Zener diode | 3.3V | $0.50 |
-| 5 | Zener diode | 5.1V | $0.50 |
-
-**Subtotal: ~$2** (use LEDs/resistors from kit)
-
----
-
-## Project 4.3: Audio Probe (Signal Tracer)
-
-```
-    Input ──[100nF]──┬──[10kΩ]──+9V
+    Inverter A                    Inverter B
+    (9V battery)                  (6V battery)
+         │                             │
+    ┌────┴────┐                  ┌────┴────┐
+    │ H-Bridge│                  │ H-Bridge│
+    │   555   │                  │   555   │
+    └────┬────┘                  └────┬────┘
+         │                             │
+         └───────────┬─────────────────┘
                      │
-                    Speaker
+                  AC BUS
                      │
-                    GND
+                  [LOAD]
+                  (motor/LED)
+                     │
+                   GND
 ```
 
-| Qty | Component | Value | Est. Price |
-|-----|-----------|-------|------------|
-| 2 | Speaker | 8Ω 0.5W | $2 |
+**CRITICAL:** Both 555 oscillators must run at SAME frequency!
+- Use same R and C values
+- Or better: one master clock feeds both
 
-**Subtotal: ~$2**
-
----
-
-## Phase 4 Complete BOM
-
-| Category | Items | Est. Total |
-|----------|-------|------------|
-| Buzzers | 2 pcs | $1 |
-| Speakers | 2 pcs | $2 |
-| Probes | 2 pcs | $2 |
-| Project box | 1 pc | $2 |
-| Zener diodes | 10 pcs | $1 |
-
-**Phase 4 Total: ~$9**
+**What you'll observe:**
+- Both inverters contribute to powering the load
+- If frequencies drift apart → buzzing, inefficiency
 
 ---
 
-# STEP 1 COMPLETE SUMMARY
+## 5.2 Power Sharing Observation
 
-## Bill of Materials
+**See current split between inverters**
+
+```
+    Inverter A                         Inverter B
+         │                                  │
+        [LED A]                           [LED B]
+     (shows A's                        (shows B's
+      contribution)                     contribution)
+         │                                  │
+         └─────────────┬───────────────────┘
+                       │
+                    [LOAD]
+                       │
+                     GND
+```
+
+**Experiment:**
+1. Equal batteries (9V + 9V): LEDs equally bright
+2. Unequal (9V + 6V): 9V LED brighter (contributing more)
+3. Disconnect B: A supplies 100%
+4. Disconnect A: B supplies 100%
+
+**This IS swarm behavior!**
+- Each inverter contributes based on capacity
+- System survives individual failures
+- No central controller needed
+
+---
+
+## 5.3 Master/Slave Synchronization
+
+**One inverter sets the beat, other follows**
+
+```
+    MASTER (Inverter A)              SLAVE (Inverter B)
+    Has its own 555                  No 555! Uses master's signal
+         │                                  │
+    555 OUT ──────────────────────────────► H-Bridge B
+         │                                  (via optocoupler
+    H-Bridge A                               for isolation)
+         │                                  │
+         └─────────────┬───────────────────┘
+                       │
+                    AC BUS
+```
+
+**Why this matters:**
+- Perfect synchronization
+- No frequency drift
+- Master can adjust frequency, slave follows
+
+**BOM:**
+| Qty | Component | Price |
+|-----|-----------|-------|
+| 2 | PC817 optocoupler | $1 |
+
+---
+
+## 5.4 Droop Control Demo
+
+**Automatic load sharing based on voltage**
+
+```
+    Inverter A (9V)              Inverter B (9V)
+    Both same voltage            but B has LOAD on its battery
+         │                             │
+         │                           [LOAD]
+         │                          (drains B)
+         │                             │
+    ┌────┴────┐                  ┌────┴────┐
+    │ H-Bridge│                  │ H-Bridge│
+    └────┬────┘                  └────┬────┘
+         │                             │
+         └───────────┬─────────────────┘
+                     │
+                  AC BUS
+```
+
+**What happens:**
+1. Initially: both batteries 9V, equal sharing
+2. B's battery drains to 8V (due to extra load)
+3. A's voltage now higher than B's
+4. A automatically contributes MORE
+5. Current flows A → B through AC bus
+
+**Measure with multimeter:**
+- Current from A increases
+- Current from B decreases
+- Total to load stays constant
+
+**THIS IS DROOP CONTROL WORKING!**
+
+---
+
+## 5.5 Energy Counter (Mini Metering)
+
+**Track energy transferred between inverters**
+
+```
+    Simple Amp-hour counter:
+
+    Inverter A ──[ACS712]──┬── AC Bus
+                           │
+                     Signal to
+                     Arduino/ESP
+                     (count pulses
+                      over time)
+```
+
+**Arduino sketch concept:**
+```cpp
+float current = readACS712();  // Amps
+float power = 9.0 * current;   // Watts (V × I)
+energy_wh += power * (1.0/3600.0);  // Accumulate Wh
+
+if (current > 0) {
+  Serial.println("EXPORTING");
+  export_wh += power * (1.0/3600.0);
+} else {
+  Serial.println("IMPORTING");
+  import_wh += abs(power) * (1.0/3600.0);
+}
+```
+
+**Display:**
+```
+    ┌────────────────────────┐
+    │ Inverter A Status      │
+    │                        │
+    │ Mode: EXPORTING        │
+    │ Power: 2.3W            │
+    │ Exported: 0.15 Wh      │
+    │ Imported: 0.02 Wh      │
+    │ Balance: +0.13 Wh      │
+    └────────────────────────┘
+```
+
+**BOM:**
+| Qty | Component | Price |
+|-----|-----------|-------|
+| 1 | Arduino Nano | $3 |
+| 1 | OLED 0.96" I2C | $3 |
+| 1 | ACS712 5A module | (have from 2.5) |
+
+---
+
+## Phase 5 Summary
+
+| Project | Demonstrates | Real Microgrid Equivalent |
+|---------|--------------|--------------------------|
+| 5.1 Two Inverters | Parallel operation | Multiple houses connected |
+| 5.2 Power Sharing | Load distribution | Automatic balancing |
+| 5.3 Master/Slave | Synchronization | Frequency coordination |
+| 5.4 Droop Demo | Voltage-based sharing | Droop control |
+| 5.5 Energy Counter | Metering | kWh billing system |
+
+**Phase 5 Cost: ~$10**
+
+---
+
+# COMPLETE STEP 1 SUMMARY
+
+## Cost Breakdown
 
 | Phase | Focus | Cost |
 |-------|-------|------|
-| Phase 1 | Basics + Power Flow | $30 |
-| Phase 2 | 555 Timer | $18 |
-| Phase 3 | Control + H-Bridge | $15 |
-| Phase 4 | Measurement | $9 |
-
-**Components Total: ~$72**
-**Tools (if needed): ~$80-150**
-
----
-
-## Skills Progression
-
-| After Project | You Understand |
-|---------------|----------------|
-| 1.1-1.3 | Basic electronics, transistor switching |
-| 1.4 | Why standard inverters are one-way |
-| 1.5-1.6 | Bi-directional control, droop principle |
-| 2.1-2.3 | Timing, oscillation, relay driving |
-| 3.3-3.4 | **H-bridge = inverter topology** |
-| 3.5 | Power stage design |
+| Phase 1 | DC Fundamentals | $18 |
+| Phase 2 | Power Flow & Direction | $15 |
+| Phase 3 | Oscillation & AC | $12 |
+| Phase 4 | Build the Inverter | $15 |
+| Phase 5 | Mini Swarm Microgrid | $10 |
+| **Total Components** | | **~$70** |
+| **Tools** (if needed) | | **~$80-130** |
 
 ---
 
-## Connection to Swarm Microgrid
+## Skills Achieved
 
 ```
-By completing Step 1, you understand:
+After Step 1, you can:
 
-✓ Current direction (LED polarity)
-✓ One-way flow (diodes) → why standard inverters can't import
-✓ Bi-directional control (transistors) → how to enable import/export
-✓ Auto-sensing (voltage comparison) → droop control principle
-✓ H-bridge topology → the actual inverter circuit
-✓ Oscillator + H-bridge → working inverter!
+✓ Read and understand any DC circuit schematic
+✓ Explain Ohm's Law and use it for calculations
+✓ Design voltage dividers for any sensing need
+✓ Explain why power flows from high to low voltage
+✓ Explain why standard inverters can't import power
+✓ Build bi-directional power control circuits
+✓ Explain droop control without complex math
+✓ Build oscillators at any frequency
+✓ Explain what AC is and how it's generated
+✓ Build a working H-bridge inverter
+✓ Explain dead-time and why it matters
+✓ Connect two inverters to share load
+✓ Demonstrate automatic power sharing
+✓ Build a simple energy meter
 
-You're ready for Step 2: Real inverters with MOSFETs and transformers.
+YOU'VE BUILT A WORKING MINI SWARM MICROGRID!
 ```
 
 ---
 
-## Shopping List (All Phases)
+## Connection to Full-Scale System
 
-**Order from AliExpress/Amazon:**
+| Mini Version (Step 1) | Real Version (Steps 2-7) |
+|-----------------------|--------------------------|
+| 9V battery | 48V battery bank |
+| BC547/BC557 transistors | IRFP4668 MOSFETs |
+| 555 timer | EG8010 SPWM controller |
+| Small motor | 5kVA transformer |
+| Manual buttons | ESP32 automation |
+| Two breadboard inverters | Four household inverters |
+| LED current indicator | ACS712 + ESP32 metering |
+| ~$70 total | ~$3,500 per household |
+
+**Same principles. Same topology. Just scaled up.**
+
+---
+
+## Complete Shopping List
 
 ```
-SEMICONDUCTORS:
+PHASE 1-5 COMPONENTS:
+
+Semiconductors:
 - 10× BC547 NPN transistor
-- 5× BC557 PNP transistor
+- 10× BC557 PNP transistor
 - 5× 2N2222 NPN transistor
-- 3× TIP120 Darlington NPN
-- 3× TIP125 Darlington PNP
 - 5× 555 timer IC
-- 3× CD4017 decade counter
-- 2× CD4069 hex inverter
+- 2× CD4069 hex inverter IC
+- 2× CD4017 decade counter (optional)
 - 20× 1N4007 diode
-- 5× 1N5408 diode (3A)
-- 10× Zener diode (3.3V, 5.1V)
-- 15× LED (red, green, yellow)
-
-PASSIVE:
-- Resistor kit (100Ω to 1MΩ)
-- Capacitor kit (100nF to 220µF)
-- 4× Potentiometer (10kΩ, 100kΩ)
-
-MISC:
-- 5× IC socket 8-pin
-- 3× IC socket 14-pin
-- 3× IC socket 16-pin
-- 5× Tactile button
-- 4× Relay (5V and 9V)
-- 2× Small DC motor
-- 2× Piezo buzzer
-- 2× Small speaker
+- 5× 1N5408 3A diode
+- 15× LED (red, green, yellow 5mm)
+- 2× PC817 optocoupler
 - 2× LDR
 - 2× Thermistor 10kΩ
-- 1× Breadboard 830pts
+
+Resistors (or buy kit):
+- 10× each: 100Ω, 330Ω, 1kΩ, 10kΩ, 100kΩ
+
+Capacitors:
+- 10× 100nF ceramic
+- 5× 1µF electrolytic
+- 5× 10µF electrolytic
+- 5× 100µF electrolytic
+- 5× 1000µF electrolytic
+
+Potentiometers:
+- 4× 100kΩ linear
+
+Other:
+- 5× IC socket 8-pin (for 555)
+- 2× IC socket 14-pin (for CD4069)
+- 10× Tactile button 6×6mm
+- 2× Small DC motor 3-6V
+- 2× Speaker 8Ω 0.5W
+- 2× Small transformer 9V
+- 2× ACS712 5A current sensor
+- 1× Arduino Nano (or clone)
+- 1× OLED 0.96" I2C
+- 2× Breadboard 830 points
 - 1× Jumper wire kit
-- 1× 9V battery + clip
-- 1× 4×AA holder + batteries
-- 3× Heatsink TO-220
+- 2× 9V battery + clip
+- 1× 4×AA battery holder + batteries
 ```
 
-**Estimated total: $50-70** (varies by supplier)
+**Estimated total: $60-80** (depending on supplier)
 
 ---
 
-*Next: Step 2 - CD4047 Square Wave Inverter (150W)*
+## Recommended Order
+
+**AliExpress (cheapest, 2-4 week shipping):**
+- Component kits
+- Arduino clones
+- Sensors
+
+**Amazon/Local (faster):**
+- Batteries
+- Basic tools
+- Breadboards
+
+---
+
+## Time Investment
+
+| Phase | Projects | Weekends |
+|-------|----------|----------|
+| Phase 1 | 6 | 2 |
+| Phase 2 | 5 | 2 |
+| Phase 3 | 5 | 2 |
+| Phase 4 | 5 | 2-3 |
+| Phase 5 | 5 | 2 |
+| **Total** | **26** | **10-12** |
+
+---
+
+## Next Steps
+
+After completing Step 1:
+
+1. **Step 2:** CD4047 Square Wave Inverter (150W)
+   - Real MOSFETs (IRF3205)
+   - Real transformer
+   - 12V → 230V
+
+2. **Step 3:** SG3525 Modified Sine (500W)
+   - H-bridge topology
+   - IR2110 gate drivers
+   - Dead-time in hardware
+
+3. **Step 4:** EG8010 Pure Sine (1kW)
+   - SPWM controller
+   - LC filtering
+   - <3% THD
+
+4. **Step 5:** OzInverter (6-15kW)
+   - Full power build
+   - Toroidal transformer
+   - Production quality
+
+5. **Step 6:** Smart Upgrade
+   - ESP32 monitoring
+   - Home Assistant
+   - Energy metering
+
+6. **Step 7:** Full Swarm Microgrid
+   - 4 households
+   - Bi-directional tie inverters
+   - Automatic power sharing
+
+---
+
+*You've built the foundation. The principles you learned in Step 1 scale directly to the full system. Onward!*
