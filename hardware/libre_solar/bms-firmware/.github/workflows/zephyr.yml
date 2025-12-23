@@ -1,0 +1,58 @@
+name: Code check and build tests
+
+on: [push, pull_request]
+
+jobs:
+  zephyr:
+    # Avoid running twice if pushing to a PR branch in the base repo
+    if: >
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: firmware
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          path: firmware
+          fetch-depth: 0 # necessary to get tags
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+
+      - name: Zephyr project setup
+        uses: zephyrproject-rtos/action-zephyr-setup@v1
+        with:
+          app-path: firmware
+          toolchains: arm-zephyr-eabi:riscv64-zephyr-elf
+
+      - name: Coding style check
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-format-15 colordiff
+          git status
+          bash scripts/check-style.sh
+
+      - name: Fetch hal_espressif binary blobs
+        run: |
+          west blobs fetch hal_espressif
+
+      - name: Build firmware
+        run: |
+          cd app
+          west build -p -b native_sim
+          west build -p -b bms_5s50_sc
+          west build -p -b bms_8s50_ic@0.2 -- -DEXTRA_CONF_FILE=oled.conf -DSHIELD=uext_oled
+          west build -p -b bms_15s80_sc
+          west build -p -b bms_16s100_sc
+          west build -p -b bms_c1@0.4
+          rm -rf build
+          west build -b bms_c1@0.4 --sysbuild -p
+
+      - name: Run unit-tests
+        run: |
+          ../zephyr/scripts/twister -T ./tests --integration --inline-logs -n

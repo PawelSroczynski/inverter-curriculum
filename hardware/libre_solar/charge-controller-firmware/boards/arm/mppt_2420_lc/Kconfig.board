@@ -1,0 +1,6 @@
+# Copyright (c) The Libre Solar Project Contributors
+# SPDX-License-Identifier: Apache-2.0
+
+config BOARD_MPPT_2420_LC
+	bool "Libre Solar MPPT 2420 LC"
+	depends on SOC_STM32F072XB

@@ -1,0 +1,120 @@
+menu "Board Selection"
+
+    config GPIO_LED
+        int "GPIO pin of LED"
+        default 18
+
+    config THINGSET_CAN
+        bool "ThingSet CAN interface (LS.bus)"
+        default y
+
+    config GPIO_CAN_RX
+        int "GPIO pin of CAN RX"
+        default 4
+
+    config GPIO_CAN_TX
+        int "GPIO pin of CAN TX"
+        default 5
+
+    config GPIO_CAN_STB
+        int "GPIO pin of CAN standby"
+        default 12
+
+    config THINGSET_SERIAL
+        bool "ThingSet serial interface (LS.one)"
+        default y
+
+    config GPIO_UART_RX
+        int "GPIO pin of UART RX"
+        default 16
+
+    config GPIO_UART_TX
+        int "GPIO pin of UART TX"
+        default 17
+
+endmenu
+
+menu "User Configuration"
+
+    config WIFI_SSID
+        string "WiFi SSID"
+        help
+            SSID (network name) for the example to connect to.
+
+    config WIFI_PASSWORD
+        string "WiFi password"
+        help
+            WiFi password (WPA or WPA2).
+            Can be left blank if the network has no security set.
+
+    config DEVICE_HOSTNAME
+        string "Device host name"
+        default "esp32-edge"
+        help
+            Specify the default host name for this device. It shall be user-configurable in
+            the future.
+
+    menuconfig THINGSET_MQTT
+        bool "ThingSet MQTT support"
+        default n
+        help
+            Currently disabled by default to pass CI, as it is not compatible with outdated
+            ESP-IDF release used by PlatformIO.
+
+    config THINGSET_MQTT_BROKER_URI
+        string "Hostname of MQTT broker"
+        default "mqtts://mqtt.eclipseprojects.io:8883"
+
+    config THINGSET_MQTT_TLS
+        bool "Use secure MQTT connection via TLS (recommended)"
+        default y
+
+    config THINGSET_MQTT_AUTHENTICATION
+        bool "Use MQTT broker authentication"
+        default y
+
+    config THINGSET_MQTT_USER
+        string "MQTT username"
+        depends on THINGSET_MQTT_AUTHENTICATION
+
+    config THINGSET_MQTT_PASS
+        string "MQTT password"
+        depends on THINGSET_MQTT_AUTHENTICATION
+
+    config THINGSET_MQTT_PUBLISH_INTERVAL
+        int "MQTT publish interval in seconds"
+        default 10
+
+    menuconfig EMONCMS
+        bool "OpenEnergyMonitor Emoncms support"
+        default n
+
+    config EMONCMS_HOST
+        string "Hostname of Emoncms server"
+        default "emoncms.org"
+
+    config EMONCMS_PORT
+        string "Port of Emoncms server"
+        default "80"
+
+    config EMONCMS_URL
+        string "URL of Emoncms post API endpoint"
+        default "/emoncms/input/post"
+
+    config EMONCMS_APIKEY
+        string "API key for Emoncms access"
+        default ""
+
+    config EMONCMS_NODE_SERIAL
+        string "Node name of ThingSet device connected to serial"
+        default "serial"
+
+    config EMONCMS_NODE_MPPT
+        string "Node name of MPPT connected via CAN"
+        default "mppt"
+
+    config EMONCMS_NODE_BMS
+        string "Node name of BMS connected via CAN"
+        default "bms"
+
+endmenu

@@ -1,0 +1,45 @@
+name: Build with Zephyr toolchain
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: zephyrprojectrtos/ci:latest
+    env:
+      CMAKE_PREFIX_PATH: /opt/toolchains
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: charge-controller-firmware
+          fetch-depth: 0
+
+      - name: Initialize
+        working-directory: charge-controller-firmware
+        run: |
+          west init -l .
+          west update --narrow
+
+      - name: Coding style check
+        working-directory: charge-controller-firmware
+        run: |
+          apt-get update
+          apt-get install -y clang-format-12 colordiff
+          git status
+          bash scripts/check-style.sh
+
+      - name: Build firmware
+        working-directory: charge-controller-firmware
+        run: |
+          cd app
+          west build -b mppt_2420_hc@0.2 -p
+          west build -b mppt_2420_lc -p
+          west build -b mppt_1210_hus@0.7 -p
+          west build -b pwm_2420_lus@0.3 -p
+
+      - name: Run unit-tests
+        working-directory: charge-controller-firmware
+        run: |
+          cd tests
+          west build -b native_posix -t run

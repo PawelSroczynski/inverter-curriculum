@@ -1,0 +1,50 @@
+# Copyright (c) The Libre Solar Project Contributors
+#
+# SPDX-License-Identifier: Apache-2.0
+
+# Most boards have 40 MHz XTAL frequency, but e.g. ESP32thing has 26 MHz. Auto supports all boards.
+CONFIG_ESP32_XTAL_FREQ_AUTO=y
+
+# Partition table with SPIFFS
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+
+# Increase default flash size
+CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
+CONFIG_ESPTOOLPY_FLASHSIZE="4MB"
+
+# BLE for provisioning
+CONFIG_BT_ENABLED=y
+CONFIG_BT_NIMBLE_ENABLED=y
+
+# Provisioning is not used if SSID is set below
+CONFIG_WIFI_SSID=""
+CONFIG_WIFI_PASSWORD=""
+
+# OpenEnergyMonitor Emoncms
+CONFIG_EMONCMS=y
+CONFIG_EMONCMS_HOST="emoncms.org"
+CONFIG_EMONCMS_PORT="80"
+CONFIG_EMONCMS_URL="/emoncms/input/post"
+CONFIG_EMONCMS_APIKEY="your-api-code"
+CONFIG_EMONCMS_NODE_MPPT="mppt"
+CONFIG_EMONCMS_NODE_BMS="bms"
+CONFIG_EMONCMS_NODE_SERIAL="serial"
+
+#
+# HTTP Server
+#
+CONFIG_HTTPD_MAX_REQ_HDR_LEN=1024
+# UEXT ESP32 pin definitions
+
+CONFIG_GPIO_LED=27
+
+CONFIG_THINGSET_SERIAL=y
+CONFIG_GPIO_UART_RX=16
+CONFIG_GPIO_UART_TX=17
+
+CONFIG_THINGSET_CAN=y
+CONFIG_GPIO_CAN_RX=32
+CONFIG_GPIO_CAN_TX=33
+CONFIG_GPIO_CAN_STB=25
+

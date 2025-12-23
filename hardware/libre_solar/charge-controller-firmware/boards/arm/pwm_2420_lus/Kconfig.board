@@ -1,0 +1,6 @@
+# Copyright (c) The Libre Solar Project Contributors
+# SPDX-License-Identifier: Apache-2.0
+
+config BOARD_PWM_2420_LUS
+	bool "Libre Solar PWM 2420 LUS"
+	depends on SOC_STM32L072XX
