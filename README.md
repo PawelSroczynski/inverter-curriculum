@@ -89,22 +89,18 @@ How houses within a cluster share power and communicate.
 │   │  Inv 6kW    │         │  Inv 6kW    │         │  Inv 6kW    │                 │
 │   │  ESP32 MSTR │         │  ESP32 SLV  │         │  ESP32 SLV  │                 │
 │   │             │         │             │         │             │                 │
+│   │  ┌───────┐  │         │  ┌───────┐  │         │  ┌───────┐  │                 │
+│   │  │ 48V DC│  │         │  │ 48V DC│  │         │  │ 48V DC│  │                 │
+│   │  │(local)│  │         │  │(local)│  │         │  │(local)│  │                 │
+│   │  └───────┘  │         │  └───────┘  │         │  └───────┘  │                 │
+│   │      ↓      │         │      ↓      │         │      ↓      │                 │
+│   │  Inverter   │         │  Inverter   │         │  Inverter   │                 │
+│   │      ↓      │         │      ↓      │         │      ↓      │                 │
 │   └──────┬──────┘         └──────┬──────┘         └──────┬──────┘                 │
-│          │                       │                       │                        │
-│          │ 48V DC                │ 48V DC                │ 48V DC                 │
-│          │                       │                       │                        │
-│   ┄┄┄┄┄┄┄┴┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┴┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┴┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄    │
-│   48V DC BUS (shared within cluster only - batteries help each other)             │
-│   ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄    │
-│                                                                                    │
-│                    ┌──────────────────────────────────────┐                        │
-│                    │  INVERTERS CONVERT: 48V DC → 230V AC │                        │
-│                    └──────────────────────────────────────┘                        │
-│                                                                                    │
 │          │ 230V AC               │ 230V AC               │ 230V AC                │
 │          │                       │                       │                        │
 │   ═══════╧═══════════════════════╧═══════════════════════╧══════════════════►     │
-│   230V AC BUS (shared within cluster, synced via CAN)               to other      │
+│   230V AC BUS (shared - inverters parallel via droop control)       to other      │
 │   ══════════════════════════════════════════════════════════════════ cluster      │
 │                                                                                    │
 │          │ RJ45                  │ RJ45                  │ RJ45                   │
@@ -115,14 +111,18 @@ How houses within a cluster share power and communicate.
 │                                                                                    │
 │   ○ = RJ45 jack on inverter                                                       │
 │                                                                                    │
-│   WITHIN CLUSTER:                                                                 │
-│   • 48V DC bus: batteries share charge (House 1 low → House 2 helps)              │
-│   • 230V AC bus: inverters share load (synced via CAN, no phase conflict)         │
+│   CONNECTIONS BETWEEN HOUSES:                                                     │
+│   • 230V AC bus: inverters share load (synced via CAN, droop control)             │
 │   • CAN bus: ESP32s exchange SOC%, load, faults, sync timing                      │
+│                                                                                    │
+│   NO DC BUS BETWEEN HOUSES:                                                       │
+│   • Each house has isolated 48V DC (battery stays local)                          │
+│   • Power sharing happens via AC (simpler wiring, cheaper cables)                 │
+│   • Battery balancing: if House 2 low, it draws from AC bus,                      │
+│     House 1 supplies via AC → same effect, 5% less efficient but simpler          │
 │                                                                                    │
 │   TO OTHER CLUSTERS:                                                              │
 │   • 230V AC + CAN travel together in 5-wire cable                                 │
-│   • 48V DC stays local (never crosses to other cluster)                           │
 │                                                                                    │
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -131,7 +131,7 @@ How houses within a cluster share power and communicate.
 
 ### Level 3: House Detail
 
-Internal wiring of one house, showing connection to cluster buses.
+Internal wiring of one house, showing connection to cluster AC bus.
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────┐
@@ -150,11 +150,11 @@ Internal wiring of one house, showing connection to cluster buses.
 │   └────────┬─────────┘                                                             │
 │            │ 48V DC                                                                │
 │            ▼                                                                       │
-│   ┌──────────────────┐              ┌──────────────────────────────────────────┐   │
-│   │       BMS        │    30A fuse  │                                          │   │
-│   │   48V / 5kWh     │◄────────────►│  48V DC CLUSTER BUS                      │   │
-│   │    LiFePO4       │              │  ◄───── to/from other houses in cluster  │   │
-│   └────────┬─────────┘              └──────────────────────────────────────────┘   │
+│   ┌──────────────────┐                                                             │
+│   │       BMS        │   48V DC stays inside this house                            │
+│   │   48V / 5kWh     │   (no DC connection to other houses)                        │
+│   │    LiFePO4       │                                                             │
+│   └────────┬─────────┘                                                             │
 │            │ 48V DC                                                                │
 │            ▼                                                                       │
 │   ┌──────────────────┐              ┌──────────────────────────────────────────┐   │
@@ -187,7 +187,7 @@ Internal wiring of one house, showing connection to cluster buses.
 │      Lights     Fridge     Kitchen    Living     Oven                              │
 │                            plugs      plugs                                        │
 │                                                                                    │
-│   CONNECTION DETAIL: Cluster Bus ↔ House                                           │
+│   CONNECTION DETAIL: How House Connects to Cluster                                 │
 │   ┌────────────────────────────────────────────────────────────────────────────┐   │
 │   │                                                                            │   │
 │   │    230V AC CLUSTER BUS (shared with other houses)                          │   │
@@ -205,6 +205,12 @@ Internal wiring of one house, showing connection to cluster buses.
 │   │    • House produces excess → pushes to cluster bus → other houses use it   │   │
 │   │    • House needs more → pulls from cluster bus → other houses supply it    │   │
 │   │                                                                            │   │
+│   │    ONLY TWO CONNECTIONS LEAVE THIS HOUSE:                                  │   │
+│   │    1. 230V AC (L + N + PE) → to cluster AC bus                             │   │
+│   │    2. CAN bus (RJ45) → to other houses for communication                   │   │
+│   │                                                                            │   │
+│   │    48V DC stays entirely inside the house (battery is isolated)            │   │
+│   │                                                                            │   │
 │   └────────────────────────────────────────────────────────────────────────────┘   │
 │                                                                                    │
 └────────────────────────────────────────────────────────────────────────────────────┘
@@ -214,22 +220,20 @@ Internal wiring of one house, showing connection to cluster buses.
 
 ### Hardware Summary
 
-**Per House:**
+**Per House (isolated 48V DC system):**
 | Component | Description |
 |-----------|-------------|
 | Solar Panels | 3kW array (size varies) |
 | MPPT Charger | Libre Solar MPPT-2420-HC or similar |
-| BMS + Battery | Libre Solar BMS-C1 + 48V/5kWh LiFePO4 |
+| BMS + Battery | Libre Solar BMS-C1 + 48V/5kWh LiFePO4 (stays inside house) |
 | Inverter | OzInverter 6kW with EG8010 + ESP32 + MCP2515 |
-| Main Breaker | 63A MCB, isolates house from cluster |
-| DC Fuse | 30A, protects battery connection to cluster DC bus |
+| Main Breaker | 63A MCB, isolates house from cluster AC bus |
 | RJ45 Jack | CAN bus connection to other houses |
 
-**Per Cluster (shared):**
+**Per Cluster (shared between houses):**
 | Component | Description |
 |-----------|-------------|
-| 48V DC Bus | Heavy cable (10mm²+) connecting all house batteries |
-| 230V AC Bus | Standard wiring connecting all house inverter outputs |
+| 230V AC Bus | 4mm² cable connecting all house inverter outputs (10-30m) |
 | CAN Bus | RJ45 cables daisy-chaining all houses (10-30m runs) |
 
 **Between Clusters:**
@@ -244,10 +248,15 @@ Internal wiring of one house, showing connection to cluster buses.
 ### How It Works
 
 **Power Flow:**
-1. Sun → Solar panels → MPPT → Battery (48V DC)
+1. Sun → Solar panels → MPPT → Battery (48V DC, inside house)
 2. Battery → Inverter → 230V AC → House loads
 3. Excess → Cluster AC bus → Other houses (via droop control)
 4. Still excess → Inter-cluster cable → Other clusters (via droop control)
+
+**No DC Bus Between Houses:**
+- Each house has isolated 48V battery (simpler, cheaper wiring)
+- Power sharing happens via 230V AC (thinner cables for same power)
+- Battery balancing is indirect: low battery house draws from AC, others supply
 
 **Communication:**
 1. ESP32 master broadcasts sync timing @ 100Hz on CAN bus
