@@ -64,8 +64,8 @@ Build your own 6-15kW pure sine wave inverters that communicate, share power aut
 │    ┌────▼────┐    ┌────▼────┐            ┌────▼────┐    ┌────▼────┐               │
 │    │ INV 1   │    │ INV 2   │            │ INV 3   │    │ INV 4   │               │
 │    │ 6kW     │    │ 6kW     │            │ 6kW     │    │ 6kW     │               │
-│    │ EG8010  │◄──►│ EG8010  │            │ EG8010  │◄──►│ EG8010  │               │
-│    │ +ESP32  │SYNC│ +ESP32  │            │ +ESP32  │SYNC│ +ESP32  │               │
+│    │ EG8010  │    │ EG8010  │            │ EG8010  │    │ EG8010  │               │
+│    │ +ESP32  │    │ +ESP32  │            │ +ESP32  │    │ +ESP32  │               │
 │    └────┬────┘    └────┬────┘            └────┬────┘    └────┬────┘               │
 │         │              │                      │              │                    │
 │    ═════╧══════════════╧═════            ═════╧══════════════╧═════               │
@@ -96,17 +96,21 @@ Build your own 6-15kW pure sine wave inverters that communicate, share power aut
 │                         └──────────────────┘                                      │
 │                                                                                   │
 │   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
-│   CAN BUS (twisted pair, runs alongside power cables)                             │
+│   CAN BUS (RJ45 cable or twisted pair, handles SYNC + STATUS)                     │
 │   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
 │         │              │                      │              │                    │
 │    ┌────┴────┐    ┌────┴────┐            ┌────┴────┐    ┌────┴────┐               │
 │    │ ESP32   │    │ ESP32   │            │ ESP32   │    │ ESP32   │               │
-│    │ CAN     │    │ CAN     │            │ CAN     │    │ CAN     │               │
-│    │Transcev.│    │Transcev.│            │Transcev.│    │Transcev.│               │
+│    │ MASTER  │    │ SLAVE   │            │ SLAVE   │    │ SLAVE   │               │
+│    │         │    │         │            │         │    │         │               │
 │    │ MCP2515 │    │ MCP2515 │            │ MCP2515 │    │ MCP2515 │               │
 │    └─────────┘    └─────────┘            └─────────┘    └─────────┘               │
 │                                                                                   │
-│   CAN messages: SOC%, voltage, load watts, faults, droop params (ThingSet)        │
+│   CAN messages: SYNC timing, SOC%, voltage, load watts, faults (ThingSet)         │
+│                                                                                   │
+│   SYNC METHOD: ESP32 master broadcasts timing @ 100Hz                             │
+│                All slaves adjust EG8010 phase to match                            │
+│                Works at any distance (same room or 500m)                          │
 │                                                                                   │
 └───────────────────────────────────────────────────────────────────────────────────┘
 
@@ -116,18 +120,20 @@ HARDWARE LIST:
 ├────────────────┼─────────────────────────────────────────────────────────────────┤
 │ MPPT Charger   │ Solar charge controller (Libre Solar MPPT-2420-HC or similar)   │
 │ BMS            │ Battery Management System (Libre Solar BMS-C1, 48V/100A)        │
-│ INV (Inverter) │ OzInverter 6kW with EG8010 driver + ESP32 for monitoring        │
+│ INV (Inverter) │ OzInverter 6kW with EG8010 driver + ESP32 for sync & monitoring │
 │ 63A Contactor  │ DIN-rail power relay, 230V coil, closes to connect clusters     │
-│ ESP32 + CAN    │ ESP32 dev board + MCP2515 CAN transceiver module                │
+│ ESP32 + CAN    │ ESP32 dev board + MCP2515 CAN transceiver (sync + telemetry)    │
+│ RJ45 Cable     │ Standard Ethernet cable for CAN bus between all nodes           │
 └────────────────┴─────────────────────────────────────────────────────────────────┘
 ```
 
 **How it works:**
-- Within cluster: Inverters share 48V DC bus, sync via EG8010 SYNC pin
+- CAN bus sync: Master ESP32 broadcasts timing, all inverters phase-lock via software
+- One protocol for all: Same CAN bus handles sync (1m or 500m distance)
 - AC loads: Each house connects to cluster's 230V AC bus
-- Between clusters: 63A contactor connects the two AC buses
+- Between clusters: 63A contactor connects the two AC buses + droop balances power
 - Droop control: Each inverter adjusts frequency based on load, power flows automatically
-- CAN bus: All ESP32s share status, no central controller needed
+- No special wiring: RJ45 Ethernet cables carry CAN signals everywhere
 
 ---
 
