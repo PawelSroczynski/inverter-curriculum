@@ -278,6 +278,34 @@ Internal wiring of one house, showing connection to cluster AC bus.
 - Other inverters sense lower frequency → push more power
 - No central controller needed - physics handles balancing
 
+```
+How Droop Control Shares Power Between Houses:
+
+  House 2 (big load - 4kW oven)          House 1 (light load - 500W)
+  ┌─────────────────────────────┐        ┌─────────────────────────────┐
+  │                             │        │                             │
+  │  Battery ──► Inverter ──┬──►│ LOAD   │  Battery ──► Inverter ──┬──►│ load
+  │              (2kW)      │   │ 4kW    │              (2kW)      │   │ 500W
+  │                         │   │        │                         │   │
+  └─────────────────────────┼───┘        └─────────────────────────┼───┘
+                            │                                      │
+                ◄═══════════╧══════════════════════════════════════╧═══
+                230V AC BUS - House 1 pushes 1.5kW → House 2
+
+  1. House 2 inverter works hard (4kW load) → frequency drops to 49.85 Hz
+  2. House 1 inverter sees low frequency → increases output to push freq back up
+  3. Power flows: House 1 battery → House 1 inverter → AC bus → House 2 load
+  4. System settles at ~49.9 Hz with load shared
+
+  The math for House 2:
+  • Load needs:              4.0 kW
+  • Local inverter supplies: 2.0 kW (from its own battery)
+  • AC bus supplies:         2.0 kW (from House 1's inverter)
+
+  Key: Each inverter only draws from its own battery.
+       AC bus is just a wire - power flows via frequency difference.
+```
+
 ---
 
 ### When AC Bus Power Sharing Kicks In
