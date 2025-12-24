@@ -31,44 +31,39 @@ The system has three levels of detail. Start with the big picture, then zoom in.
 
 ### Level 1: Microgrid Overview
 
-How clusters connect to form a community microgrid.
+How clusters connect to form a community microgrid (linear topology for long sites).
 
 ```
-┌────────────────────────────────────────────────────────────────────────────────┐
-│                           COMMUNITY MICROGRID                                  │
-│                                                                                │
-│                              50-200m between clusters                          │
-│                                                                                │
-│         ┌───────────────┐       5-WIRE        ┌───────────────┐               │
-│         │               │◄═════ CABLE ═══════►│               │               │
-│         │   CLUSTER A   │    L+N+PE+CAN       │   CLUSTER B   │               │
-│         │               │                      │               │               │
-│         │  3 houses     │                      │  3 houses     │               │
-│         │  18kW gen     │                      │  18kW gen     │               │
-│         │  15kWh store  │                      │  15kWh store  │               │
-│         │               │                      │               │               │
-│         └───────┬───────┘                      └───────┬───────┘               │
-│                 │                                      │                       │
-│                 │            5-WIRE CABLE              │                       │
-│                 │     ┌───────────────────────┐        │                       │
-│                 └─────┤                       ├────────┘                       │
-│                       │      CLUSTER C        │                                │
-│                       │                       │                                │
-│                       │      3 houses         │                                │
-│                       │      18kW gen         │                                │
-│                       │      15kWh store      │                                │
-│                       │                       │                                │
-│                       └───────────────────────┘                                │
-│                                                                                │
-│  TOTALS: 9 houses │ 54kW solar │ 45kWh battery │ 54kW inverter capacity       │
-│                                                                                │
-│  ═══════  230V AC power (L + N + PE, 4mm² each)                               │
-│  ┄┄┄┄┄┄┄  CAN bus data (CAN-H + CAN-L, 0.5mm² each, in same cable)            │
-│                                                                                │
-│  DROOP CONTROL: Power flows automatically from surplus to deficit clusters    │
-│  CAN SYNC: One master ESP32 broadcasts timing, all others follow              │
-│                                                                                │
-└────────────────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────────┐
+│                           COMMUNITY MICROGRID                                       │
+│                           (800m linear site example)                                │
+│                                                                                     │
+│   ┌───────────────┐   5-WIRE CABLE   ┌───────────────┐   5-WIRE CABLE   ┌─────────────────┐
+│   │               │   (200-400m)     │               │   (200-400m)     │                 │
+│   │   CLUSTER A   │◄════════════════►│   CLUSTER B   │◄════════════════►│   CLUSTER C     │
+│   │               │  L+N+PE+CAN      │               │  L+N+PE+CAN      │                 │
+│   │  4 houses     │                  │  4 houses     │                  │  4 houses       │
+│   │  24kW inv     │                  │  24kW inv     │                  │  24kW inv       │
+│   │  20kWh bat    │                  │  20kWh bat    │                  │  20kWh bat      │
+│   │               │                  │               │                  │                 │
+│   └───────────────┘                  └───────────────┘                  └─────────────────┘
+│                                                                                     │
+│   ◄──────────────────────────── 800m total site length ────────────────────────────►
+│                                                                                     │
+│   TOPOLOGY: LINEAR DAISY-CHAIN (not circular)                                       │
+│   • Single 5-wire cable runs through entire site                                    │
+│   • Each cluster taps into the cable                                               │
+│   • No loop - just A ─── B ─── C                                                   │
+│                                                                                     │
+│   TOTALS: 12 houses │ 72kW solar │ 60kWh battery │ 72kW inverter capacity          │
+│                                                                                     │
+│   ═══════  230V AC power (L + N + PE, 4mm² each)                                   │
+│   ┄┄┄┄┄┄┄  CAN bus data (CAN-H + CAN-L, 0.5mm² each, in same cable)                │
+│                                                                                     │
+│   DROOP CONTROL: Power flows automatically from surplus to deficit clusters        │
+│   CAN SYNC: One master ESP32 broadcasts timing, all others follow                  │
+│                                                                                     │
+└─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
