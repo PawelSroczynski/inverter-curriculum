@@ -26,27 +26,53 @@ Build your own 6-15kW pure sine wave inverters that communicate, share power aut
 ## The Swarm Microgrid Vision
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    COMMUNITY MICROGRID                       │
-│                                                              │
-│   Cluster A (48V DC)              Cluster B (48V DC)        │
-│   ┌─────────┐ ┌─────────┐         ┌─────────┐ ┌─────────┐   │
-│   │ House 1 │ │ House 2 │         │ House 3 │ │ House 4 │   │
-│   │  Solar  │ │  Solar  │         │  Solar  │ │  Solar  │   │
-│   │   BMS   │ │   BMS   │         │   BMS   │ │   BMS   │   │
-│   │ Inverter│ │ Inverter│         │ Inverter│ │ Inverter│   │
-│   └────┬────┘ └────┬────┘         └────┬────┘ └────┬────┘   │
-│        └─────┬─────┘                   └─────┬─────┘        │
-│              │                               │              │
-│         ┌────▼────┐    230V AC Tie     ┌────▼────┐          │
-│         │ TIE INV │◄──────────────────►│ TIE INV │          │
-│         └─────────┘   Bi-directional   └─────────┘          │
-│                                                              │
-│   ✓ No utility grid required                                │
-│   ✓ Automatic power balancing (droop control)               │
-│   ✓ Resilient: works if units fail                          │
-│   ✓ Self-organizing swarm behavior                          │
-└─────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────┐
+│                         COMMUNITY MICROGRID                              │
+│                                                                          │
+│          CLUSTER A (48V DC Bus)              CLUSTER B (48V DC Bus)      │
+│   ┌─────────────┐   ┌─────────────┐   ┌─────────────┐   ┌─────────────┐  │
+│   │   HOUSE 1   │   │   HOUSE 2   │   │   HOUSE 3   │   │   HOUSE 4   │  │
+│   │ ┌─────────┐ │   │ ┌─────────┐ │   │ ┌─────────┐ │   │ ┌─────────┐ │  │
+│   │ │  Solar  │ │   │ │  Solar  │ │   │ │  Solar  │ │   │ │  Solar  │ │  │
+│   │ │ Panels  │ │   │ │ Panels  │ │   │ │ Panels  │ │   │ │ Panels  │ │  │
+│   │ └────┬────┘ │   │ └────┬────┘ │   │ └────┬────┘ │   │ └────┬────┘ │  │
+│   │      ▼      │   │      ▼      │   │      ▼      │   │      ▼      │  │
+│   │ ┌─────────┐ │   │ ┌─────────┐ │   │ ┌─────────┐ │   │ ┌─────────┐ │  │
+│   │ │   BMS   │ │   │ │   BMS   │ │   │ │   BMS   │ │   │ │   BMS   │ │  │
+│   │ │ Battery │ │   │ │ Battery │ │   │ │ Battery │ │   │ │ Battery │ │  │
+│   │ └────┬────┘ │   │ └────┬────┘ │   │ └────┬────┘ │   │ └────┬────┘ │  │
+│   │      ▼      │   │      ▼      │   │      ▼      │   │      ▼      │  │
+│   │ ┌─────────┐ │   │ ┌─────────┐ │   │ ┌─────────┐ │   │ ┌─────────┐ │  │
+│   │ │Inverter │ │   │ │Inverter │ │   │ │Inverter │ │   │ │Inverter │ │  │
+│   │ │  6kW    │ │   │ │  6kW    │ │   │ │  6kW    │ │   │ │  6kW    │ │  │
+│   │ └────┬────┘ │   │ └────┬────┘ │   │ └────┬────┘ │   │ └────┬────┘ │  │
+│   │      │      │   │      │      │   │      │      │   │      │      │  │
+│   │ 230V AC out │   │ 230V AC out │   │ 230V AC out │   │ 230V AC out │  │
+│   │      │      │   │      │      │   │      │      │   │      │      │  │
+│   │      ▼      │   │      ▼      │   │      ▼      │   │      ▼      │  │
+│   │  ┌──────┐   │   │  ┌──────┐   │   │  ┌──────┐   │   │  ┌──────┐   │  │
+│   │  │LOADS │   │   │  │LOADS │   │   │  │LOADS │   │   │  │LOADS │   │  │
+│   │  │fridge│   │   │  │lights│   │   │  │oven  │   │   │  │washer│   │  │
+│   │  │lights│   │   │  │tools │   │   │  │pump  │   │   │  │heat  │   │  │
+│   │  └──────┘   │   │  └──────┘   │   │  └──────┘   │   │  └──────┘   │  │
+│   └──────┬──────┘   └──────┬──────┘   └──────┬──────┘   └──────┬──────┘  │
+│          │                 │                 │                 │         │
+│          └────────┬────────┘                 └────────┬────────┘         │
+│                   │                                   │                  │
+│            ┌──────▼──────┐                     ┌──────▼──────┐           │
+│            │   TIE INV   │                     │   TIE INV   │           │
+│            │ (optional)  │                     │ (optional)  │           │
+│            └──────┬──────┘                     └──────┬──────┘           │
+│                   │      INTER-CLUSTER LINK          │                  │
+│                   └──────────────────────────────────┘                  │
+│                        (power sharing only,                              │
+│                         not a load connection)                           │
+│                                                                          │
+│   ✓ Each house powers its own loads directly                            │
+│   ✓ Inter-cluster link balances surplus/deficit between clusters        │
+│   ✓ Automatic power sharing via droop control                           │
+│   ✓ No utility grid required                                            │
+└──────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
