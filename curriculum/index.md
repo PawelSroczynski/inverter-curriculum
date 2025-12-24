@@ -8,7 +8,7 @@
 
 | File | Contents |
 |------|----------|
-| `part1_fundamentals.md` | Step 1: 26 projects (5 phases) |
+| `part1_fundamentals.md` | Step 1: 37 projects (6 phases) - Includes SmartBob/ESP32 & Home Assistant |
 | `part2_modified_sine.md` | Steps 2-3: CD4047 → SG3525 |
 | `part3_pure_sine.md` | Steps 4-5: EG8010 → OzInverter |
 | `part4_smart_upgrade.md` | Step 6: ESP32 monitoring |
@@ -23,50 +23,79 @@
 
 ### Timeline
 ```
-Step 1: 8-12 weekends  (Fundamentals)
+Step 1: 10-14 weekends (Fundamentals + SmartBob + Sync)
 Step 2: 2-3 weekends   (First Inverter)
 Step 3: 3-4 weekends   (H-Bridge)
 Step 4: 1-2 months     (Pure Sine)
 Step 5: 2-3 months     (OzInverter)
 ────────────────────────────────────
-Total:  6-12 months
+Total:  7-13 months
 ```
 
 ### Budget
 ```
-Step 1:    $64   (12 projects)
-Step 2:    $40   (150W inverter)
-Step 3:   $110   (500W inverter)
-Step 4:   $150   (1kW inverter)
-Step 5:   $600   (6kW inverter)
-Tools:    $300   (one-time)
+Step 1:   ~400 PLN  (37 projects + ESP32)
+Step 2:    $40      (150W inverter)
+Step 3:   $110      (500W inverter)
+Step 4:   $150      (1kW inverter)
+Step 5:   $600      (6kW inverter)
+Tools:   ~300 PLN   (soldering station)
 ────────────────────────────────────
-Total: ~$1,264
+Total: ~$1,000 + 700 PLN (~$1,175)
 ```
 
 ---
 
-## Part 1: Fundamentals (12 Projects)
+## Part 1: Fundamentals (37 Projects)
 
-### Phase 1: No ICs
+### Phase 1: DC Fundamentals (No ICs)
 - 1.1 LED + Resistor (Ohm's Law)
-- 1.2 Switch Circuits (AND/OR logic)
-- 1.3 Transistor as Switch
+- 1.2 Series/Parallel LEDs (Kirchhoff's Laws)
+- 1.3 Potentiometer Dimmer (Voltage dividers)
+- 1.4 Switch Circuits (AND/OR logic)
+- 1.5 Transistor as Switch (BJT basics)
+- 1.6 Current Limiting (Protection circuits)
 
-### Phase 2: 555 Timer
-- 1.4 Monostable (One-Shot)
-- 1.5 Astable (Blinker)
-- 1.6 Relay Control
+### Phase 2: Power Flow & SmartBob (9 projects)
+- 2.1 5V Regulator (Linear regulation)
+- 2.2 Adjustable LM317 (Feedback control)
+- 2.3 Capacitor Filtering (Ripple reduction)
+- 2.4 Voltage Divider + Multimeter (Measurement)
+- 2.5 Bi-Directional Power Flow (Source/sink concepts)
+- 2.6 SmartBob Intro (ESP32 voltage monitor)
+- 2.7 Battery State Estimation (SOC algorithm)
+- 2.8 Power Direction Detection (Current sensing)
+- 2.9 Home Assistant Dashboard (ESPHome integration)
 
-### Phase 3: Control Concepts
-- 1.7 PWM Dimmer
-- 1.8 LED Chaser (4017)
-- 1.9 Power Switching (TIP120)
+### Phase 3: Oscillation & AC (5 projects)
+- 3.1 555 Astable (Square wave generation)
+- 3.2 50Hz Generator (AC frequency)
+- 3.3 Variable Duty Cycle (PWM basics)
+- 3.4 LC Tank Circuit (Resonance concepts)
+- 3.5 Transformer Fundamentals (AC voltage conversion)
 
-### Phase 4: Measurement
-- 1.10 Continuity Tester
-- 1.11 Voltage Indicator
-- 1.12 Audio Oscillator
+### Phase 4: Build the Inverter (5 projects)
+- 4.1 Push-Pull Driver (CD4047 + transistors)
+- 4.2 MOSFET Switching (IRF3205 gate drive)
+- 4.3 H-Bridge Construction (Full bridge topology)
+- 4.4 Modified Sine Output (12V→230V conversion)
+- 4.5 Output Filtering (LC low-pass filter)
+
+### Phase 5: Mini Swarm Microgrid (6 projects)
+- 5.1 Two-Unit Power Sharing (Master/slave basics)
+- 5.2 Parallel AC Connection (Phase synchronization)
+- 5.3 Grid-Forming vs Grid-Following (Role assignment)
+- 5.4 Voltage Droop Control (V-based power sharing)
+- 5.5 Frequency Droop Control (P-f power balance)
+- 5.6 ESP32 Microgrid Monitor (Real-time dashboard)
+
+### Phase 6: Advanced Synchronization (6 projects)
+- 6.1 Frequency Matching (PLL concepts)
+- 6.2 Phase Angle Visualization (Oscilloscope timing)
+- 6.3 Zero-Cross Detection (Hardware interrupt)
+- 6.4 Droop Control Integration (Combined V-f droop)
+- 6.5 Soft Parallel Connection (Sync before connect)
+- 6.6 Island Grid Operation (Autonomous microgrid)
 
 ---
 

@@ -1,0 +1,32 @@
+# Claude Code
+.claude/
+
+# Backup files and archives
+*.tar.gz
+*.zip
+backups/
+enklava_backup/
+
+# Separate projects (not part of curriculum)
+GlampModeler/
+MarcinowDocs/
+tolokapp/
+enklava/
+enklava-vision-main/
+
+# Config and setup files
+enklava-nginx-config.conf
+setup-commands.sh
+
+# Documentation drafts and reports
+SENIOR_ARCHITECT_PROMPT.md
+TLOKA_SYSTEM_ARCHITECTURE.md
+reportenklava.md
+upgrade-toloka.md
+
+# Large files
+*.pdf
+
+# OS files
+.DS_Store
+Thumbs.db
