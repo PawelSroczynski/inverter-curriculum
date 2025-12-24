@@ -26,56 +26,87 @@ Build your own 6-15kW pure sine wave inverters that communicate, share power aut
 ## The Swarm Microgrid Vision
 
 ```
-┌──────────────────────────────────────────────────────────────────────────┐
-│                         COMMUNITY MICROGRID                              │
-│                                                                          │
-│          CLUSTER A (48V DC Bus)              CLUSTER B (48V DC Bus)      │
-│   ┌─────────────┐   ┌─────────────┐   ┌─────────────┐   ┌─────────────┐  │
-│   │   HOUSE 1   │   │   HOUSE 2   │   │   HOUSE 3   │   │   HOUSE 4   │  │
-│   │ ┌─────────┐ │   │ ┌─────────┐ │   │ ┌─────────┐ │   │ ┌─────────┐ │  │
-│   │ │  Solar  │ │   │ │  Solar  │ │   │ │  Solar  │ │   │ │  Solar  │ │  │
-│   │ │ Panels  │ │   │ │ Panels  │ │   │ │ Panels  │ │   │ │ Panels  │ │  │
-│   │ └────┬────┘ │   │ └────┬────┘ │   │ └────┬────┘ │   │ └────┬────┘ │  │
-│   │      ▼      │   │      ▼      │   │      ▼      │   │      ▼      │  │
-│   │ ┌─────────┐ │   │ ┌─────────┐ │   │ ┌─────────┐ │   │ ┌─────────┐ │  │
-│   │ │   BMS   │ │   │ │   BMS   │ │   │ │   BMS   │ │   │ │   BMS   │ │  │
-│   │ │ Battery │ │   │ │ Battery │ │   │ │ Battery │ │   │ │ Battery │ │  │
-│   │ └────┬────┘ │   │ └────┬────┘ │   │ └────┬────┘ │   │ └────┬────┘ │  │
-│   │      ▼      │   │      ▼      │   │      ▼      │   │      ▼      │  │
-│   │ ┌─────────┐ │   │ ┌─────────┐ │   │ ┌─────────┐ │   │ ┌─────────┐ │  │
-│   │ │Inverter │ │   │ │Inverter │ │   │ │Inverter │ │   │ │Inverter │ │  │
-│   │ │  6kW    │ │   │ │  6kW    │ │   │ │  6kW    │ │   │ │  6kW    │ │  │
-│   │ └────┬────┘ │   │ └────┬────┘ │   │ └────┬────┘ │   │ └────┬────┘ │  │
-│   │      │      │   │      │      │   │      │      │   │      │      │  │
-│   │ 230V AC out │   │ 230V AC out │   │ 230V AC out │   │ 230V AC out │  │
-│   │      │      │   │      │      │   │      │      │   │      │      │  │
-│   │      ▼      │   │      ▼      │   │      ▼      │   │      ▼      │  │
-│   │  ┌──────┐   │   │  ┌──────┐   │   │  ┌──────┐   │   │  ┌──────┐   │  │
-│   │  │LOADS │   │   │  │LOADS │   │   │  │LOADS │   │   │  │LOADS │   │  │
-│   │  │fridge│   │   │  │lights│   │   │  │oven  │   │   │  │washer│   │  │
-│   │  │lights│   │   │  │tools │   │   │  │pump  │   │   │  │heat  │   │  │
-│   │  └──────┘   │   │  └──────┘   │   │  └──────┘   │   │  └──────┘   │  │
-│   └──────┬──────┘   └──────┬──────┘   └──────┬──────┘   └──────┬──────┘  │
-│          │                 │                 │                 │         │
-│          └────────┬────────┘                 └────────┬────────┘         │
-│                   │                                   │                  │
-│            ┌──────▼──────┐                     ┌──────▼──────┐           │
-│            │   TIE INV   │                     │   TIE INV   │           │
-│            │ (optional)  │                     │ (optional)  │           │
-│            └──────┬──────┘                     └──────┬──────┘           │
-│                   │                                   │                  │
-│                   │   ┌───────────────────────────┐   │                  │
-│                   └───┤  230V AC INTER-CLUSTER    ├───┘                  │
-│                       │  (bi-directional tie,     │                      │
-│                       │   power sharing only)     │                      │
-│                       └───────────────────────────┘                      │
-│                                                                          │
-│   ✓ Each house powers its own loads directly                            │
-│   ✓ Inter-cluster link balances surplus/deficit between clusters        │
-│   ✓ Automatic power sharing via droop control                           │
-│   ✓ No utility grid required                                            │
-└──────────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                            COMMUNITY MICROGRID                                  │
+│                                                                                 │
+│   CLUSTER A                                      CLUSTER B                      │
+│   ═════════════════════════════════              ═════════════════════════════  │
+│                                                                                 │
+│   ┌──── 48V DC BUS (shared) ────┐               ┌──── 48V DC BUS (shared) ────┐ │
+│   │                             │               │                             │ │
+│   │  ┌───────┐    ┌───────┐    │               │  ┌───────┐    ┌───────┐    │ │
+│   │  │Solar 1│    │Solar 2│    │               │  │Solar 3│    │Solar 4│    │ │
+│   │  │ MPPT  │    │ MPPT  │    │               │  │ MPPT  │    │ MPPT  │    │ │
+│   │  └───┬───┘    └───┬───┘    │               │  └───┬───┘    └───┬───┘    │ │
+│   │      │            │        │               │      │            │        │ │
+│   │      ▼            ▼        │               │      ▼            ▼        │ │
+│   │  ┌───────┐    ┌───────┐    │               │  ┌───────┐    ┌───────┐    │ │
+│   │  │ BMS 1 │    │ BMS 2 │    │               │  │ BMS 3 │    │ BMS 4 │    │ │
+│   │  │48V bat│    │48V bat│    │               │  │48V bat│    │48V bat│    │ │
+│   │  └───┬───┘    └───┬───┘    │               │  └───┬───┘    └───┬───┘    │ │
+│   │      │            │        │               │      │            │        │ │
+│   │      └─────┬──────┘        │               │      └─────┬──────┘        │ │
+│   │            │ 48V DC        │               │            │ 48V DC        │ │
+│   └────────────┼───────────────┘               └────────────┼───────────────┘ │
+│                │                                            │                 │
+│        ┌───────┴───────┐                            ┌───────┴───────┐         │
+│        │               │                            │               │         │
+│   ┌────▼────┐    ┌────▼────┐                   ┌────▼────┐    ┌────▼────┐    │
+│   │ INV 1   │    │ INV 2   │                   │ INV 3   │    │ INV 4   │    │
+│   │  6kW    │    │  6kW    │                   │  6kW    │    │  6kW    │    │
+│   │ EG8010  │    │ EG8010  │                   │ EG8010  │    │ EG8010  │    │
+│   │ +ESP32  │    │ +ESP32  │                   │ +ESP32  │    │ +ESP32  │    │
+│   └────┬────┘    └────┬────┘                   └────┬────┘    └────┬────┘    │
+│        │  ▲      ▲    │                             │  ▲      ▲    │         │
+│        │  └──────┘    │                             │  └──────┘    │         │
+│        │   SYNC pin   │                             │   SYNC pin   │         │
+│        │ (master/slave)                             │ (master/slave)         │
+│        │              │                             │              │         │
+│   ─────┴──────────────┴─────                   ─────┴──────────────┴─────    │
+│   │  CLUSTER A: 230V AC BUS │                   │  CLUSTER B: 230V AC BUS │  │
+│   ──────────┬───────────────                   ──────────┬────────────────   │
+│             │                                            │                   │
+│        ┌────┴────┐                                  ┌────┴────┐              │
+│        │  LOADS  │                                  │  LOADS  │              │
+│        │ House 1 │                                  │ House 3 │              │
+│        │ House 2 │                                  │ House 4 │              │
+│        └────┬────┘                                  └────┬────┘              │
+│             │                                            │                   │
+│             │         ┌─────────────────────┐            │                   │
+│             └─────────┤  AC CONTACTOR/BRK   ├────────────┘                   │
+│                       │  (inter-cluster)    │                                │
+│                       │                     │                                │
+│                       │  230V AC tie line   │                                │
+│                       │  Droop control      │                                │
+│                       │  handles sync       │                                │
+│                       └─────────────────────┘                                │
+│                                                                              │
+│   ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄  │
+│   CAN BUS (communication layer - separate from power)                        │
+│   ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄  │
+│        │              │                             │              │         │
+│   ┌────┴────┐    ┌────┴────┐                   ┌────┴────┐    ┌────┴────┐    │
+│   │ ESP32-1 │    │ ESP32-2 │                   │ ESP32-3 │    │ ESP32-4 │    │
+│   └─────────┘    └─────────┘                   └─────────┘    └─────────┘    │
+│                                                                              │
+│   CAN bus carries: battery SOC, load %, faults, droop params, ThingSet msgs  │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+POWER FLOW:    Solar → MPPT → 48V DC Bus → Inverter → 230V AC Bus → Loads
+                                                            ↓
+                                              Inter-cluster AC tie (droop)
+
+COMMUNICATION: ESP32 ←──── CAN bus (ThingSet protocol) ────→ ESP32
+               All inverters share status, coordinate via droop control
 ```
+
+**Key points:**
+- No special "TIE INV" needed - just an AC contactor between cluster AC buses
+- Droop control in each inverter handles synchronization automatically
+- CAN bus is separate communication layer, not power
+- Within cluster: EG8010 SYNC pin for tight phase lock
+- Between clusters: droop control allows slight freq/phase variation
 
 ---
 
