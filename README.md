@@ -78,63 +78,64 @@ How clusters connect to form a community microgrid.
 How houses within a cluster share power and communicate.
 
 ```
-┌────────────────────────────────────────────────────────────────────────────────────┐
-│                              CLUSTER (typical)                                     │
-│                                                                                    │
-│   ┌─────────────┐         ┌─────────────┐         ┌─────────────┐                 │
-│   │   HOUSE 1   │         │   HOUSE 2   │         │   HOUSE 3   │                 │
-│   │             │         │             │         │             │                 │
-│   │  Solar 3kW  │         │  Solar 3kW  │         │  Solar 3kW  │                 │
-│   │  Bat 5kWh   │         │  Bat 5kWh   │         │  Bat 5kWh   │                 │
-│   │  Inv 6kW    │         │  Inv 6kW    │         │  Inv 6kW    │                 │
-│   │  ESP32 MSTR │         │  ESP32 SLV  │         │  ESP32 SLV  │                 │
-│   │             │         │             │         │             │                 │
-│   │  ┌───────┐  │         │  ┌───────┐  │         │  ┌───────┐  │                 │
-│   │  │ 48V DC│  │         │  │ 48V DC│  │         │  │ 48V DC│  │                 │
-│   │  │(local)│  │         │  │(local)│  │         │  │(local)│  │                 │
-│   │  └───┬───┘  │         │  └───┬───┘  │         │  └───┬───┘  │                 │
-│   │      ▼      │         │      ▼      │         │      ▼      │                 │
-│   │  Inverter   │         │  Inverter   │         │  Inverter   │                 │
-│   │      │      │         │      │      │         │      │      │                 │
-│   │      ▼      │         │      ▼      │         │      ▼      │                 │
-│   │  ┌───────┐  │         │  ┌───────┐  │         │  ┌───────┐  │                 │
-│   │  │ LOADS │  │         │  │ LOADS │  │         │  │ LOADS │  │                 │
-│   │  │fridge │  │         │  │lights │  │         │  │oven   │  │                 │
-│   │  │lights │  │         │  │tools  │  │         │  │pump   │  │                 │
-│   │  └───────┘  │         │  └───────┘  │         │  └───────┘  │                 │
-│   │      ▲      │         │      ▲      │         │      ▲      │                 │
-│   └──────┼──────┘         └──────┼──────┘         └──────┼──────┘                 │
-│          │ 230V AC               │ 230V AC               │ 230V AC                │
-│          │                       │                       │                        │
-│   ◄══════╧═══════════════════════╧═══════════════════════╧══════════════════►     │
-│   230V AC BUS (BIDIRECTIONAL - power flows both ways via droop)     to other      │
-│   ◄════════════════════════════════════════════════════════════════► cluster      │
-│                                                                                    │
-│          │ RJ45                  │ RJ45                  │ RJ45                   │
-│          │                       │                       │                        │
-│   ───────○───────────────────────○───────────────────────○──────────────────►     │
-│   CAN BUS (daisy-chain via RJ45, 10-30m between houses)             to other      │
-│   ──────────────────────────────────────────────────────────────────  cluster     │
-│                                                                                    │
-│   ○ = RJ45 jack on inverter                                                       │
-│                                                                                    │
-│   BIDIRECTIONAL POWER FLOW:                                                       │
-│   • House 1 has excess solar → pushes power to AC bus → House 2 uses it           │
-│   • House 2 has big load → pulls power from AC bus → House 1 supplies it          │
-│   • Droop control handles direction automatically (no manual switching)           │
-│                                                                                    │
-│   LOADS CONNECT INSIDE EACH HOUSE:                                                │
-│   • Inverter output → House distribution board → Loads                            │
-│   • House also connects to shared AC bus (can import/export power)                │
-│                                                                                    │
-│   NO DC BUS BETWEEN HOUSES:                                                       │
-│   • Each house has isolated 48V DC (battery stays local)                          │
-│   • Power sharing happens via 230V AC (bidirectional, simpler wiring)             │
-│                                                                                    │
-│   TO OTHER CLUSTERS:                                                              │
-│   • 230V AC + CAN travel together in 5-wire cable                                 │
-│                                                                                    │
-└────────────────────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│                         CLUSTER - LOAD BALANCING EXAMPLE                             │
+│                                                                                      │
+│   HOUSE 1 (light load)     HOUSE 2 (heavy load)      HOUSE 3 (medium load)          │
+│   ┌──────────────────┐     ┌──────────────────┐     ┌──────────────────┐            │
+│   │ Solar 6kW        │     │ Solar 6kW        │     │ Solar 6kW        │            │
+│   │ Bat 5kWh (80%)   │     │ Bat 5kWh (40%)   │     │ Bat 5kWh (60%)   │            │
+│   │ Inv 6kW          │     │ Inv 6kW          │     │ Inv 6kW          │            │
+│   │                  │     │                  │     │                  │            │
+│   │ ┌──────────────┐ │     │ ┌──────────────┐ │     │ ┌──────────────┐ │            │
+│   │ │   BATTERY    │ │     │ │   BATTERY    │ │     │ │   BATTERY    │ │            │
+│   │ │    48V DC    │ │     │ │    48V DC    │ │     │ │    48V DC    │ │            │
+│   │ └──────┬───────┘ │     │ └──────┬───────┘ │     │ └──────┬───────┘ │            │
+│   │        │         │     │        │         │     │        │         │            │
+│   │        ▼ 2kW     │     │        ▼ 3kW     │     │        ▼ 2kW     │            │
+│   │ ┌──────────────┐ │     │ ┌──────────────┐ │     │ ┌──────────────┐ │            │
+│   │ │   INVERTER   │ │     │ │   INVERTER   │ │     │ │   INVERTER   │ │            │
+│   │ │   50.0 Hz    │ │     │ │   49.8 Hz    │ │     │ │   49.95 Hz   │ │            │
+│   │ └──────┬───────┘ │     │ └──────┬───────┘ │     │ └──────┬───────┘ │            │
+│   │        │         │     │        │         │     │        │         │            │
+│   │        ▼         │     │        ▼         │     │        ▼         │            │
+│   │ ┌──────────────┐ │     │ ┌──────────────┐ │     │ ┌──────────────┐ │            │
+│   │ │    LOADS     │ │     │ │    LOADS     │ │     │ │    LOADS     │ │            │
+│   │ │   500W only  │ │     │ │  5kW (oven!) │ │     │ │    1.5kW     │ │            │
+│   │ └──────────────┘ │     │ └──────────────┘ │     │ └──────────────┘ │            │
+│   │        ▲         │     │        ▲         │     │        ▲         │            │
+│   └────────┼─────────┘     └────────┼─────────┘     └────────┼─────────┘            │
+│            │                        │                        │                      │
+│            │ 230V AC                │ 230V AC                │ 230V AC              │
+│            │                        │                        │                      │
+│   ─────────┴────────────────────────┴────────────────────────┴───────────────►      │
+│                                                                                      │
+│            ════1.5kW═══════════════►║◄════════0.5kW══════════                       │
+│                    House 1 pushes   ║   House 3 pushes                              │
+│                    power to House 2 ║   power to House 2                            │
+│                                                                                      │
+│   230V AC BUS @ 49.9 Hz (frequency settles between all inverters)                   │
+│   ──────────────────────────────────────────────────────────────────► to cluster    │
+│                                                                                      │
+│            │ RJ45                   │ RJ45                   │ RJ45                 │
+│   ─────────○───────────────────────○───────────────────────○────────► to cluster   │
+│   CAN BUS: sync timing + SOC% + load data                                           │
+│                                                                                      │
+├──────────────────────────────────────────────────────────────────────────────────────┤
+│   HOW DROOP LOAD-BALANCING WORKS:                                                   │
+│                                                                                      │
+│   1. House 2 turns on oven (5kW) → its inverter works hard → freq drops to 49.8 Hz  │
+│   2. House 1 inverter sees low freq → increases output → pushes 1.5kW to bus        │
+│   3. House 3 inverter sees low freq → increases output → pushes 0.5kW to bus        │
+│   4. System settles: House 2 gets 3kW local + 2kW from neighbors = 5kW total        │
+│                                                                                      │
+│   THE MATH:                                                                         │
+│   • House 2 needs: 5.0 kW  │  House 2 supplies from battery: 3.0 kW                 │
+│   • House 1 pushes: 1.5 kW │  House 3 pushes: 0.5 kW  │  Total: 5.0 kW ✓            │
+│                                                                                      │
+│   NO CONTROLLER NEEDED - frequency difference creates automatic power flow          │
+│                                                                                      │
+└──────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
