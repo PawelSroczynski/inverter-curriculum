@@ -19,134 +19,245 @@ Build your own 6-15kW pure sine wave inverters that communicate, share power aut
 | Single inverter = single point of failure | Swarm of inverters = resilient |
 | Grid dependency | Complete energy independence |
 
-**End Goal:** 4-household microgrid with 20kW+ capacity, automatic power sharing, no utility grid required.
+**End Goal:** 9-household microgrid with 54kW capacity, automatic power sharing, no utility grid required.
 
 ---
 
-## The Swarm Microgrid Vision
+## System Architecture
+
+The system has three levels of detail. Start with the big picture, then zoom in.
+
+---
+
+### Level 1: Microgrid Overview
+
+How clusters connect to form a community microgrid.
 
 ```
-┌──────────────────────────────────────────────────────────────────────────────────────┐
-│                               COMMUNITY MICROGRID                                    │
-│                                                                                      │
-│  CLUSTER A                                    CLUSTER B                              │
-│  ════════════════════════════════════════     ════════════════════════════════════   │
-│                                                                                      │
-│  ┌───────────────────┐ ┌───────────────────┐  ┌───────────────────┐ ┌─────────────────┐
-│  │      HOUSE 1      │ │      HOUSE 2      │  │      HOUSE 3      │ │     HOUSE 4     │
-│  │                   │ │                   │  │                   │ │                 │
-│  │  ┌─────────────┐  │ │  ┌─────────────┐  │  │  ┌─────────────┐  │ │  ┌───────────┐  │
-│  │  │ Solar 3kW   │  │ │  │ Solar 3kW   │  │  │  │ Solar 3kW   │  │ │  │ Solar 3kW │  │
-│  │  └──────┬──────┘  │ │  └──────┬──────┘  │  │  └──────┬──────┘  │ │  └─────┬─────┘  │
-│  │         ▼         │ │         ▼         │  │         ▼         │ │        ▼        │
-│  │  ┌─────────────┐  │ │  ┌─────────────┐  │  │  ┌─────────────┐  │ │  ┌───────────┐  │
-│  │  │    MPPT     │  │ │  │    MPPT     │  │  │  │    MPPT     │  │ │  │   MPPT    │  │
-│  │  │   Charger   │  │ │  │   Charger   │  │  │  │   Charger   │  │ │  │  Charger  │  │
-│  │  └──────┬──────┘  │ │  └──────┬──────┘  │  │  └──────┬──────┘  │ │  └─────┬─────┘  │
-│  │         ▼         │ │         ▼         │  │         ▼         │ │        ▼        │
-│  │  ┌─────────────┐  │ │  ┌─────────────┐  │  │  ┌─────────────┐  │ │  ┌───────────┐  │
-│  │  │     BMS     │  │ │  │     BMS     │  │  │  │     BMS     │  │ │  │    BMS    │  │
-│  │  │  48V / 5kWh │  │ │  │  48V / 5kWh │  │  │  │  48V / 5kWh │  │ │  │ 48V / 5kWh│  │
-│  │  │   Battery   │  │ │  │   Battery   │  │  │  │   Battery   │  │ │  │  Battery  │  │
-│  │  └──────┬──────┘  │ │  └──────┬──────┘  │  │  └──────┬──────┘  │ │  └─────┬─────┘  │
-│  │         │ 48V DC  │ │         │ 48V DC  │  │         │ 48V DC  │ │        │ 48V DC │
-│  │         ▼         │ │         ▼         │  │         ▼         │ │        ▼        │
-│  │  ┌─────────────┐  │ │  ┌─────────────┐  │  │  ┌─────────────┐  │ │  ┌───────────┐  │
-│  │  │  INVERTER   │  │ │  │  INVERTER   │  │  │  │  INVERTER   │  │ │  │ INVERTER  │  │
-│  │  │    6kW      │  │ │  │    6kW      │  │  │  │    6kW      │  │ │  │   6kW     │  │
-│  │  │   EG8010    │  │ │  │   EG8010    │  │  │  │   EG8010    │  │ │  │  EG8010   │  │
-│  │  │   ESP32     │  │ │  │   ESP32     │  │  │  │   ESP32     │  │ │  │  ESP32    │  │
-│  │  │   MCP2515   │  │ │  │   MCP2515   │  │  │  │   MCP2515   │  │ │  │  MCP2515  │  │
-│  │  │   MASTER    │  │ │  │   SLAVE     │  │  │  │   SLAVE     │  │ │  │  SLAVE    │  │
-│  │  └──────┬──────┘  │ │  └──────┬──────┘  │  │  └──────┬──────┘  │ │  └─────┬─────┘  │
-│  │         │ 230V AC │ │         │ 230V AC │  │         │ 230V AC │ │        │ 230V AC│
-│  │         ▼         │ │         ▼         │  │         ▼         │ │        ▼        │
-│  │  ┌─────────────┐  │ │  ┌─────────────┐  │  │  ┌─────────────┐  │ │  ┌───────────┐  │
-│  │  │    LOADS    │  │ │  │    LOADS    │  │  │  │    LOADS    │  │ │  │   LOADS   │  │
-│  │  │   fridge    │  │ │  │   lights    │  │  │  │    oven     │  │ │  │  washer   │  │
-│  │  │   lights    │  │ │  │   tools     │  │  │  │    pump     │  │ │  │   heat    │  │
-│  │  │   router    │  │ │  │   garage    │  │  │  │    shop     │  │ │  │  office   │  │
-│  │  └─────────────┘  │ │  └─────────────┘  │  │  └─────────────┘  │ │  └───────────┘  │
-│  │                   │ │                   │  │                   │ │                 │
-│  └──────┬──────────────┘ └─────────┬────────────┘  └──────┬──────────────┘ └───────┬───────┘
-│         │                         │                      │                        │
-│         │                         │                      │                        │
-│  ┄┄┄┄┄┄┄┴┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┴┄┄┄┄┄┄┄┄┄┄┄    ┄┄┄┄┄┄┄┴┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┴┄┄┄┄┄┄┄
-│  48V DC BUS (within Cluster A only)               48V DC BUS (within Cluster B only)
-│  Batteries can share charge within cluster        Batteries can share charge within cluster
-│  THIS BUS DOES NOT CROSS TO OTHER CLUSTER         THIS BUS DOES NOT CROSS TO OTHER CLUSTER
-│  ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄    ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
-│
-│                    ▲                                              ▲
-│                    │ INVERTERS CONVERT                            │ INVERTERS CONVERT
-│                    │ 48V DC → 230V AC                             │ 48V DC → 230V AC
-│                    ▼                                              ▼
-│
-│  ═══════════════════════════════════════════     ═══════════════════════════════════════════
-│  ║    CLUSTER A: 230V AC BUS               ║     ║    CLUSTER B: 230V AC BUS               ║
-│  ═══════════════════╤═══════════════════════     ═══════════════════╤═══════════════════════
-│                     │                                               │
-│                     │                                               │
-│                     │         ┌─────────────────────────┐           │
-│                     │         │   5-WIRE CABLE          │           │
-│                     └─────────┤   (50-100m between      ├───────────┘
-│                               │    clusters)            │
-│                               │                         │
-│                               │   ┌─────┬─────┬─────┐   │
-│                               │   │  L  │  N  │ PE  │   │  ← 230V AC power
-│                               │   │4mm² │4mm² │4mm² │   │    (3 wires)
-│                               │   ├─────┴─────┴─────┤   │
-│                               │   │ CAN-H │ CAN-L   │   │  ← CAN bus data
-│                               │   │ 0.5mm │ 0.5mm   │   │    (2 wires)
-│                               │   └─────────────────┘   │
-│                               │                         │
-│                               │   + 63A BREAKER each    │
-│                               │     side for safety     │
-│                               └─────────────────────────┘
-│
-│  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─
-│  CAN BUS (RJ45 cables between all houses, handles SYNC + STATUS via ThingSet)
-│  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─
-│       │                   │                     │                    │
-│       │                   │                     │                    │
-│    House 1             House 2               House 3              House 4
-│    ESP32               ESP32                 ESP32                ESP32
-│    MASTER              SLAVE                 SLAVE                SLAVE
-│
-│  CAN messages: SYNC timing @ 100Hz, SOC%, voltage, load watts, faults
-│  SYNC: Master broadcasts timing, all slaves adjust EG8010 phase
-│  DROOP: Each inverter adjusts freq based on load, power flows automatically
-│
-└────────────────────────────────────────────────────────────────────────────────────────┘
-
-HARDWARE PER HOUSE:
-┌────────────────┬─────────────────────────────────────────────────────────────────┐
-│ Component      │ Description                                                     │
-├────────────────┼─────────────────────────────────────────────────────────────────┤
-│ Solar Panels   │ 3kW array (typical, size varies per house)                      │
-│ MPPT Charger   │ Libre Solar MPPT-2420-HC or similar, charges battery from solar │
-│ BMS + Battery  │ Libre Solar BMS-C1 + 48V/5kWh LiFePO4 cells                     │
-│ Inverter       │ OzInverter 6kW with EG8010 driver chip                          │
-│ ESP32 + CAN    │ ESP32 + MCP2515 transceiver (inside inverter, handles sync)     │
-│ RJ45 Cable     │ Connects to next house for CAN bus daisy-chain                  │
-└────────────────┴─────────────────────────────────────────────────────────────────┘
-
-SHARED BETWEEN CLUSTERS:
-┌────────────────┬─────────────────────────────────────────────────────────────────┐
-│ 5-Wire Cable   │ L + N + PE (4mm² each) + CAN-H + CAN-L (0.5mm² each)            │
-│                │ One cable carries power AND data between clusters               │
-│ 63A Breakers   │ One breaker on each cluster side (safety disconnect)            │
-└────────────────┴─────────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────────────┐
+│                           COMMUNITY MICROGRID                                  │
+│                                                                                │
+│                              50-200m between clusters                          │
+│                                                                                │
+│         ┌───────────────┐       5-WIRE        ┌───────────────┐               │
+│         │               │◄═════ CABLE ═══════►│               │               │
+│         │   CLUSTER A   │    L+N+PE+CAN       │   CLUSTER B   │               │
+│         │               │                      │               │               │
+│         │  3 houses     │                      │  3 houses     │               │
+│         │  18kW gen     │                      │  18kW gen     │               │
+│         │  15kWh store  │                      │  15kWh store  │               │
+│         │               │                      │               │               │
+│         └───────┬───────┘                      └───────┬───────┘               │
+│                 │                                      │                       │
+│                 │            5-WIRE CABLE              │                       │
+│                 │     ┌───────────────────────┐        │                       │
+│                 └─────┤                       ├────────┘                       │
+│                       │      CLUSTER C        │                                │
+│                       │                       │                                │
+│                       │      3 houses         │                                │
+│                       │      18kW gen         │                                │
+│                       │      15kWh store      │                                │
+│                       │                       │                                │
+│                       └───────────────────────┘                                │
+│                                                                                │
+│  TOTALS: 9 houses │ 54kW solar │ 45kWh battery │ 54kW inverter capacity       │
+│                                                                                │
+│  ═══════  230V AC power (L + N + PE, 4mm² each)                               │
+│  ┄┄┄┄┄┄┄  CAN bus data (CAN-H + CAN-L, 0.5mm² each, in same cable)            │
+│                                                                                │
+│  DROOP CONTROL: Power flows automatically from surplus to deficit clusters    │
+│  CAN SYNC: One master ESP32 broadcasts timing, all others follow              │
+│                                                                                │
+└────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**How it works:**
-- Each house is self-contained: Solar → MPPT → Battery → Inverter → Loads
-- 48V DC bus shared within cluster (batteries can share charge, stays LOCAL)
-- Inverters convert 48V DC → 230V AC (this is where voltage changes)
-- 230V AC bus shared within cluster (inverters parallel via CAN sync)
-- Clusters connected via 230V AC cable ONLY (DC never crosses between clusters)
-- Droop control balances power automatically between clusters
-- CAN bus daisy-chains all houses: RJ45 from House 1 → 2 → 3 → 4
+---
+
+### Level 2: Cluster Detail
+
+How houses within a cluster share power and communicate.
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────┐
+│                              CLUSTER (typical)                                     │
+│                                                                                    │
+│   ┌─────────────┐         ┌─────────────┐         ┌─────────────┐                 │
+│   │   HOUSE 1   │         │   HOUSE 2   │         │   HOUSE 3   │                 │
+│   │             │         │             │         │             │                 │
+│   │  Solar 3kW  │         │  Solar 3kW  │         │  Solar 3kW  │                 │
+│   │  Bat 5kWh   │         │  Bat 5kWh   │         │  Bat 5kWh   │                 │
+│   │  Inv 6kW    │         │  Inv 6kW    │         │  Inv 6kW    │                 │
+│   │  ESP32 MSTR │         │  ESP32 SLV  │         │  ESP32 SLV  │                 │
+│   │             │         │             │         │             │                 │
+│   └──────┬──────┘         └──────┬──────┘         └──────┬──────┘                 │
+│          │                       │                       │                        │
+│          │ 48V DC                │ 48V DC                │ 48V DC                 │
+│          │                       │                       │                        │
+│   ┄┄┄┄┄┄┄┴┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┴┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┴┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄    │
+│   48V DC BUS (shared within cluster only - batteries help each other)             │
+│   ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄    │
+│                                                                                    │
+│                    ┌──────────────────────────────────────┐                        │
+│                    │  INVERTERS CONVERT: 48V DC → 230V AC │                        │
+│                    └──────────────────────────────────────┘                        │
+│                                                                                    │
+│          │ 230V AC               │ 230V AC               │ 230V AC                │
+│          │                       │                       │                        │
+│   ═══════╧═══════════════════════╧═══════════════════════╧══════════════════►     │
+│   230V AC BUS (shared within cluster, synced via CAN)               to other      │
+│   ══════════════════════════════════════════════════════════════════ cluster      │
+│                                                                                    │
+│          │ RJ45                  │ RJ45                  │ RJ45                   │
+│          │                       │                       │                        │
+│   ───────○───────────────────────○───────────────────────○──────────────────►     │
+│   CAN BUS (daisy-chain via RJ45, 10-30m between houses)             to other      │
+│   ──────────────────────────────────────────────────────────────────  cluster     │
+│                                                                                    │
+│   ○ = RJ45 jack on inverter                                                       │
+│                                                                                    │
+│   WITHIN CLUSTER:                                                                 │
+│   • 48V DC bus: batteries share charge (House 1 low → House 2 helps)              │
+│   • 230V AC bus: inverters share load (synced via CAN, no phase conflict)         │
+│   • CAN bus: ESP32s exchange SOC%, load, faults, sync timing                      │
+│                                                                                    │
+│   TO OTHER CLUSTERS:                                                              │
+│   • 230V AC + CAN travel together in 5-wire cable                                 │
+│   • 48V DC stays local (never crosses to other cluster)                           │
+│                                                                                    │
+└────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### Level 3: House Detail
+
+Internal wiring of one house, showing connection to cluster buses.
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────┐
+│                              HOUSE (typical)                                       │
+│                                                                                    │
+│   ROOF                                                                             │
+│   ┌──────────────────┐                                                             │
+│   │   Solar Panels   │                                                             │
+│   │      3kW         │                                                             │
+│   └────────┬─────────┘                                                             │
+│            │ DC (Vmp ~100V)                                                        │
+│            ▼                                                                       │
+│   ┌──────────────────┐                                                             │
+│   │   MPPT Charger   │                                                             │
+│   │  (Libre Solar)   │                                                             │
+│   └────────┬─────────┘                                                             │
+│            │ 48V DC                                                                │
+│            ▼                                                                       │
+│   ┌──────────────────┐              ┌──────────────────────────────────────────┐   │
+│   │       BMS        │    30A fuse  │                                          │   │
+│   │   48V / 5kWh     │◄────────────►│  48V DC CLUSTER BUS                      │   │
+│   │    LiFePO4       │              │  ◄───── to/from other houses in cluster  │   │
+│   └────────┬─────────┘              └──────────────────────────────────────────┘   │
+│            │ 48V DC                                                                │
+│            ▼                                                                       │
+│   ┌──────────────────┐              ┌──────────────────────────────────────────┐   │
+│   │    INVERTER      │     RJ45     │                                          │   │
+│   │      6kW         │◄────────────►│  CAN BUS                                 │   │
+│   │    EG8010        │              │  ◄───── to/from other houses + clusters  │   │
+│   │    ESP32         │              └──────────────────────────────────────────┘   │
+│   │    MCP2515       │                                                             │
+│   │  (MASTER/SLAVE)  │                                                             │
+│   └────────┬─────────┘                                                             │
+│            │ 230V AC                                                               │
+│            ▼                                                                       │
+│   ┌──────────────────┐              ┌──────────────────────────────────────────┐   │
+│   │   MAIN BREAKER   │    63A MCB   │                                          │   │
+│   │   (house entry)  │◄────────────►│  230V AC CLUSTER BUS                     │   │
+│   └────────┬─────────┘              │  ◄───── to/from other houses + clusters  │   │
+│            │                        └──────────────────────────────────────────┘   │
+│            │                                                                       │
+│   ═════════╧═══════════════════════════════════════════════════════════            │
+│   ║            230V AC HOUSE DISTRIBUTION BOARD                    ║               │
+│   ══════╤══════════╤══════════╤══════════╤══════════╤══════════════                │
+│         │          │          │          │          │                              │
+│      ┌──┴──┐    ┌──┴──┐    ┌──┴──┐    ┌──┴──┐    ┌──┴──┐                          │
+│      │ 6A  │    │ 10A │    │ 16A │    │ 16A │    │ 20A │                          │
+│      │Light│    │Fridge│   │Plugs│    │Plugs│    │Oven │                          │
+│      │ MCB │    │ MCB │    │ MCB │    │ MCB │    │ MCB │                          │
+│      └──┬──┘    └──┬──┘    └──┬──┘    └──┬──┘    └──┬──┘                          │
+│         │          │          │          │          │                              │
+│         ▼          ▼          ▼          ▼          ▼                              │
+│      Lights     Fridge     Kitchen    Living     Oven                              │
+│                            plugs      plugs                                        │
+│                                                                                    │
+│   CONNECTION DETAIL: Cluster Bus ↔ House                                           │
+│   ┌────────────────────────────────────────────────────────────────────────────┐   │
+│   │                                                                            │   │
+│   │    230V AC CLUSTER BUS (shared with other houses)                          │   │
+│   │    ═══════════════╤═══════════════════════════════════════                 │   │
+│   │                   │                                                        │   │
+│   │              ┌────┴────┐                                                   │   │
+│   │              │  63A    │  Main breaker: isolates house from cluster        │   │
+│   │              │ BREAKER │  if fault or maintenance                          │   │
+│   │              └────┬────┘                                                   │   │
+│   │                   │                                                        │   │
+│   │    ═══════════════╧═══════════════════════════════════════                 │   │
+│   │    230V AC HOUSE DISTRIBUTION (internal to this house)                     │   │
+│   │                                                                            │   │
+│   │    Power flows BOTH directions:                                            │   │
+│   │    • House produces excess → pushes to cluster bus → other houses use it   │   │
+│   │    • House needs more → pulls from cluster bus → other houses supply it    │   │
+│   │                                                                            │   │
+│   └────────────────────────────────────────────────────────────────────────────┘   │
+│                                                                                    │
+└────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### Hardware Summary
+
+**Per House:**
+| Component | Description |
+|-----------|-------------|
+| Solar Panels | 3kW array (size varies) |
+| MPPT Charger | Libre Solar MPPT-2420-HC or similar |
+| BMS + Battery | Libre Solar BMS-C1 + 48V/5kWh LiFePO4 |
+| Inverter | OzInverter 6kW with EG8010 + ESP32 + MCP2515 |
+| Main Breaker | 63A MCB, isolates house from cluster |
+| DC Fuse | 30A, protects battery connection to cluster DC bus |
+| RJ45 Jack | CAN bus connection to other houses |
+
+**Per Cluster (shared):**
+| Component | Description |
+|-----------|-------------|
+| 48V DC Bus | Heavy cable (10mm²+) connecting all house batteries |
+| 230V AC Bus | Standard wiring connecting all house inverter outputs |
+| CAN Bus | RJ45 cables daisy-chaining all houses (10-30m runs) |
+
+**Between Clusters:**
+| Component | Description |
+|-----------|-------------|
+| 5-Wire Cable | L + N + PE (4mm²) + CAN-H + CAN-L (0.5mm²) |
+| 63A Breakers | One on each cluster side (safety disconnect) |
+| Distance | Typically 50-200m between clusters |
+
+---
+
+### How It Works
+
+**Power Flow:**
+1. Sun → Solar panels → MPPT → Battery (48V DC)
+2. Battery → Inverter → 230V AC → House loads
+3. Excess → Cluster AC bus → Other houses (via droop control)
+4. Still excess → Inter-cluster cable → Other clusters (via droop control)
+
+**Communication:**
+1. ESP32 master broadcasts sync timing @ 100Hz on CAN bus
+2. All slave ESP32s adjust their EG8010 phase to match
+3. Status messages (SOC%, load, faults) shared via ThingSet protocol
+
+**Droop Control (automatic power sharing):**
+- Heavy load → inverter frequency drops slightly (e.g., 50.0 → 49.8 Hz)
+- Other inverters sense lower frequency → push more power
+- No central controller needed - physics handles balancing
 
 ---
 
