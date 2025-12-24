@@ -25,14 +25,14 @@ SmartBob introduced early for monitoring throughout.
 
 ## Milestone Preview
 
-| After Phase | You Can Do |
-|-------------|------------|
-| 1 | Understand any DC circuit schematic |
-| 2 | Read sensors with SmartBob, send data to Home Assistant |
-| 3 | Build oscillators, understand AC and frequency |
-| 4 | Build a working H-bridge inverter |
-| 5 | Run two inverters sharing power with droop control |
-| **6** | **Synchronize inverters with phase alignment for island grid** |
+| After Phase | You Can Do | Practical Device |
+|-------------|------------|------------------|
+| 1 | Understand any DC circuit schematic | LED Flashlight + Continuity Tester |
+| 2 | Read sensors with SmartBob, send data to Home Assistant | USB 5V Charger + Battery Monitor |
+| 3 | Build oscillators, understand AC and frequency | Audio Alarm / Metronome |
+| 4 | Build a working H-bridge inverter | 12V→USB Emergency Charger |
+| 5 | Run two inverters sharing power with droop control | Home Power Monitor Dashboard |
+| **6** | **Synchronize inverters with phase alignment for island grid** | **Autonomous Backup Power System** |
 
 ---
 
@@ -343,6 +343,43 @@ MOSFET = voltage-controlled transistor (even better!)
 | 1.6 Transistor | Electronic switch | Foundation for MOSFETs |
 
 **Phase 1 Cost: ~70 PLN**
+
+---
+
+## ★ PRACTICAL DEVICE: LED Flashlight + Continuity Tester
+
+**Combine Phase 1 skills into two useful tools:**
+
+### DIY LED Flashlight
+```
+    9V Battery
+        │
+    [Switch]
+        │
+    [R] 47Ω
+        │
+    3× White LEDs (parallel, each with 100Ω)
+        │
+       GND
+
+→ Bright, efficient, uses Ohm's Law + parallel circuits
+→ Add reflector from aluminum foil
+```
+
+### Continuity Tester
+```
+    9V ──[R 1kΩ]──┬── Probe A
+                  │
+               [Buzzer]
+                  │
+    GND ──────────┴── Probe B
+
+When probes touch conductive material → buzzer sounds
+→ Essential tool for debugging circuits
+→ Uses: transistor as switch + LED indicator
+```
+
+**Keep these tools - you'll use them throughout the curriculum!**
 
 ---
 
@@ -952,6 +989,46 @@ Home Assistant becomes your MICROGRID CONTROL CENTER:
 
 ---
 
+## ★ PRACTICAL DEVICE: USB 5V Charger + Battery Monitor
+
+**Two genuinely useful devices from Phase 2:**
+
+### USB 5V Slow Charger (for any phone)
+```
+    12V Battery
+        │
+       [7805 Regulator]
+        │  │  │
+       IN GND OUT
+              │
+        [USB-A Female Connector]
+              │
+           5V @ 1A → Charges any phone (slow, ~5W)
+
+Add: 100µF capacitor on input, 10µF on output
+→ Works as emergency phone charger from car battery
+→ Uses: voltage regulator + capacitor filtering
+```
+
+### SmartBob Battery Monitor
+```
+Your completed 2.9 project IS the device!
+
+Features:
+- Real-time voltage on OLED
+- Current flow direction (charge/discharge)
+- Power calculation (Watts)
+- Home Assistant dashboard
+
+→ Mount in project box
+→ Use to monitor any 12V-48V battery bank
+→ Add to your solar setup later
+```
+
+**The USB charger is your first "inverter product" - DC→DC conversion!**
+
+---
+
 # PHASE 3: Oscillation & AC
 
 **Time:** 2 weekends | **Cost:** ~50 PLN | **Projects:** 5
@@ -1162,6 +1239,47 @@ THD < 3% = clean power for sensitive electronics.
 | 3.5 PWM | Average voltage control | SPWM for pure sine |
 
 **Phase 3 Cost: ~50 PLN**
+
+---
+
+## ★ PRACTICAL DEVICE: Audio Alarm + PWM LED Dimmer
+
+**Combine Phase 3 oscillator skills:**
+
+### Adjustable Audio Alarm / Metronome
+```
+    9V ──┬── Pin 8 (Vcc)
+         │
+         ├── Pin 4 (Reset)
+         │
+    NE555 Timer (Astable mode)
+         │
+    Pin 3 ──[100Ω]── Piezo Buzzer ── GND
+
+Adjust frequency:
+- POT on pins 6-7: 40Hz → 4kHz
+- Low = bass tone, High = alarm screech
+
+Uses:
+→ Door alarm (add magnetic switch)
+→ Metronome for music practice
+→ Continuity tester with sound
+```
+
+### PWM LED Dimmer (Touch-Free)
+```
+Same 555 PWM circuit from 3.5, but add:
+
+- Power MOSFET (IRF540) instead of LED directly
+- 12V LED strip as load
+- POT controls brightness 0-100%
+
+→ Desk lamp dimmer
+→ Mood lighting
+→ Learn MOSFET gate drive (needed for inverter!)
+```
+
+**These oscillators become your inverter's "heartbeat" in Phase 4!**
 
 ---
 
@@ -1384,6 +1502,49 @@ Toroidal transformers are most efficient.
 | 4.5 Transformer | Voltage scaling | 48V → 230V |
 
 **Phase 4 Cost: ~60 PLN**
+
+---
+
+## ★ PRACTICAL DEVICE: 12V→USB Emergency Power Station
+
+**Your first REAL inverter product!**
+
+### Portable USB Charger from 12V Battery
+```
+┌─────────────────────────────────────────────┐
+│                                             │
+│   12V Battery (car, motorcycle, solar)      │
+│        │                                    │
+│   [Your H-Bridge Inverter]                  │
+│        │                                    │
+│   [Small 12V→230V Transformer]              │
+│        │                                    │
+│   ~230V AC (low power, ~20-50W)             │
+│        │                                    │
+│   [Standard USB Phone Charger]              │
+│        │                                    │
+│   USB 5V → Phone charged!                   │
+│                                             │
+└─────────────────────────────────────────────┘
+
+Alternative (simpler): DC-DC only
+    12V ──[LM2596 Buck Module]── 5V/3A ── USB
+
+    (Skip AC, but doesn't test your inverter!)
+```
+
+### Practical Use Cases
+```
+→ Charge phone from car battery during power outage
+→ Camping/hiking power source
+→ Emergency backup for home
+→ Test load for your inverter development
+
+Start small: USB charging = ~10W
+Your mini inverter can handle this!
+```
+
+**This IS an inverter. Small, but real. You built it.**
 
 ---
 
@@ -1737,6 +1898,55 @@ text_sensor:
 | 5.6 HA Dashboard | Remote monitoring | Microgrid SCADA |
 
 **Phase 5 Cost: ~80 PLN**
+
+---
+
+## ★ PRACTICAL DEVICE: Home Power Monitor Dashboard
+
+**Your SmartBob swarm = real home energy monitor!**
+
+### What You Have After Phase 5
+```
+┌─────────────────────────────────────────────┐
+│         HOME ASSISTANT DASHBOARD            │
+├─────────────────────────────────────────────┤
+│  Inverter 1 (Master)     Inverter 2 (Slave) │
+│  ├─ Voltage: 48.2V       ├─ Voltage: 47.8V  │
+│  ├─ Current: 12.3A       ├─ Current: 8.7A   │
+│  ├─ Power: 591W          ├─ Power: 416W     │
+│  └─ Status: FORMING      └─ Status: FOLLOWING│
+│                                             │
+│  Total Power: 1007W                         │
+│  Load Balance: 59% / 41%                    │
+│                                             │
+│  [Graph: Power over last 24h]               │
+└─────────────────────────────────────────────┘
+```
+
+### Real-World Uses
+```
+→ Monitor your actual solar/battery system
+→ Track energy consumption patterns
+→ Alerts when battery low or overload
+→ Historical data for optimization
+→ Remote access via Home Assistant app
+
+No need to buy expensive energy monitors!
+You built one. With swarm capability.
+```
+
+### Extend It
+```
+Add more SmartBobs:
+- Solar panel monitor (voltage + current)
+- Grid tie point monitor
+- Individual circuit monitors
+
+All feed into same HA dashboard.
+Your own home SCADA system.
+```
+
+**This dashboard scales to your real 6kW OzInverter later!**
 
 ---
 
@@ -2101,20 +2311,81 @@ Same principles at 9V or 48V!
 
 ---
 
+## ★ PRACTICAL DEVICE: Autonomous Backup Power System
+
+**The ultimate Phase 6 outcome: a complete off-grid power system!**
+
+### What You've Built
+```
+┌─────────────────────────────────────────────────────────┐
+│           MINI AUTONOMOUS MICROGRID                     │
+├─────────────────────────────────────────────────────────┤
+│                                                         │
+│   ┌──────────┐         ┌──────────┐                    │
+│   │ Battery 1│         │ Battery 2│                    │
+│   │   9V     │         │   9V     │                    │
+│   └────┬─────┘         └────┬─────┘                    │
+│        │                    │                          │
+│   ┌────┴─────┐         ┌────┴─────┐                    │
+│   │Inverter 1│◄──sync──►│Inverter 2│                   │
+│   │ (Master) │         │ (Slave)  │                    │
+│   └────┬─────┘         └────┬─────┘                    │
+│        │                    │                          │
+│        └────────┬───────────┘                          │
+│                 │                                      │
+│            [AC BUS]                                    │
+│                 │                                      │
+│        ┌────────┴────────┐                             │
+│        │   AC LOAD       │                             │
+│        │  (LED bulb)     │                             │
+│        └─────────────────┘                             │
+│                                                         │
+│   SmartBob monitoring + Home Assistant dashboard        │
+└─────────────────────────────────────────────────────────┘
+```
+
+### What Makes It "Autonomous"
+```
+✓ No grid connection needed
+✓ Automatic power sharing between units
+✓ Hot-swap: add/remove inverters while running
+✓ Self-balancing via droop control
+✓ Phase-synchronized (no circulating currents)
+✓ Remote monitoring via Home Assistant
+✓ Expandable: add more units anytime
+```
+
+### Scale-Up Path
+```
+This 9V demo → Your 48V/230V OzInverter system
+
+Same concepts, same SmartBob code, just:
+- Bigger MOSFETs (IRFP4668)
+- Bigger transformer (5kVA toroid)
+- Bigger batteries (48V LiFePO4)
+- Higher currents (proper busbars)
+
+The control logic YOU WROTE stays the same!
+```
+
+**You now understand everything needed for a real microgrid.**
+
+---
+
 # COMPLETE PART 1 SUMMARY
 
 ## Cost Breakdown
 
-| Phase | Focus | Cost |
-|-------|-------|------|
-| Phase 1 | DC Fundamentals | ~70 PLN |
-| Phase 2 | Power Flow & SmartBob | ~120 PLN |
-| Phase 3 | Oscillation & AC | ~50 PLN |
-| Phase 4 | Build the Inverter | ~60 PLN |
-| Phase 5 | Mini Swarm Microgrid | ~80 PLN |
-| Phase 6 | Advanced Synchronization | ~40 PLN |
-| **Total Components** | | **~420 PLN** |
-| **Tools** (soldering station, etc.) | | **~400 PLN** |
+| Phase | Focus | Cost | Practical Device |
+|-------|-------|------|------------------|
+| Phase 1 | DC Fundamentals | ~70 PLN | LED Flashlight + Continuity Tester |
+| Phase 2 | Power Flow & SmartBob | ~120 PLN | USB 5V Charger + Battery Monitor |
+| Phase 3 | Oscillation & AC | ~50 PLN | Audio Alarm + PWM Dimmer |
+| Phase 4 | Build the Inverter | ~60 PLN | 12V→USB Emergency Charger |
+| Phase 5 | Mini Swarm Microgrid | ~80 PLN | Home Power Monitor Dashboard |
+| Phase 6 | Advanced Synchronization | ~40 PLN | Autonomous Backup Power System |
+| **Total Components** | | **~420 PLN** | **6 useful devices!** |
+| **Tools** (soldering station, etc.) | | **~400 PLN** | |
 
 ---
 
