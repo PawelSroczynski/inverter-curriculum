@@ -188,7 +188,7 @@ Each house is self-reliant with 6-15kW inverter. Load-balancing only kicks in fo
 │   HOUSE 1                  HOUSE 2                  HOUSE 3                          │
 │   ┌──────────────────┐     ┌──────────────────┐     ┌──────────────────┐            │
 │   │ Solar 6kW        │     │ Solar 6kW        │     │ Solar 6kW        │            │
-│   │ Bat 5kWh         │     │ Bat 5kWh         │     │ Bat 5kWh         │            │
+│   │ Bat 15kWh        │     │ Bat 15kWh        │     │ Bat 15kWh        │            │
 │   │ Inv 6kW          │     │ Inv 6kW          │     │ Inv 6kW          │            │
 │   │                  │     │                  │     │                  │            │
 │   │ BATTERY 48V      │     │ BATTERY 48V      │     │ BATTERY 48V      │            │
@@ -279,7 +279,7 @@ Internal wiring of one house, showing connection to cluster AC bus.
 │            ▼                                                                       │
 │   ┌──────────────────┐                                                             │
 │   │       BMS        │   48V DC stays inside this house                            │
-│   │   48V / 5kWh     │   (no DC connection to other houses)                        │
+│   │   48V / 15kWh    │   (no DC connection to other houses)                        │
 │   │    LiFePO4       │                                                             │
 │   └────────┬─────────┘                                                             │
 │            │ 48V DC                                                                │
@@ -352,7 +352,7 @@ Internal wiring of one house, showing connection to cluster AC bus.
 |-----------|-------------|
 | Solar Panels | 3kW array (size varies) |
 | MPPT Charger | Libre Solar MPPT-2420-HC or similar |
-| BMS + Battery | Libre Solar BMS-C1 + 48V/5kWh LiFePO4 (stays inside house) |
+| BMS + Battery | Libre Solar BMS-C1 + 48V/15kWh LiFePO4 (stays inside house) |
 | Inverter | OzInverter 6kW with EG8010 + ESP32 + MCP2515 |
 | Main Breaker | 63A MCB, isolates house from cluster AC bus |
 | RJ45 Jack | CAN bus connection to other houses |
@@ -498,13 +498,13 @@ What happens when you connect more houses and clusters:
 **Per house baseline:**
 - Inverter: 6-15 kW
 - Solar: 6 kW
-- Battery: 5-10 kWh
+- Battery: 15 kWh
 
 | Scale | Houses | Inverter Capacity | Solar | Battery Storage |
 |-------|--------|-------------------|-------|-----------------|
-| Single house | 1 | 6-15 kW | 6 kW | 5-10 kWh |
-| **Cluster (4 houses)** | 4 | 24-60 kW | 24 kW | 20-40 kWh |
-| **Swarm (12 houses)** | 12 | 72-180 kW | 72 kW | 60-120 kWh |
+| Single house | 1 | 6-15 kW | 6 kW | 15 kWh |
+| **Cluster (4 houses)** | 4 | 24-60 kW | 24 kW | 60 kWh |
+| **Swarm (12 houses)** | 12 | 72-180 kW | 72 kW | 180 kWh |
 
 **What 72-180 kW powers simultaneously:**
 
@@ -521,14 +521,16 @@ What happens when you connect more houses and clusters:
 ├── Emergency shelter for 50+ people
 ```
 
-**Battery perspective (60-120 kWh):**
+**Battery perspective (180 kWh total swarm storage):**
 
 ```
 Average house uses ~10 kWh/day
 
-60 kWh  = 6 houses for 1 full day (no sun)
-120 kWh = 12 houses for 1 day
-        = 6 houses for 2 days (cloudy spell)
+15 kWh  = 1 house for 1.5 days (no sun)
+60 kWh  = 1 cluster for 1.5 days
+180 kWh = full swarm for 1.5 days
+        = 6 houses for 3 days (cloudy spell)
+        = critical loads only for 1 week
 ```
 
 The swarm becomes a **small village grid** - completely independent from utility.
