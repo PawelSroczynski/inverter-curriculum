@@ -88,15 +88,20 @@ Build your own 6-15kW pure sine wave inverters that communicate, share power aut
 │                     │                                               │
 │                     │                                               │
 │                     │         ┌─────────────────────────┐           │
-│                     │         │   230V AC CABLE         │           │
-│                     └─────────┤   (4mm², 50-100m)       ├───────────┘
+│                     │         │   5-WIRE CABLE          │           │
+│                     └─────────┤   (50-100m between      ├───────────┘
+│                               │    clusters)            │
 │                               │                         │
-│                               │   + BREAKER 63A each    │
+│                               │   ┌─────┬─────┬─────┐   │
+│                               │   │  L  │  N  │ PE  │   │  ← 230V AC power
+│                               │   │4mm² │4mm² │4mm² │   │    (3 wires)
+│                               │   ├─────┴─────┴─────┤   │
+│                               │   │ CAN-H │ CAN-L   │   │  ← CAN bus data
+│                               │   │ 0.5mm │ 0.5mm   │   │    (2 wires)
+│                               │   └─────────────────┘   │
+│                               │                         │
+│                               │   + 63A BREAKER each    │
 │                               │     side for safety     │
-│                               │                         │
-│                               │   This is the ONLY      │
-│                               │   connection between    │
-│                               │   clusters              │
 │                               └─────────────────────────┘
 │
 │  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─
@@ -128,8 +133,9 @@ HARDWARE PER HOUSE:
 
 SHARED BETWEEN CLUSTERS:
 ┌────────────────┬─────────────────────────────────────────────────────────────────┐
+│ 5-Wire Cable   │ L + N + PE (4mm² each) + CAN-H + CAN-L (0.5mm² each)            │
+│                │ One cable carries power AND data between clusters               │
 │ 63A Breakers   │ One breaker on each cluster side (safety disconnect)            │
-│ AC Cable       │ 4mm² underground or overhead cable, 50-100m between clusters    │
 └────────────────┴─────────────────────────────────────────────────────────────────┘
 ```
 
