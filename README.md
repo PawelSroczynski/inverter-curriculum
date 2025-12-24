@@ -280,31 +280,39 @@ Internal wiring of one house, showing connection to cluster AC bus.
 - No central controller needed - physics handles balancing
 
 ```
-How Droop Control Shares Power Between Houses:
+How Droop Control Shares Power Between Houses (EV Charging Example):
 
-  House 2 (big load - 4kW oven)          House 1 (light load - 500W)
+  House 2 (charging EV at 7kW)           House 1 (light load - 1kW)
   ┌─────────────────────────────┐        ┌─────────────────────────────┐
+  │  6kW inverter (maxed out)   │        │  6kW inverter (idle)        │
   │                             │        │                             │
-  │  Battery ──► Inverter ──┬──►│ LOAD   │  Battery ──► Inverter ──┬──►│ load
-  │              (2kW)      │   │ 4kW    │              (2kW)      │   │ 500W
-  │                         │   │        │                         │   │
+  │  Battery ──► Inverter ──┬──►│ EV     │  Battery ──► Inverter ──┬──►│ load
+  │    48V        6kW       │   │ 7kW    │    48V        2kW       │   │ 1kW
+  │              49.7 Hz    │   │        │              50.0 Hz    │   │
   └─────────────────────────┼───┘        └─────────────────────────┼───┘
                             │                                      │
                 ◄═══════════╧══════════════════════════════════════╧═══
-                230V AC BUS - House 1 pushes 1.5kW → House 2
+                230V AC BUS - House 1 pushes 2kW → House 2 (freq settles at 49.85 Hz)
 
-  1. House 2 inverter works hard (4kW load) → frequency drops to 49.85 Hz
-  2. House 1 inverter sees low frequency → increases output to push freq back up
-  3. Power flows: House 1 battery → House 1 inverter → AC bus → House 2 load
-  4. System settles at ~49.9 Hz with load shared
+  WHY THIS TRIGGERS SHARING (with 6kW inverters):
+  • House 2 needs 7kW but its inverter maxes out at 6kW
+  • Inverter strains → frequency drops to 49.7 Hz
+  • House 1 sees low freq → pushes power to help
+
+  1. House 2 plugs in EV charger (7kW) → inverter hits 6kW limit → freq drops
+  2. House 1 inverter sees 49.7 Hz → increases output → pushes power to bus
+  3. Power flows: House 1 battery → inverter → AC bus → House 2 EV
+  4. System settles at 49.85 Hz with 7kW delivered
 
   The math for House 2:
-  • Load needs:              4.0 kW
-  • Local inverter supplies: 2.0 kW (from its own battery)
-  • AC bus supplies:         2.0 kW (from House 1's inverter)
+  • EV charger needs:         7.0 kW
+  • Local 6kW inverter maxed: 6.0 kW (can't do more)
+  • AC bus supplies:          1.0 kW (from House 1)
+  • House 1 also powers own:  1.0 kW load
+  • House 1 total output:     2.0 kW (1kW local + 1kW to bus)
 
-  Key: Each inverter only draws from its own battery.
-       AC bus is just a wire - power flows via frequency difference.
+  Key: Single inverter can't do 7kW, but cluster of two 6kW inverters can.
+       Droop control automatically shares the load - no manual switching.
 ```
 
 ---
