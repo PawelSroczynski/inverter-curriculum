@@ -92,16 +92,23 @@ How houses within a cluster share power and communicate.
 │   │  ┌───────┐  │         │  ┌───────┐  │         │  ┌───────┐  │                 │
 │   │  │ 48V DC│  │         │  │ 48V DC│  │         │  │ 48V DC│  │                 │
 │   │  │(local)│  │         │  │(local)│  │         │  │(local)│  │                 │
-│   │  └───────┘  │         │  └───────┘  │         │  └───────┘  │                 │
-│   │      ↓      │         │      ↓      │         │      ↓      │                 │
+│   │  └───┬───┘  │         │  └───┬───┘  │         │  └───┬───┘  │                 │
+│   │      ▼      │         │      ▼      │         │      ▼      │                 │
 │   │  Inverter   │         │  Inverter   │         │  Inverter   │                 │
-│   │      ↓      │         │      ↓      │         │      ↓      │                 │
-│   └──────┬──────┘         └──────┬──────┘         └──────┬──────┘                 │
+│   │      │      │         │      │      │         │      │      │                 │
+│   │      ▼      │         │      ▼      │         │      ▼      │                 │
+│   │  ┌───────┐  │         │  ┌───────┐  │         │  ┌───────┐  │                 │
+│   │  │ LOADS │  │         │  │ LOADS │  │         │  │ LOADS │  │                 │
+│   │  │fridge │  │         │  │lights │  │         │  │oven   │  │                 │
+│   │  │lights │  │         │  │tools  │  │         │  │pump   │  │                 │
+│   │  └───────┘  │         │  └───────┘  │         │  └───────┘  │                 │
+│   │      ▲      │         │      ▲      │         │      ▲      │                 │
+│   └──────┼──────┘         └──────┼──────┘         └──────┼──────┘                 │
 │          │ 230V AC               │ 230V AC               │ 230V AC                │
 │          │                       │                       │                        │
-│   ═══════╧═══════════════════════╧═══════════════════════╧══════════════════►     │
-│   230V AC BUS (shared - inverters parallel via droop control)       to other      │
-│   ══════════════════════════════════════════════════════════════════ cluster      │
+│   ◄══════╧═══════════════════════╧═══════════════════════╧══════════════════►     │
+│   230V AC BUS (BIDIRECTIONAL - power flows both ways via droop)     to other      │
+│   ◄════════════════════════════════════════════════════════════════► cluster      │
 │                                                                                    │
 │          │ RJ45                  │ RJ45                  │ RJ45                   │
 │          │                       │                       │                        │
@@ -111,15 +118,18 @@ How houses within a cluster share power and communicate.
 │                                                                                    │
 │   ○ = RJ45 jack on inverter                                                       │
 │                                                                                    │
-│   CONNECTIONS BETWEEN HOUSES:                                                     │
-│   • 230V AC bus: inverters share load (synced via CAN, droop control)             │
-│   • CAN bus: ESP32s exchange SOC%, load, faults, sync timing                      │
+│   BIDIRECTIONAL POWER FLOW:                                                       │
+│   • House 1 has excess solar → pushes power to AC bus → House 2 uses it           │
+│   • House 2 has big load → pulls power from AC bus → House 1 supplies it          │
+│   • Droop control handles direction automatically (no manual switching)           │
+│                                                                                    │
+│   LOADS CONNECT INSIDE EACH HOUSE:                                                │
+│   • Inverter output → House distribution board → Loads                            │
+│   • House also connects to shared AC bus (can import/export power)                │
 │                                                                                    │
 │   NO DC BUS BETWEEN HOUSES:                                                       │
 │   • Each house has isolated 48V DC (battery stays local)                          │
-│   • Power sharing happens via AC (simpler wiring, cheaper cables)                 │
-│   • Battery balancing: if House 2 low, it draws from AC bus,                      │
-│     House 1 supplies via AC → same effect, 5% less efficient but simpler          │
+│   • Power sharing happens via 230V AC (bidirectional, simpler wiring)             │
 │                                                                                    │
 │   TO OTHER CLUSTERS:                                                              │
 │   • 230V AC + CAN travel together in 5-wire cable                                 │
