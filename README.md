@@ -535,6 +535,89 @@ The swarm becomes a **small village grid** - completely independent from utility
 
 ---
 
+### Connecting High-Power Loads (>6kW)
+
+Single house inverter maxes at 6kW. For larger loads, connect directly to cluster or swarm bus.
+
+**Where to connect based on load size:**
+
+| Load Power | Connect To | Why |
+|------------|------------|-----|
+| <6kW | House breaker | Single inverter handles it |
+| 6-24kW | Cluster bus | 4 inverters share (24kW max) |
+| 24-72kW | Swarm bus | All 12 inverters share |
+
+**Connection point for high-power equipment:**
+
+```
+CLUSTER BUS ════════════════════════════════════════
+     │           │           │           │
+   House1      House2      House3      HIGH-POWER
+   6kW inv     6kW inv     6kW inv     EQUIPMENT
+                                       (connects here,
+                                        not through house)
+```
+
+---
+
+### Energy Accumulation Through Work
+
+**Key insight:** On sunny days, use surplus power for work that stores energy in other forms.
+
+Instead of filling batteries (limited capacity), convert solar abundance into:
+- **Processed materials** (wood chips, grain, crushed stone)
+- **Pumped water** (irrigation tanks, elevated storage)
+- **Compressed air** (workshop tanks)
+- **Heated mass** (water tanks, thermal storage)
+- **Charged vehicles** (EVs, e-bikes, tractors)
+
+**Seasonal high-power tasks (best done on sunny days):**
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│  TASK                      │ POWER  │ CONNECT TO  │ ENERGY STORED AS   │
+├────────────────────────────┼────────┼─────────────┼────────────────────┤
+│  Wood chipper              │ 15-25kW│ Cluster bus │ Processed firewood │
+│  Grain mill                │ 5-15kW │ Cluster bus │ Flour/feed         │
+│  Water pump to hill tank   │ 3-10kW │ House/Clust │ Potential energy   │
+│  Air compressor (big tank) │ 5-10kW │ Cluster bus │ Compressed air     │
+│  EV fast charging          │ 7-22kW │ Cluster bus │ Vehicle range      │
+│  Electric cement mixer     │ 2-5kW  │ House       │ Built structure    │
+│  Welding (construction)    │ 5-15kW │ Cluster bus │ Built structure    │
+│  Water heater (big tank)   │ 3-6kW  │ House       │ Hot water          │
+│  Freezer loading (harvest) │ 1-3kW  │ House       │ Preserved food     │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+**Example: Wood chipping day**
+
+```
+Sunny summer day, 11:00-15:00 (peak solar)
+
+Solar production:    ~50kW (not all panels at perfect angle)
+Baseline house loads: -12kW
+Wood chipper:        -20kW
+─────────────────────────────────────
+Net:                 +18kW → batteries charging
+
+Result: 4 hours × 20kW = 80kWh of work
+        = 4 cubic meters of wood chips
+        = heating fuel for 2 weeks of winter
+
+The sun's energy is now stored as processed firewood,
+not limited by battery capacity.
+```
+
+**Scheduling principle:**
+- Heavy processing → sunny midday
+- Light tasks → morning/evening
+- Storage tasks (freezing, heating water) → whenever surplus
+- Construction/welding → plan around weather forecast
+
+This turns the microgrid into a **productive community tool**, not just household power.
+
+---
+
 ## Practical Droop Control Experiments
 
 These hands-on experiments let you discover how droop control works. Each builds on the previous.
