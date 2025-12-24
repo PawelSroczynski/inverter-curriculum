@@ -1,25 +1,54 @@
-# Inverter Curriculum Part 3
+# Inverter Curriculum Part 4
 ## From SPWM Theory to Production-Quality OzInverter
 
+**Prerequisites:** Parts 1, 2, and 3 (all phases including transformer winding)
 **Output:** 24/48V DC → 220V AC (Pure Sine Wave)
-**Power Range:** 1kW → 6-15kW
-**Time:** 3-5 months
+**Power Range:** 1kW → 2.5kW → 6-15kW
+**Time:** 4-6 months
+
+---
+
+## Before You Begin
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    PREREQUISITES CHECK                           │
+│                                                                  │
+│  □ Completed Part 3 Phase 4 (500W modified sine working)        │
+│  □ Completed Part 3 Phase 5 (transformer winding practice)      │
+│  □ Comfortable with H-bridge topology                           │
+│  □ Understand gate drivers (IR2110)                             │
+│  □ Have wound at least one small transformer                    │
+│  □ Have oscilloscope OR logic analyzer (helpful)                │
+│                                                                  │
+│  Part 4 is a MAJOR step up in complexity and power.             │
+│  The intermediate builds are designed to catch mistakes         │
+│  at lower power levels before they become expensive!            │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
 ## Part 3 Overview
 
 ```
-Phase 1              Phase 2              Phase 3              Phase 4
-SPWM Theory          1kW Pure Sine        High-Power           OzInverter
-& EG8010             Build                Design               Build
-   │                     │                    │                    │
-   ▼                     ▼                    ▼                    ▼
-┌─────────┐         ┌─────────┐         ┌─────────┐         ┌─────────┐
-│ Digital │────────►│ Working │────────►│ Scaling │────────►│ 6-15kW  │
-│ SPWM    │         │ 1kW     │         │ Up      │         │ System  │
-│ Filters │         │ Inverter│         │ Thermal │         │ Complete│
-└─────────┘         └─────────┘         └─────────┘         └─────────┘
+Phase 1         Phase 2         Phase 3         Phase 4         Phase 5
+SPWM Theory     1kW Pure Sine   2.5kW Inter-    High-Power      OzInverter
+& EG8010        Build           mediate Build   Theory          Build
+   │                │               │               │               │
+   ▼                ▼               ▼               ▼               ▼
+┌───────┐      ┌───────┐      ┌───────┐      ┌───────┐      ┌───────┐
+│Digital│─────►│Working│─────►│8 FETs │─────►│Scaling│─────►│6-15kW │
+│SPWM   │      │1kW    │      │Practice│     │Design │      │System │
+│Filters│      │Inverter│     │Parallel│     │Thermal│      │Complete│
+└───────┘      └───────┘      └───────┘      └───────┘      └───────┘
+
+KEY INSIGHT:
+─────────────
+Phase 3 (2.5kW) is your PRACTICE run before Phase 5 (6-15kW).
+You'll learn MOSFET paralleling with 8 FETs before using 16+.
+Mistakes cost $50 at 2.5kW, but $200+ at 6kW.
 ```
 
 ---
@@ -719,15 +748,403 @@ After completing Phase 2:
 
 ---
 
-# PHASE 3: HIGH-POWER DESIGN
+# PHASE 3: 2.5kW INTERMEDIATE BUILD
 
-**Goal:** Learn techniques for scaling to 6kW+ power levels
-**Time:** 2-3 weekends (theory + planning)
-**Cost:** ~$50 (for test components and materials)
+**Goal:** Practice MOSFET paralleling and real thermal management at moderate power
+**Time:** 3-4 weekends
+**Cost:** ~$200
 
 ---
 
-## 3.1 Scaling Challenges
+## 3.1 Why This Intermediate Step?
+
+```
+THE PROBLEM WITH JUMPING TO 6kW:
+────────────────────────────────
+• 1kW uses 4 MOSFETs → 6kW uses 16 MOSFETs
+• That's 4x the complexity in one jump!
+• If you wire one MOSFET wrong: fire, smoke, $$$ lost
+• At 6kW, a mistake ruins $70 transformer + $80 MOSFETs
+
+THE SOLUTION - 2.5kW INTERMEDIATE:
+───────────────────────────────────
+• Uses 8 MOSFETs (2 per position instead of 1)
+• Teaches paralleling technique at lower stakes
+• Uses smaller 2.5-3kVA transformer ($30-40)
+• Mistakes cost ~$50 instead of $150+
+• Still useful! Can power a small home
+
+Think of it like learning to drive:
+• 1kW = parking lot practice (4 MOSFETs)
+• 2.5kW = quiet streets (8 MOSFETs) ← YOU ARE HERE
+• 6-15kW = highway driving (16+ MOSFETs)
+```
+
+---
+
+## 3.2 System Architecture
+
+```
+┌────────────────────────────────────────────────────────────────────┐
+│                       2.5kW INVERTER                                │
+│                                                                     │
+│  48V ──► EGS002/003 ──► H-Bridge ──► XFMR ──► Filter ──► 220V     │
+│  Battery   (SPWM)       (8 FETs)   (2.5kVA)   (LC)      AC        │
+│                         2 parallel                                  │
+│                         per position                                │
+│                                                                     │
+└────────────────────────────────────────────────────────────────────┘
+```
+
+### H-Bridge with 2 Parallel MOSFETs per Position
+
+```
+                          +48V DC
+                            │
+         ┌──────────────────┼──────────────────┐
+         │                  │                  │
+     ┌───┴───┐          ┌───┴───┐          ┌───┴───┐
+     │ Q1a   │          │       │          │ Q3a   │
+     │ Q1b   │          │       │          │ Q3b   │
+     └───┬───┘          │       │          └───┬───┘
+         │              │       │              │
+         └──────────[TRANSFORMER]──────────────┘
+                     PRIMARY
+         ┌───────────────────────────────────┐
+         │                                   │
+     ┌───┴───┐                           ┌───┴───┐
+     │ Q2a   │                           │ Q4a   │
+     │ Q2b   │                           │ Q4b   │
+     └───┬───┘                           └───┬───┘
+         │                                   │
+         └──────────────────┬────────────────┘
+                            │
+                           GND
+
+8 MOSFETs total:
+• Q1a + Q1b = high-side left (paralleled)
+• Q2a + Q2b = low-side left (paralleled)
+• Q3a + Q3b = high-side right (paralleled)
+• Q4a + Q4b = low-side right (paralleled)
+```
+
+---
+
+## 3.3 Why Parallel MOSFETs?
+
+### Current Sharing
+
+```
+Single IRFP4668 at 2.5kW (48V input):
+  Current = 2500W / 48V = 52A
+  Power loss = I² × Rds(on) = 52² × 0.008 = 21.6W per MOSFET
+  × 4 positions = 86W total heat
+
+Two parallel IRFP4668 at 2.5kW:
+  Current per MOSFET = 52A / 2 = 26A
+  Power loss = 26² × 0.008 = 5.4W per MOSFET
+  × 8 MOSFETs = 43W total heat
+
+Result: 50% less heat! Easier cooling, higher efficiency.
+```
+
+### The Gate Resistor Rule
+
+```
+CRITICAL: Each MOSFET needs its OWN gate resistor!
+
+WRONG (current hogging):                RIGHT (balanced):
+         ┌───────────────┐                    ┌───────────────┐
+Gate ────┤               │              Gate ─┤─[4.7Ω]── Q1a  │
+         │  Q1a   Q1b    │                    │               │
+         │   │     │     │                    └─[4.7Ω]── Q1b  │
+         └───┴─────┴─────┘
+              │                               Individual resistors
+              Problem: Q1a might switch                force equal switching!
+              faster, take all current!
+
+Gate resistor value: 4.7Ω to 10Ω
+Purpose: Forces current sharing by limiting gate charge rate
+```
+
+---
+
+## 3.4 Bill of Materials - 2.5kW Inverter
+
+### Control Section (Same as 1kW)
+
+| Qty | Component | Value/Spec | Purpose | Est. Price |
+|-----|-----------|------------|---------|------------|
+| 1 | EGS002/003 | Module | SPWM + drivers | $10 |
+| 1 | 7812 | Regulator | 12V supply | $0.50 |
+| 4 | Capacitor | 100nF ceramic | Bypass | $0.20 |
+| 2 | Capacitor | 100µF/25V | Power filter | $0.40 |
+
+### Power Section (Upgraded)
+
+| Qty | Component | Value/Spec | Purpose | Est. Price |
+|-----|-----------|------------|---------|------------|
+| 8 | IRFP4668 | MOSFET 200V/130A | H-bridge (2 parallel) | $4 ea = $32 |
+| 8 | Resistor | 4.7Ω 2W | Individual gate resistors | $2 |
+| 8 | Zener | 18V 1W | Gate protection | $2 |
+| 4 | Capacitor | 2200µF/63V | Input filter | $2 ea = $8 |
+| 4 | Diode | MUR1560 | Freewheeling | $1 ea = $4 |
+| 2 | Heatsink | 200×100mm aluminum | Cooling | $15 ea = $30 |
+| 2 | Fan | 80mm 12V | Active cooling | $4 ea = $8 |
+| 1 | Thermal paste | Tube | Mounting | $3 |
+
+### Transformer
+
+| Qty | Component | Value/Spec | Purpose | Est. Price |
+|-----|-----------|------------|---------|------------|
+| 1 | Toroidal xfmr | 48V/220V, 2.5-3kVA | Step-up | $35-50 |
+
+Options:
+- Wind yourself (uses Part 2 Phase 5 skills!)
+- Buy pre-wound 2.5kVA toroid
+
+### LC Filter
+
+| Qty | Component | Value/Spec | Purpose | Est. Price |
+|-----|-----------|------------|---------|------------|
+| 1 | Inductor | 1.5mH / 15A | Filter L | $12 |
+| 2 | Capacitor | 4.7µF/400V film | Filter C | $3 ea = $6 |
+
+### Protection & Mechanical
+
+| Qty | Component | Value/Spec | Purpose | Est. Price |
+|-----|-----------|------------|---------|------------|
+| 1 | Fuse holder | ANL type | Main fuse | $5 |
+| 2 | Fuse | 80A ANL | Overcurrent | $4 ea = $8 |
+| 1 | Varistor | 275V MOV | Surge protection | $1 |
+| 2 | NTC | 10kΩ | Temperature sense | $1 |
+| 1 | PCB | 20×15cm heavy copper | Main board | $15 |
+| 1 | Enclosure | Metal, ventilated | Housing | $30 |
+| - | Wire | 6 AWG (power), 18 AWG (signal) | Connections | $15 |
+| - | Terminals | Anderson, ring | Connections | $10 |
+
+---
+
+## 3.5 BOM Summary
+
+| Category | Est. Total |
+|----------|------------|
+| Control (EGS module, regulators) | $15 |
+| Power MOSFETs (8×) | $32 |
+| Gate resistors, zeners | $4 |
+| Input capacitors | $8 |
+| Diodes | $4 |
+| Transformer (DIY or bought) | $40 |
+| LC filter | $18 |
+| Heatsinks & cooling | $45 |
+| Protection | $15 |
+| Mechanical & enclosure | $70 |
+
+**Phase 3 Total: ~$250**
+
+*Note: You can reuse the EGS002/003 from Phase 2 if desired.*
+
+---
+
+## 3.6 Winding Your 2.5kVA Transformer (Optional but Recommended)
+
+### Core Selection
+
+```
+For 2.5kVA at 50Hz:
+
+Core specifications:
+├── Outer diameter: 140-160mm
+├── Inner diameter: 80-100mm
+├── Height: 50-60mm
+├── Cross-section: ~20-25cm²
+├── Weight: ~5-6kg
+└── Cost: $20-30 (core only)
+```
+
+### Turns Calculation
+
+```
+Volts per turn for 23cm² core at Bmax=1.1T:
+V/turn = 4.44 × 50 × 23 × 1.1 × 10⁻⁴ = 0.56V/turn
+
+For 48V primary: 48 / 0.56 = 86 turns
+For 220V secondary: 220 / 0.56 = 393 turns (round to 395)
+
+Wire sizing:
+├── Primary: 2.5kVA / 48V = 52A → 8 AWG (8mm²)
+├── Secondary: 2.5kVA / 220V = 11A → 14 AWG (2.5mm²)
+```
+
+### This Is Your Dress Rehearsal
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  Winding this transformer teaches you:                          │
+│                                                                  │
+│  ✓ Working with medium-weight core (~5kg vs 20kg for 6kW)       │
+│  ✓ Winding thicker wire (8 AWG practice for 6 AWG later)        │
+│  ✓ Higher turn counts (86 + 395 = 481 turns)                    │
+│  ✓ Proper layer insulation at high voltage                      │
+│  ✓ Testing under real load                                      │
+│                                                                  │
+│  If you screw up a $25 core, you learn cheaply.                 │
+│  If you screw up a $70 core, expensive lesson.                  │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 3.7 Build Sequence
+
+### Week 1: Control Board (Same as Phase 2)
+
+```
+Day 1:
+□ Verify EGS002/003 module works (from Phase 2)
+□ Build power supply section
+□ Test gate signals on oscilloscope/LEDs
+
+Day 2:
+□ Prepare individual gate resistor wiring
+□ Pre-make 8 gate wire assemblies with 4.7Ω resistors
+□ Add zener protection to each
+```
+
+### Week 2: MOSFET Mounting (Critical Phase!)
+
+```
+Day 1 - Heatsink Preparation:
+□ Clean heatsink surfaces thoroughly
+□ Mark 4 MOSFET positions per heatsink
+□ Drill and tap mounting holes if needed
+□ Apply thermal paste (THIN even layer!)
+□ Mount MOSFETs with insulating washers
+□ Torque screws evenly (1-1.5 Nm)
+□ Test insulation between MOSFETs with multimeter
+
+Day 2 - Paralleling:
+□ Connect Drain of Q1a to Drain of Q1b (short thick wire)
+□ Connect Source of Q1a to Source of Q1b
+□ DO NOT connect gates directly!
+□ Gate of Q1a ← [4.7Ω] ← common gate signal
+□ Gate of Q1b ← [4.7Ω] ← common gate signal
+□ Repeat for Q2, Q3, Q4 pairs
+□ Triple-check all connections!
+```
+
+### Week 3: Transformer & Integration
+
+```
+Day 1:
+□ Wind transformer (if DIY) or mount purchased unit
+□ Test transformer at low voltage (12V input)
+□ Verify output ratio
+
+Day 2:
+□ Connect transformer to H-bridge
+□ Add input capacitors
+□ Build LC filter
+□ Connect to output
+□ Prepare for testing
+```
+
+### Week 4: Testing
+
+```
+IMPORTANT: Follow staged testing!
+
+Stage 1 - 24V Input, No Load:
+□ Connect 24V battery (half voltage)
+□ Power on - should hear transformer hum
+□ Measure output: expect ~110V AC
+□ Run for 10 minutes
+□ Check all MOSFET temperatures (should be warm, not hot)
+
+Stage 2 - 48V Input, Light Load:
+□ Connect 48V battery bank
+□ Add 100W load (bulbs)
+□ Verify output voltage: 220-230V AC
+□ Check waveform if oscilloscope available
+□ Run for 30 minutes
+□ Check temperatures
+
+Stage 3 - Progressive Load Testing:
+□ 500W load - 30 minutes
+□ 1000W load - 20 minutes
+□ 1500W load - 15 minutes
+□ 2000W load - 10 minutes
+□ 2500W load - 5 minutes
+□ Record temperatures at each level
+
+Stage 4 - Thermal Steady State:
+□ 1500W load for 2 hours continuous
+□ Verify fans keeping temperatures stable
+□ Note maximum heatsink temperature
+□ If >80°C, improve cooling before proceeding
+```
+
+---
+
+## 3.8 What You'll Learn
+
+```
+SKILLS GAINED IN PHASE 3:
+─────────────────────────
+✓ MOSFET paralleling technique (2 per position)
+✓ Individual gate resistor importance
+✓ Real thermal management with fans
+✓ Winding 2.5kVA transformer (if DIY)
+✓ Staged testing methodology
+✓ Temperature monitoring under load
+✓ Current sharing verification
+
+DIRECTLY APPLICABLE TO PHASE 5:
+───────────────────────────────
+• 8 MOSFETs → 16 MOSFETs (same technique, just more)
+• 2.5kVA transformer → 6-7.5kVA (same winding technique)
+• 2 fans → 4 fans (same thermal management approach)
+• 80A fusing → 200A fusing (same protection philosophy)
+```
+
+---
+
+## 3.9 Common Mistakes at This Stage
+
+| Mistake | Consequence | Prevention |
+|---------|-------------|------------|
+| Connected gates directly (no individual resistors) | One MOSFET hogs current, overheats | Always use individual 4.7Ω gate resistors |
+| Poor thermal paste application | Hot spots, uneven cooling | Thin, even layer - less is more |
+| Skipped 24V testing | Full voltage failure expensive | Always test at half voltage first |
+| Inadequate cooling | Thermal shutdown or damage | Verify temps under load before trusting |
+| Forgot insulating washers | Shorted MOSFETs via heatsink | Always use mica/silpad insulators |
+| Rushed testing | Missed developing problems | Follow staged test procedure |
+
+---
+
+## 3.10 Phase 3 Learning Outcomes
+
+After completing Phase 3:
+- [ ] Built working 2.5kW pure sine inverter!
+- [ ] Know how to parallel MOSFETs correctly
+- [ ] Understand individual gate resistors
+- [ ] Have thermal management experience
+- [ ] Wound medium-size transformer (if DIY)
+- [ ] Comfortable with staged testing
+- [ ] Ready for 6-15kW OzInverter!
+
+---
+
+# PHASE 4: HIGH-POWER DESIGN THEORY
+
+**Goal:** Learn techniques for scaling to 6kW+ power levels
+**Time:** 1-2 weekends (theory + planning)
+**Cost:** ~$0 (study and planning phase)
+
+---
+
+## 4.1 Scaling Challenges
 
 ### What Changes at High Power?
 
@@ -744,7 +1161,7 @@ After completing Phase 2:
 
 ---
 
-## 3.2 Paralleling MOSFETs
+## 4.2 Paralleling MOSFETs
 
 ### Why Parallel MOSFETs?
 
@@ -815,7 +1232,7 @@ Key points:
 
 ---
 
-## 3.3 Transformer Winding
+## 4.3 Transformer Winding
 
 ### Toroidal Core Selection
 
@@ -907,7 +1324,7 @@ Step 4: Testing
 
 ---
 
-## 3.4 Thermal Management
+## 4.4 Thermal Management
 
 ### Heat Calculation
 
@@ -966,7 +1383,7 @@ Or use ESP32 for smart monitoring (Step 6)
 
 ---
 
-## 3.5 High-Current Wiring
+## 4.5 High-Current Wiring
 
 ### Bus Bars vs Wire
 
@@ -1008,18 +1425,18 @@ Current density: 150A / 150mm² = 1A/mm²
 
 ---
 
-## 3.6 Phase 3 Learning Outcomes
+## 4.6 Phase 4 Learning Outcomes
 
-After completing Phase 3:
-- [ ] Understand MOSFET paralleling
-- [ ] Know transformer winding basics
+After completing Phase 4:
+- [ ] Understand MOSFET paralleling theory deeply
+- [ ] Know transformer winding calculations
 - [ ] Can calculate thermal requirements
 - [ ] Understand bus bar design
-- [ ] Ready for OzInverter build!
+- [ ] Ready for OzInverter build (Phase 5)!
 
 ---
 
-# PHASE 4: OZINVERTER BUILD (6-15kW)
+# PHASE 5: OZINVERTER BUILD (6-15kW)
 
 **Goal:** Build a production-quality 6-15kW pure sine wave inverter
 **Time:** 2-3 months
@@ -1028,7 +1445,34 @@ After completing Phase 3:
 
 ---
 
-## 4.1 OzInverter System Overview
+## You're Ready For This
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│             YOUR JOURNEY TO THIS POINT                           │
+│                                                                  │
+│  Part 1: Fundamentals (LED to mini-swarm)                       │
+│     ↓                                                            │
+│  Part 2: Safety + Baby MOSFET (first real power)               │
+│     ↓                                                            │
+│  Part 3: Modified sine (150W → 500W + winding practice)        │
+│     ↓                                                            │
+│  Part 4 Phase 1-2: SPWM + 1kW pure sine                        │
+│     ↓                                                            │
+│  Part 4 Phase 3: 2.5kW (8 MOSFETs, medium transformer)         │
+│     ↓                                                            │
+│  Part 4 Phase 4: High-power theory                              │
+│     ↓                                                            │
+│  YOU ARE HERE: 6-15kW OzInverter                                │
+│                                                                  │
+│  You've built up to this. You're ready.                         │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 5.1 OzInverter System Overview
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
@@ -1044,7 +1488,7 @@ After completing Phase 3:
 
 ---
 
-## 4.2 Bill of Materials
+## 5.2 Bill of Materials
 
 ### Control Board
 
@@ -1142,7 +1586,7 @@ After completing Phase 3:
 
 ---
 
-## 4.3 BOM Summary
+## 5.3 BOM Summary
 
 | Category | Est. Total |
 |----------|------------|
@@ -1160,7 +1604,7 @@ After completing Phase 3:
 
 ---
 
-## 4.4 Build Sequence
+## 5.4 Build Sequence
 
 ### Month 1: Preparation & Control
 
@@ -1265,7 +1709,7 @@ Week 4: Final Assembly
 
 ---
 
-## 4.5 Safety Checklist
+## 5.5 Safety Checklist
 
 ### Electrical Safety
 
@@ -1310,7 +1754,7 @@ Thermal protection:
 
 ---
 
-## 4.6 Testing Protocol
+## 5.6 Testing Protocol
 
 ### Stage 1: Control Board Only
 
@@ -1378,7 +1822,7 @@ Test sequence:
 
 ---
 
-## 4.7 Performance Expectations
+## 5.7 Performance Expectations
 
 | Parameter | Target | Acceptable |
 |-----------|--------|------------|
@@ -1393,9 +1837,9 @@ Test sequence:
 
 ---
 
-## 4.8 Phase 4 Learning Outcomes
+## 5.8 Phase 5 Learning Outcomes
 
-After completing Phase 4:
+After completing Phase 5:
 - [ ] Built production-quality 6kW+ inverter!
 - [ ] Can wind transformers
 - [ ] Mastered high-power thermal management
@@ -1405,7 +1849,7 @@ After completing Phase 4:
 
 ---
 
-# PART 3 SUMMARY
+# PART 4 SUMMARY
 
 ## What You've Achieved
 
@@ -1418,9 +1862,11 @@ After completing Phase 4:
 │     ↓                                                        │
 │  Phase 2: 1kW pure sine inverter (working!)                 │
 │     ↓                                                        │
-│  Phase 3: High-power design techniques                       │
+│  Phase 3: 2.5kW intermediate (8 MOSFETs, practice!)         │
 │     ↓                                                        │
-│  Phase 4: 6-15kW OzInverter (production quality!)           │
+│  Phase 4: High-power design theory                          │
+│     ↓                                                        │
+│  Phase 5: 6-15kW OzInverter (production quality!)           │
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -1429,25 +1875,31 @@ After completing Phase 4:
 
 | Part | Phase | Project | Power |
 |------|-------|---------|-------|
-| 1 | 1-4 | Fundamentals (12 projects) | - |
-| 2 | 1 | CD4047 Oscillator | - |
-| 2 | 2 | Push-pull inverter | 150W |
-| 2 | 3 | H-bridge & drivers | - |
-| 2 | 4 | Modified sine inverter | 500W |
-| 3 | 1 | SPWM & EG8010 | - |
-| 3 | 2 | Pure sine inverter | 1kW |
-| 3 | 3 | High-power design | - |
-| 3 | 4 | OzInverter | 6-15kW |
+| 1 | 1-5 | Fundamentals (26 projects) | 9V |
+| 2 | - | Safety + MOSFET Bridge | 12V/20W |
+| 3 | 1 | CD4047 Oscillator | - |
+| 3 | 2 | Push-pull inverter | 150W |
+| 3 | 3 | H-bridge & drivers | - |
+| 3 | 4 | Modified sine inverter | 500W |
+| 3 | 5 | Transformer winding practice | 50VA |
+| 4 | 1 | SPWM & EG8010 | - |
+| 4 | 2 | Pure sine inverter | 1kW |
+| 4 | 3 | 2.5kW intermediate | 2.5kW |
+| 4 | 4 | High-power theory | - |
+| 4 | 5 | OzInverter | 6-15kW |
 
 ## Total Investment
 
 | Category | Cost |
 |----------|------|
 | Part 1 (Fundamentals) | ~$64 |
-| Part 2 (150W + 500W) | ~$115 |
-| Part 3 (1kW + 6kW) | ~$750 |
+| Part 2 (Safety + Bridge) | ~$25 |
+| Part 3 (150W + 500W + winding) | ~$140 |
+| Part 4 (1kW + 2.5kW + 6kW) | ~$1,000 |
 | Tools (if needed) | ~$300 |
-| **Grand Total** | **~$1,230** |
+| **Grand Total** | **~$1,530** |
+
+*Note: The intermediate builds (2.5kW) add ~$250 but prevent costly mistakes at higher power levels. The investment pays off in avoided failures.*
 
 ## Skills Acquired
 
@@ -1466,21 +1918,27 @@ Electronics Fundamentals ──► Oscillators ──► MOSFETs
 
 ## Next Steps
 
-After completing Part 3, you can:
+After completing Part 4, you can:
 
-1. **Add Smart Features (Part 6)**
+1. **Add Smart Features (Part 5)**
    - ESP32 monitoring
    - Home Assistant integration
    - Remote control & alerts
 
-2. **Build Community Microgrid (Part 7)**
+2. **Build Community Microgrid (Part 6)**
    - 4-household DC/AC hybrid system
    - Swarm communication
    - Load sharing
 
-3. **Integrate Libre Solar (Bonus)**
+3. **Integrate Libre Solar (Part 7)**
    - Open source MPPT
    - Open source BMS
    - CAN bus networking
 
-**Congratulations on completing the inverter curriculum!**
+**Congratulations on completing the core inverter curriculum!**
+
+You now have:
+- A production-quality 6-15kW inverter
+- Skills to parallel for 20kW+ (two units)
+- Deep understanding of power electronics
+- Foundation for swarm microgrid development

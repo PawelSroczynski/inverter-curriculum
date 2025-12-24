@@ -2191,37 +2191,55 @@ WITH SMARTBOB MONITORING AND HOME ASSISTANT!
 
 After completing Part 1:
 
-1. **Part 2:** CD4047 Square Wave Inverter (150W)
+```
+┌─────────────────────────────────────────────────────────────────┐
+│              ⚠️  MANDATORY NEXT STEP  ⚠️                        │
+│                                                                  │
+│  You MUST complete Part 2 before proceeding to Part 3!         │
+│                                                                  │
+│  Part 2 includes:                                               │
+│  • High voltage safety fundamentals (220V can KILL)            │
+│  • Safe work practices and emergency procedures                │
+│  • Your first MOSFET circuit at safe 12V                       │
+│  • Safety quiz (required to pass)                              │
+│                                                                  │
+│  This bridges the gap between 9V breadboard and 220V output.   │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Your Path Forward:**
+
+1. **Part 2:** Safety Module + MOSFET Bridge (REQUIRED)
+   - High voltage safety
+   - First MOSFET push-pull at 12V
+   - Safe bridge before dangerous voltages
+
+2. **Part 3:** Modified Sine Wave (150W → 500W)
    - Real MOSFETs (IRF3205)
-   - Real transformer
-   - 12V → 230V
+   - Real transformers
+   - Transformer winding practice
 
-2. **Part 3:** SG3525 Modified Sine (500W)
-   - H-bridge topology
-   - IR2110 gate drivers
-   - Dead-time in hardware
+3. **Part 4:** Pure Sine Wave (1kW → 2.5kW → 6-15kW)
+   - EG8010 SPWM controller
+   - 2.5kW intermediate build (practice paralleling)
+   - OzInverter production build
 
-3. **Part 4:** EG8010 Pure Sine (1kW)
-   - SPWM controller
-   - LC filtering
-   - <3% THD
-
-4. **Part 5:** OzInverter (6-15kW)
-   - Full power build
-   - Toroidal transformer
-   - Production quality
-
-5. **Part 6:** Smart Integration
-   - SmartBob full monitoring
+4. **Part 5:** Smart Integration
+   - ESP32 monitoring
    - Home Assistant automation
-   - Energy metering & billing
+   - CAN bus networking
 
-6. **Part 7:** Full Swarm Microgrid
+5. **Part 6:** Microgrid
    - 4 households connected
    - Bi-directional power flow
-   - Automatic coordination
-   - Fair energy sharing
+   - Droop control swarm
+
+6. **Part 7:** Libre Solar Integration
+   - Open source MPPT
+   - Open source BMS
+   - ThingSet protocol
 
 ---
 
-*You've built the foundation. SmartBob is now part of your toolkit. The principles you learned scale directly to the full 4-house swarm microgrid. Onward!*
+*You've built the foundation at safe voltage. Now proceed to Part 2 to learn safety and bridge to real power electronics. The skills you learned here scale directly to the full swarm microgrid.*

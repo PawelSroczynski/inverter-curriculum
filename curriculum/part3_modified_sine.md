@@ -1,25 +1,50 @@
-# Inverter Curriculum Part 2
+# Inverter Curriculum Part 3
 ## From First Oscillator to Modified Sine Wave Inverter
 
+**Prerequisites:** Part 1 (Fundamentals) + Part 2 (Safety & MOSFET Bridge)
 **Output:** 12V DC → 220V AC
 **Power Range:** 150W → 500W
-**Time:** 5-7 weekends
+**Time:** 6-8 weekends
+
+---
+
+## Before You Begin
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     PREREQUISITES CHECK                          │
+│                                                                  │
+│  □ Completed Part 1 Fundamentals (all 5 phases)                 │
+│  □ Completed Part 2 Safety Module                               │
+│    □ Passed safety quiz with 100%                               │
+│    □ Understand capacitor discharge procedure                   │
+│    □ Have fire extinguisher in workspace                        │
+│  □ Completed Part 2 Baby MOSFET Project                         │
+│    □ Built working 12V push-pull with IRF540                    │
+│    □ Comfortable with MOSFET switching                          │
+│  □ Have appropriate workspace and tools                         │
+│                                                                  │
+│  ⚠️  Part 3 involves 220V LETHAL VOLTAGE                        │
+│  ⚠️  Do NOT proceed without completing Part 2!                 │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
 ## Part 2 Overview
 
 ```
-Phase 1              Phase 2              Phase 3              Phase 4
-Oscillator           First Inverter       H-Bridge &           Modified Sine
-Mastery              Build (150W)         Gate Drivers         Build (500W)
-   │                     │                    │                    │
-   ▼                     ▼                    ▼                    ▼
-┌─────────┐         ┌─────────┐         ┌─────────┐         ┌─────────┐
-│ CD4047  │────────►│ 2 FETs  │────────►│ IR2110  │────────►│ SG3525  │
-│ Theory  │         │ Push-   │         │ 4 FETs  │         │ 500W    │
-│ Testing │         │ Pull    │         │ H-Bridge│         │ Output  │
-└─────────┘         └─────────┘         └─────────┘         └─────────┘
+Phase 1         Phase 2         Phase 3         Phase 4         Phase 5
+Oscillator      First Inverter  H-Bridge &      Modified Sine   Transformer
+Mastery         Build (150W)    Gate Drivers    Build (500W)    Winding
+   │                │               │               │               │
+   ▼                ▼               ▼               ▼               ▼
+┌───────┐      ┌───────┐      ┌───────┐      ┌───────┐      ┌───────┐
+│CD4047 │─────►│2 FETs │─────►│IR2110 │─────►│SG3525 │─────►│Practice│
+│Theory │      │Push-  │      │4 FETs │      │500W   │      │Winding │
+│Testing│      │Pull   │      │H-Bridge│     │Output │      │50VA    │
+└───────┘      └───────┘      └───────┘      └───────┘      └───────┘
 ```
 
 ---
@@ -1202,7 +1227,373 @@ After completing Phase 4:
 
 ---
 
-# PART 2 SUMMARY
+# PHASE 5: TRANSFORMER WINDING PRACTICE
+
+**Goal:** Learn to wind transformers before attempting large power cores
+**Time:** 1 weekend
+**Cost:** ~$25
+
+---
+
+## 5.1 Why Practice Winding?
+
+```
+THE PROBLEM:
+────────────
+In Part 3, you'll wind a 6-15kW toroidal transformer.
+That core costs $50-70.
+One mistake = expensive paperweight.
+
+THE SOLUTION:
+─────────────
+Practice on small, cheap cores first!
+Learn technique on $10 core, not $70 core.
+```
+
+### What You'll Learn
+
+| Skill | Importance for Part 3 |
+|-------|----------------------|
+| Counting turns accurately | Critical - wrong ratio = wrong voltage |
+| Even winding distribution | Affects efficiency and heat |
+| Insulation between layers | Safety - prevents arc-through |
+| Terminating wire ends | Reliability - bad joints = failure |
+| Testing before varnishing | Saves time and money |
+
+---
+
+## 5.2 Practice Core Selection
+
+### Option A: Small Toroid (Recommended)
+
+```
+┌─────────────────────────────────────────┐
+│         SMALL TOROIDAL CORE             │
+│                                         │
+│   Specifications:                       │
+│   ├── Outer diameter: 50-70mm          │
+│   ├── Inner diameter: 30-40mm          │
+│   ├── Height: 20-30mm                  │
+│   ├── Power rating: 30-50VA            │
+│   ├── Cost: $8-12                      │
+│   └── Source: Salvage from old PSU     │
+│              or buy new                 │
+│                                         │
+│   Perfect for learning technique!       │
+│                                         │
+└─────────────────────────────────────────┘
+```
+
+### Option B: EI Core (Budget Alternative)
+
+```
+┌─────────────────────────────────────────┐
+│           EI LAMINATED CORE             │
+│                                         │
+│   Salvage from old transformer          │
+│   (wall wart, old TV, etc.)            │
+│                                         │
+│   Pros:                                 │
+│   + Free (salvaged)                     │
+│   + Easier to wind (rectangular)        │
+│                                         │
+│   Cons:                                 │
+│   - Different technique than toroid     │
+│   - Less relevant for Part 3            │
+│                                         │
+└─────────────────────────────────────────┘
+```
+
+---
+
+## 5.3 Project: 12V to 12V Isolation Transformer
+
+### Why 1:1 Ratio?
+
+```
+Primary: 12V AC (from your Part 1B inverter!)
+Secondary: 12V AC (isolated)
+
+Benefits:
+├── Easy to test (same voltage in and out)
+├── If ratio is wrong, obvious immediately
+├── Safe - only 12V, can't hurt you
+└── Actually useful for isolating equipment
+```
+
+### Calculating Turns
+
+```
+For small toroidal core (~50VA, ~10cm²):
+
+Volts per turn ≈ 0.2-0.3V (depends on core)
+
+Conservative calculation:
+V/turn = 0.25V
+
+For 12V: 12V / 0.25 = 48 turns
+
+Both primary and secondary: 48 turns each
+
+Wire gauge (for 2A test):
+├── Primary: 22 AWG (0.64mm²)
+└── Secondary: 22 AWG (0.64mm²)
+```
+
+---
+
+## 5.4 Winding Step-by-Step
+
+### Materials Needed
+
+| Qty | Item | Purpose | Cost |
+|-----|------|---------|------|
+| 1 | Toroidal core | 30-50VA | $10 |
+| 10m | Enameled wire | 22 AWG primary | $3 |
+| 10m | Enameled wire | 22 AWG secondary | $3 |
+| 1 roll | Kapton tape | Insulation | $5 |
+| 1 roll | Electrical tape | Layer insulation | $1 |
+| 1 | Sandpaper | Wire stripping | $1 |
+
+**Total: ~$23**
+
+### Step 1: Core Preparation
+
+```
+1. Clean the core
+   └── Remove dust, oil, debris
+
+2. Wrap with insulation tape (2 layers)
+   ┌───────────────────┐
+   │   ┌───────────┐   │
+   │   │   CORE    │   │  ← Tape wrapped around
+   │   │           │   │
+   │   └───────────┘   │
+   └───────────────────┘
+
+3. Mark starting point
+   └── Use permanent marker or tape flag
+```
+
+### Step 2: Wind Primary
+
+```
+WINDING TECHNIQUE:
+──────────────────
+
+Pass wire through center hole, around outside, repeat.
+
+               Pass wire through
+                     │
+                     ▼
+                ┌─────────┐
+   Wind around→ │    ○    │ ←Wind around
+     outside    │   │ │   │   outside
+                │   │ │   │
+                └─────────┘
+                    ↑
+              Core center hole
+
+TIPS:
+├── Keep wire TIGHT (no loose loops)
+├── Distribute evenly around core
+├── Count every pass = 1 turn
+├── Use tally marks on paper every 10 turns
+└── Don't overlap excessively
+```
+
+### Step 3: Insulate Primary
+
+```
+After primary is complete:
+
+1. Secure end temporarily (tape)
+2. Wrap entire primary with tape layer
+   ┌───────────────────┐
+   │  █████████████    │
+   │  █ PRIMARY █████  │  ← Tape over primary
+   │  █████████████    │
+   └───────────────────┘
+3. This prevents secondary touching primary
+```
+
+### Step 4: Wind Secondary
+
+```
+Same technique as primary:
+
+1. Start at OPPOSITE SIDE from primary start
+   (distributes magnetic coupling evenly)
+
+2. Wind 48 turns (same as primary)
+
+3. Count carefully!
+
+4. Keep even tension
+```
+
+### Step 5: Terminate Wires
+
+```
+Wire ends need proper termination:
+
+STRIPPING ENAMEL:
+─────────────────
+1. Sand last 15mm of wire
+2. Use fine sandpaper (400 grit)
+3. Sand all around until copper shines
+4. Test with multimeter (continuity)
+
+TERMINATION OPTIONS:
+────────────────────
+Option A: Solder to short solid wire
+Option B: Crimp ring terminal
+Option C: Solder directly to test leads
+```
+
+---
+
+## 5.5 Testing Your Transformer
+
+### Test 1: Continuity
+
+```
+With multimeter in continuity mode:
+
+□ Primary: Both ends should beep (continuous)
+□ Secondary: Both ends should beep (continuous)
+□ Primary to Secondary: Should NOT beep (isolated!)
+
+If primary-secondary shows continuity = INSULATION FAILURE
+    → Unwrap, add more insulation, rewind secondary
+```
+
+### Test 2: Voltage Ratio
+
+```
+SAFETY: Use low voltage AC source!
+
+Connect 12V AC to primary (from your Part 1B inverter)
+Measure secondary with multimeter (AC mode)
+
+Expected: 11-13V AC (close to 12V)
+
+If voltage is way off:
+├── Too high: Secondary has too few turns
+├── Too low: Secondary has too many turns
+└── Recalculate and adjust
+```
+
+### Test 3: Load Test
+
+```
+Connect 12V bulb (5-10W) to secondary
+Power primary with 12V AC
+
+Check:
+□ Bulb lights at normal brightness
+□ Transformer doesn't get hot quickly
+□ No buzzing or vibration
+□ Output voltage stays stable
+
+Run for 10 minutes and feel temperature.
+Warm = OK
+Hot = Too much load or winding problem
+```
+
+---
+
+## 5.6 Common Mistakes and Fixes
+
+| Mistake | Symptom | Fix |
+|---------|---------|-----|
+| Wrong turn count | Voltage too high/low | Recount, add/remove turns |
+| Loose winding | Buzzing, inefficient | Rewind tighter |
+| Poor insulation | Sparking, shorts | Add more tape between layers |
+| Wire too thin | Overheating | Use thicker wire |
+| Uneven distribution | One side hot | Spread turns evenly |
+| Bad termination | Intermittent | Re-strip and resolder |
+
+---
+
+## 5.7 Advanced Practice (Optional)
+
+### Build a Step-Up Transformer
+
+```
+After mastering 1:1, try 12V to 24V (1:2 ratio):
+
+Primary: 48 turns
+Secondary: 96 turns (use thinner wire - less current)
+
+This teaches:
+├── Different wire gauges for different currents
+├── Higher turn counts (more counting discipline!)
+└── Voltage doubling effect
+```
+
+### Practice with Toroidal Core from AliExpress
+
+```
+You can buy toroidal cores specifically for practice:
+
+Search: "toroidal transformer core 50VA"
+Cost: $8-15 shipped
+
+Sizes to look for:
+├── 50VA (small, perfect for practice)
+├── 100VA (medium, more wire but still cheap)
+└── Avoid >200VA for practice (expensive if ruined)
+```
+
+---
+
+## 5.8 Phase 5 Learning Outcomes
+
+After completing Phase 5:
+- [ ] Wound a working isolation transformer
+- [ ] Know how to calculate turns for voltage
+- [ ] Understand insulation requirements
+- [ ] Can terminate enameled wire properly
+- [ ] Tested transformer under load
+- [ ] Ready for larger transformer in Part 3!
+
+---
+
+## 5.9 Preparing for Part 3
+
+```
+YOUR PART 3 TRANSFORMER WILL BE:
+────────────────────────────────
+• 6-15kW rating (vs 50W practice)
+• 180-220mm diameter (vs 50-70mm)
+• 15-25kg weight (vs 200g)
+• 6 AWG primary (vs 22 AWG)
+• $50-70 core (vs $10)
+
+But the TECHNIQUE is identical!
+What you learned on the small core scales up.
+
+The big difference: you'll use a shuttle or bobbin
+to pass thick wire through the center hole.
+
+     ┌──────────────────────────────────┐
+     │   WINDING SHUTTLE (for thick wire)│
+     │                                   │
+     │   ╔═══════════════════╗          │
+     │   ║   Pre-cut wire    ║ ←Wrapped │
+     │   ║   wound on spool  ║  on form │
+     │   ╚═══════════════════╝          │
+     │                                   │
+     │   Pass shuttle through center,    │
+     │   unwind as you go.               │
+     │                                   │
+     └──────────────────────────────────┘
+```
+
+---
+
+# PART 3 SUMMARY
 
 ## What You've Achieved
 
@@ -1218,6 +1609,8 @@ After completing Phase 4:
 │  Phase 3: H-bridge & IR2110 gate drivers                    │
 │     ↓                                                        │
 │  Phase 4: 500W modified sine inverter (working!)            │
+│     ↓                                                        │
+│  Phase 5: Transformer winding practice                       │
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -1236,6 +1629,9 @@ After completing Phase 4:
 | PWM control (SG3525) | 4 |
 | Dead-time control | 4 |
 | Output filtering | 4 |
+| **Transformer winding** | **5** |
+| **Turn ratio calculations** | **5** |
+| **Wire termination** | **5** |
 
 ## Investment
 
@@ -1245,9 +1641,10 @@ After completing Phase 4:
 | Phase 2 (150W inverter) | $35 |
 | Phase 3 (H-bridge practice) | $25 |
 | Phase 4 (500W inverter) | $50 |
-| **Part 2 Total** | **~$115** |
+| Phase 5 (winding practice) | $25 |
+| **Part 3 Total** | **~$140** |
 
-## Ready for Part 3!
+## Ready for Part 4!
 
 You now have the foundation for:
 - **SPWM (Sinusoidal PWM)** - digital pure sine generation

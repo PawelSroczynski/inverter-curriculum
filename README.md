@@ -41,31 +41,45 @@ Build your own 6-15kW pure sine wave inverters that talk to each other, share po
 ## Learning Path
 
 ```
-Step 1          Step 2-3        Step 4-5         Step 6           Step 7
+Part 1        Part 2         Part 3           Part 4           Part 5-7
 ────────────────────────────────────────────────────────────────────────────►
 
 ┌─────────┐   ┌─────────┐   ┌───────────┐   ┌───────────┐   ┌──────────────┐
-│   LED   │   │  150W   │   │   6-15kW  │   │   Smart   │   │    Swarm     │
-│ Blinker │──►│Inverter │──►│ OzInverter│──►│  Monitor  │──►│  Microgrid   │
-│ (basics)│   │(H-bridge│   │(pure sine)│   │  (ESP32)  │   │(bi-direction)│
+│   LED   │   │ Safety  │   │   500W    │   │  1kW →    │   │   Smart +    │
+│ Blinker │──►│   +     │──►│ Modified  │──►│ 2.5kW →   │──►│   Swarm      │
+│ (26 proj)│  │MOSFET   │   │  + Winding│   │  6-15kW   │   │  Microgrid   │
 └─────────┘   └─────────┘   └───────────┘   └───────────┘   └──────────────┘
-   12 projects    500W          Toroid         Home Asst      4 households
-   Ohm's Law    gate drivers    winding        MQTT/CAN       droop control
+   9V safe       12V/20W       220V output     Production      4 households
+   Fundamentals  First MOSFET   + transformer   quality         droop control
+                               practice         OzInverter      parallel 20kW
+```
+
+**Incremental Power Progression:**
+```
+9V → 12V/20W → 150W → 500W → 1kW → 2.5kW → 6-15kW → 20kW (parallel)
+└Part 1─┘ └Part 2─┘ └──Part 3──┘   └────Part 4────┘   └Part 5-7┘
 ```
 
 ---
 
 ## What You'll Build
 
-| Step | Project | Power | Key Skills |
-|------|---------|-------|------------|
-| 1 | 12 fundamental projects | — | Soldering, Ohm's Law, transistors, 555, PWM |
-| 2 | CD4047 Square Wave | 150W | MOSFETs, transformers, push-pull |
-| 3 | SG3525 Modified Sine | 500W | H-bridge, gate drivers, dead-time |
-| 4 | EG8010 Pure Sine | 1kW | SPWM, LC filters, voltage feedback |
-| 5 | OzInverter | 6-15kW | Toroid winding, thermal management |
-| 6 | Smart Upgrade | — | ESP32, CAN bus, Home Assistant |
-| **7** | **Swarm Microgrid** | **12kW+** | **Bi-directional tie, droop control** |
+| Part | Phase | Project | Power | Key Skills |
+|------|-------|---------|-------|------------|
+| 1 | 1-5 | 26 fundamental projects | 9V | Soldering, Ohm's Law, transistors, 555, PWM |
+| 2 | - | Safety + MOSFET Bridge | 12V/20W | HV safety, first power MOSFETs |
+| 3 | 1-2 | CD4047 Push-Pull | 150W | MOSFETs, transformers |
+| 3 | 3-4 | SG3525 Modified Sine | 500W | H-bridge, IR2110, dead-time |
+| 3 | 5 | Transformer Winding | 50VA | Practice winding technique |
+| 4 | 1-2 | EG8010 Pure Sine | 1kW | SPWM, LC filters |
+| 4 | 3 | 2.5kW Intermediate | 2.5kW | MOSFET paralleling, thermal mgmt |
+| 4 | 4-5 | OzInverter | 6-15kW | Large toroid, 16 MOSFETs |
+| 5 | - | Smart Upgrade | — | ESP32, CAN bus, Home Assistant |
+| 6 | - | Microgrid | 4 houses | Swarm communication, load sharing |
+| 7 | - | Libre Solar Integration | — | Open MPPT, BMS, ThingSet |
+| - | - | Parallel 2× OzInverter | 20kW | Droop control, master/slave |
+
+**Curriculum design:** Safety module, MOSFET bridge project, transformer winding practice, and 2.5kW intermediate build ensure gradual skill development with no dangerous gaps.
 
 ---
 
@@ -87,18 +101,18 @@ Step 1          Step 2-3        Step 4-5         Step 6           Step 7
 
 ```
 inverter-curriculum/
-├── curriculum/                  # Learning materials (7 steps)
-│   ├── index.md                 # Start here
-│   ├── part1_fundamentals.md    # 12 basic projects
-│   ├── part2_modified_sine.md   # 150W → 500W
-│   ├── part3_pure_sine.md       # 1kW → 6-15kW OzInverter
-│   ├── upgrade_smart.md         # ESP32 + CAN bus
-│   ├── microgrid.md             # Swarm architecture
-│   └── libre_solar.md           # Open source MPPT & BMS
+├── curriculum/
+│   ├── part1_fundamentals.md            # 26 projects at safe 9V
+│   ├── part2_safety_and_mosfet_bridge.md # Safety + first MOSFETs at 12V
+│   ├── part3_modified_sine.md           # 150W → 500W + transformer practice
+│   ├── part4_pure_sine.md               # 1kW → 2.5kW → 6-15kW OzInverter
+│   ├── part5_smart_upgrade.md           # ESP32 + CAN bus
+│   ├── part6_microgrid.md               # Swarm architecture
+│   └── part7_libre_solar.md             # Open source MPPT & BMS
 │
-└── hardware/                    # Production-ready designs
-    ├── ozinverter/              # 6kW+ inverter (KiCad + Gerbers)
-    └── libre_solar/             # MPPT, BMS, ESP32 gateway
+└── hardware/                            # Production-ready designs
+    ├── ozinverter/                      # 6kW+ inverter (KiCad + Gerbers)
+    └── libre_solar/                     # MPPT, BMS, ESP32 gateway
 ```
 
 ---
@@ -107,10 +121,17 @@ inverter-curriculum/
 
 | Path | Time | Cost |
 |------|------|------|
-| Single Smart Inverter | 6-12 months | ~$775 |
-| 4-Household Swarm Microgrid | 12-24 months | ~$14,300 (~$3,575/house) |
+| Part 1 (Fundamentals) | 6-8 weekends | ~$64 |
+| Part 2 (Safety + Bridge) | 1-2 weekends | ~$25 |
+| Part 3 (Modified Sine + Winding) | 6-8 weekends | ~$140 |
+| Part 4 (1kW + 2.5kW + OzInverter) | 4-6 months | ~$1,000 |
+| Parts 5-7 (Smart + Microgrid) | 3-6 months | ~$500 |
+| **Complete: 20kW Parallel System** | **12-18 months** | **~$1,730** |
+| **4-Household Microgrid** | **18-24 months** | **~$14,300 (~$3,575/house)** |
 
 **Savings vs Commercial:** 60-75% less than Victron/SMA equivalent
+
+**Note:** Intermediate builds (2.5kW) add ~$250 but prevent costly mistakes. Better to fail with a $30 transformer than a $70 one.
 
 ---
 
@@ -129,16 +150,27 @@ All designs are open source with KiCad files and Gerbers ready for fabrication.
 
 ## Getting Started
 
-1. **Read** → `curriculum/index.md`
-2. **Build** → Complete Steps 1-5 (single inverter)
-3. **Upgrade** → Add ESP32 smart monitoring (Step 6)
-4. **Scale** → Connect multiple units (Step 7)
+1. **Part 1** → Complete 26 fundamental projects at safe 9V
+2. **Part 2** → Safety module + first MOSFET project (MANDATORY before 220V)
+3. **Part 3** → Build modified sine inverters (150W → 500W) + winding practice
+4. **Part 4** → Pure sine progression: 1kW → 2.5kW → 6-15kW OzInverter
+5. **Parts 5-7** → Smart upgrade, microgrid, Libre Solar integration
+6. **Scale** → Parallel two inverters for 20kW
 
 ---
 
 ## Safety
 
 ⚠️ **High voltage warning.** 48V DC can cause fires. 230V AC can kill. Never work on live circuits.
+
+**Mandatory:** Complete Part 2 (Safety Module) before any work with 220V. This includes:
+- Electrical safety fundamentals (30mA can kill)
+- One-hand rule and safe work practices
+- Capacitor discharge procedures
+- Emergency response procedures
+- Safety quiz (must pass before proceeding)
+
+The curriculum is designed with incremental voltage progression: 9V → 12V → 220V to build skills and safety awareness before handling dangerous voltages.
 
 ---
 
