@@ -1,4 +1,4 @@
-# DIY Swarm Microgrid
+# Droop-Controlled AC Microgrid
 
 **From Zero Electronics to Community Energy Independence**
 
