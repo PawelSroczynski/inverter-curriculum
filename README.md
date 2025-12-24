@@ -75,65 +75,77 @@ How clusters connect to form a community microgrid.
 
 ### Level 2: Cluster Detail
 
-How houses within a cluster share power and communicate.
+Each house is self-reliant with 6-15kW inverter. Load-balancing only kicks in for special scenarios.
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────┐
-│                         CLUSTER - LOAD BALANCING EXAMPLE                             │
+│                      CLUSTER - NORMAL OPERATION (99% of the time)                    │
 │                                                                                      │
-│   HOUSE 1 (light load)     HOUSE 2 (heavy load)      HOUSE 3 (medium load)          │
+│   HOUSE 1                  HOUSE 2                  HOUSE 3                          │
 │   ┌──────────────────┐     ┌──────────────────┐     ┌──────────────────┐            │
 │   │ Solar 6kW        │     │ Solar 6kW        │     │ Solar 6kW        │            │
-│   │ Bat 5kWh (80%)   │     │ Bat 5kWh (40%)   │     │ Bat 5kWh (60%)   │            │
+│   │ Bat 5kWh         │     │ Bat 5kWh         │     │ Bat 5kWh         │            │
 │   │ Inv 6kW          │     │ Inv 6kW          │     │ Inv 6kW          │            │
 │   │                  │     │                  │     │                  │            │
-│   │ ┌──────────────┐ │     │ ┌──────────────┐ │     │ ┌──────────────┐ │            │
-│   │ │   BATTERY    │ │     │ │   BATTERY    │ │     │ │   BATTERY    │ │            │
-│   │ │    48V DC    │ │     │ │    48V DC    │ │     │ │    48V DC    │ │            │
-│   │ └──────┬───────┘ │     │ └──────┬───────┘ │     │ └──────┬───────┘ │            │
-│   │        │         │     │        │         │     │        │         │            │
-│   │        ▼ 2kW     │     │        ▼ 3kW     │     │        ▼ 2kW     │            │
-│   │ ┌──────────────┐ │     │ ┌──────────────┐ │     │ ┌──────────────┐ │            │
-│   │ │   INVERTER   │ │     │ │   INVERTER   │ │     │ │   INVERTER   │ │            │
-│   │ │   50.0 Hz    │ │     │ │   49.8 Hz    │ │     │ │   49.95 Hz   │ │            │
-│   │ └──────┬───────┘ │     │ └──────┬───────┘ │     │ └──────┬───────┘ │            │
-│   │        │         │     │        │         │     │        │         │            │
-│   │        ▼         │     │        ▼         │     │        ▼         │            │
-│   │ ┌──────────────┐ │     │ ┌──────────────┐ │     │ ┌──────────────┐ │            │
-│   │ │    LOADS     │ │     │ │    LOADS     │ │     │ │    LOADS     │ │            │
-│   │ │   500W only  │ │     │ │  5kW (oven!) │ │     │ │    1.5kW     │ │            │
-│   │ └──────────────┘ │     │ └──────────────┘ │     │ └──────────────┘ │            │
-│   │        ▲         │     │        ▲         │     │        ▲         │            │
+│   │ BATTERY 48V      │     │ BATTERY 48V      │     │ BATTERY 48V      │            │
+│   │      │           │     │      │           │     │      │           │            │
+│   │      ▼           │     │      ▼           │     │      ▼           │            │
+│   │ INVERTER 50.0Hz  │     │ INVERTER 50.0Hz  │     │ INVERTER 50.0Hz  │            │
+│   │      │           │     │      │           │     │      │           │            │
+│   │      ▼           │     │      ▼           │     │      ▼           │            │
+│   │ LOADS 2kW        │     │ LOADS 4kW        │     │ LOADS 1kW        │            │
+│   │ (fridge,lights)  │     │ (oven,fridge)    │     │ (lights,TV)      │            │
 │   └────────┼─────────┘     └────────┼─────────┘     └────────┼─────────┘            │
 │            │                        │                        │                      │
-│            │ 230V AC                │ 230V AC                │ 230V AC              │
-│            │                        │                        │                      │
 │   ─────────┴────────────────────────┴────────────────────────┴───────────────►      │
-│                                                                                      │
-│            ════1.5kW═══════════════►║◄════════0.5kW══════════                       │
-│                    House 1 pushes   ║   House 3 pushes                              │
-│                    power to House 2 ║   power to House 2                            │
-│                                                                                      │
-│   230V AC BUS @ 49.9 Hz (frequency settles between all inverters)                   │
+│   230V AC BUS @ 50.0 Hz - NO POWER FLOWING BETWEEN HOUSES (each self-sufficient)    │
 │   ──────────────────────────────────────────────────────────────────► to cluster    │
 │                                                                                      │
 │            │ RJ45                   │ RJ45                   │ RJ45                 │
 │   ─────────○───────────────────────○───────────────────────○────────► to cluster   │
-│   CAN BUS: sync timing + SOC% + load data                                           │
+│   CAN BUS: sync timing + SOC% + status data                                         │
+│                                                                                      │
+│   NORMAL: Each 6kW inverter handles its own loads easily (oven=3kW, fridge=200W)    │
+│                                                                                      │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│                  CLUSTER - SPECIAL SCENARIO: EV CHARGING EXCEEDS 6kW                 │
+│                                                                                      │
+│   HOUSE 1                  HOUSE 2 (needs help!)   HOUSE 3                          │
+│   ┌──────────────────┐     ┌──────────────────┐     ┌──────────────────┐            │
+│   │ Inv 6kW          │     │ Inv 6kW (MAXED)  │     │ Inv 6kW          │            │
+│   │                  │     │                  │     │                  │            │
+│   │ BATTERY 48V      │     │ BATTERY 48V      │     │ BATTERY 48V      │            │
+│   │      │           │     │      │           │     │      │           │            │
+│   │      ▼ 2kW       │     │      ▼ 6kW MAX   │     │      ▼ 1.5kW     │            │
+│   │ INVERTER 50.0Hz  │     │ INVERTER 49.7Hz  │     │ INVERTER 49.9Hz  │            │
+│   │      │           │     │      │           │     │      │           │            │
+│   │      ▼           │     │      ▼           │     │      ▼           │            │
+│   │ LOADS 1kW        │     │ LOADS 7kW !!!    │     │ LOADS 1kW        │            │
+│   │                  │     │ (EV charger)     │     │                  │            │
+│   └────────┼─────────┘     └────────┼─────────┘     └────────┼─────────┘            │
+│            │                        │                        │                      │
+│   ─────────┴────────────────────────┴────────────────────────┴───────────────►      │
+│                                                                                      │
+│            ════1.0kW═══════════════►║◄════════0.5kW══════════                       │
+│                    House 1 pushes   ║   House 3 pushes                              │
+│                                                                                      │
+│   230V AC BUS @ 49.85 Hz - POWER FLOWS TO HOUSE 2 (droop triggered)                 │
+│   ──────────────────────────────────────────────────────────────────► to cluster    │
 │                                                                                      │
 ├──────────────────────────────────────────────────────────────────────────────────────┤
-│   HOW DROOP LOAD-BALANCING WORKS:                                                   │
+│   WHY LOAD-BALANCING KICKS IN:                                                      │
 │                                                                                      │
-│   1. House 2 turns on oven (5kW) → its inverter works hard → freq drops to 49.8 Hz  │
-│   2. House 1 inverter sees low freq → increases output → pushes 1.5kW to bus        │
-│   3. House 3 inverter sees low freq → increases output → pushes 0.5kW to bus        │
-│   4. System settles: House 2 gets 3kW local + 2kW from neighbors = 5kW total        │
+│   House 2 plugs in EV charger (7kW) but inverter maxes at 6kW:                       │
+│   • Inverter strains → frequency drops to 49.7 Hz                                   │
+│   • House 1 & 3 see low freq → push power to bus                                    │
+│   • House 2 gets: 6kW local + 1kW from H1 + 0.5kW from H3 = 7.5kW available         │
 │                                                                                      │
-│   THE MATH:                                                                         │
-│   • House 2 needs: 5.0 kW  │  House 2 supplies from battery: 3.0 kW                 │
-│   • House 1 pushes: 1.5 kW │  House 3 pushes: 0.5 kW  │  Total: 5.0 kW ✓            │
-│                                                                                      │
-│   NO CONTROLLER NEEDED - frequency difference creates automatic power flow          │
+│   OTHER SCENARIOS THAT TRIGGER SHARING:                                             │
+│   • Low battery (BMS limits output) → neighbors supply deficit                      │
+│   • Inverter fault/maintenance → house runs entirely from bus                       │
+│   • Motor startup surge (9kW for 2 sec) → cluster absorbs spike                     │
 │                                                                                      │
 └──────────────────────────────────────────────────────────────────────────────────────┘
 ```
