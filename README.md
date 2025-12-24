@@ -63,10 +63,12 @@ Build your own 6-15kW pure sine wave inverters that communicate, share power aut
 │            │   TIE INV   │                     │   TIE INV   │           │
 │            │ (optional)  │                     │ (optional)  │           │
 │            └──────┬──────┘                     └──────┬──────┘           │
-│                   │      INTER-CLUSTER LINK          │                  │
-│                   └──────────────────────────────────┘                  │
-│                        (power sharing only,                              │
-│                         not a load connection)                           │
+│                   │                                   │                  │
+│                   │   ┌───────────────────────────┐   │                  │
+│                   └───┤  230V AC INTER-CLUSTER    ├───┘                  │
+│                       │  (bi-directional tie,     │                      │
+│                       │   power sharing only)     │                      │
+│                       └───────────────────────────┘                      │
 │                                                                          │
 │   ✓ Each house powers its own loads directly                            │
 │   ✓ Inter-cluster link balances surplus/deficit between clusters        │
