@@ -48,54 +48,54 @@ Total: ~$1,000 + 700 PLN (~$1,175)
 
 ## Part 1: Fundamentals (37 Projects)
 
-### Phase 1: DC Fundamentals (No ICs)
+### Phase 1: DC Fundamentals (6 projects)
 - 1.1 LED + Resistor (Ohm's Law)
-- 1.2 Series/Parallel LEDs (Kirchhoff's Laws)
-- 1.3 Potentiometer Dimmer (Voltage dividers)
-- 1.4 Switch Circuits (AND/OR logic)
-- 1.5 Transistor as Switch (BJT basics)
-- 1.6 Current Limiting (Protection circuits)
+- 1.2 Voltage Divider (Sensing foundation)
+- 1.3 Capacitor Basics (Energy storage)
+- 1.4 Diode - One Way Flow
+- 1.5 Switch Circuits (Logic basics)
+- 1.6 Transistor as Switch (BJT control)
 
 ### Phase 2: Power Flow & SmartBob (9 projects)
-- 2.1 5V Regulator (Linear regulation)
-- 2.2 Adjustable LM317 (Feedback control)
-- 2.3 Capacitor Filtering (Ripple reduction)
-- 2.4 Voltage Divider + Multimeter (Measurement)
-- 2.5 Bi-Directional Power Flow (Source/sink concepts)
-- 2.6 SmartBob Intro (ESP32 voltage monitor)
-- 2.7 Battery State Estimation (SOC algorithm)
-- 2.8 Power Direction Detection (Current sensing)
-- 2.9 Home Assistant Dashboard (ESPHome integration)
+- 2.1 Two-Battery Power Flow
+- 2.2 Diode Enforces Direction
+- 2.3 Transistor Bi-Directional Control
+- 2.4 Voltage Droop Control (CRITICAL!)
+- 2.5 Current Sensing Introduction
+- 2.6 SmartBob First Light (ESP32 intro)
+- 2.7 SmartBob Current Monitor (ACS712)
+- 2.8 SmartBob Power Calculator
+- 2.9 SmartBob + Home Assistant
 
 ### Phase 3: Oscillation & AC (5 projects)
-- 3.1 555 Astable (Square wave generation)
-- 3.2 50Hz Generator (AC frequency)
-- 3.3 Variable Duty Cycle (PWM basics)
-- 3.4 LC Tank Circuit (Resonance concepts)
-- 3.5 Transformer Fundamentals (AC voltage conversion)
+- 3.1 What IS AC? (Manual demo)
+- 3.2 RC Oscillator (Simplest timing)
+- 3.3 555 Astable (Controlled frequency)
+- 3.4 Frequency = Sound (Hear it!)
+- 3.5 PWM - Pulse Width Modulation
 
 ### Phase 4: Build the Inverter (5 projects)
-- 4.1 Push-Pull Driver (CD4047 + transistors)
-- 4.2 MOSFET Switching (IRF3205 gate drive)
-- 4.3 H-Bridge Construction (Full bridge topology)
-- 4.4 Modified Sine Output (12V→230V conversion)
-- 4.5 Output Filtering (LC low-pass filter)
+- 4.1 Push-Pull (Two transistors alternating)
+- 4.2 H-Bridge Manual Control
+- 4.3 H-Bridge + Oscillator = INVERTER!
+- 4.4 Dead-Time (CRITICAL safety)
+- 4.5 Add Transformer (Step up!)
 
 ### Phase 5: Mini Swarm Microgrid (6 projects)
-- 5.1 Two-Unit Power Sharing (Master/slave basics)
-- 5.2 Parallel AC Connection (Phase synchronization)
-- 5.3 Grid-Forming vs Grid-Following (Role assignment)
-- 5.4 Voltage Droop Control (V-based power sharing)
-- 5.5 Frequency Droop Control (P-f power balance)
-- 5.6 ESP32 Microgrid Monitor (Real-time dashboard)
+- 5.1 Two Inverters, One AC Bus
+- 5.2 Power Sharing Observation
+- 5.3 Master/Slave Synchronization
+- 5.4 Voltage Droop Control Demo
+- 5.5 SmartBob Swarm Monitor
+- 5.6 SmartBob + Home Assistant Dashboard
 
 ### Phase 6: Advanced Synchronization (6 projects)
-- 6.1 Frequency Matching (PLL concepts)
-- 6.2 Phase Angle Visualization (Oscilloscope timing)
-- 6.3 Zero-Cross Detection (Hardware interrupt)
-- 6.4 Droop Control Integration (Combined V-f droop)
-- 6.5 Soft Parallel Connection (Sync before connect)
-- 6.6 Island Grid Operation (Autonomous microgrid)
+- 6.1 Why Phase Matters
+- 6.2 Phase Visualization (Two 555s)
+- 6.3 Zero-Cross Detection
+- 6.4 Frequency Droop Control (P-f)
+- 6.5 Soft Parallel Connection
+- 6.6 Full Island Grid Demo
 
 ---
 
