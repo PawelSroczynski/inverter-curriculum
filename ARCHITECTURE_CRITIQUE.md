@@ -7,6 +7,142 @@
 
 ---
 
+## Critique Process
+
+**Run this critique periodically** (after major README updates, before implementation phases).
+
+### How to Run a Critique
+
+1. **Read the current README** architecture sections
+2. **Compare against this document's recommendations** (R1-R22)
+3. **Update the Latest Critique Run section** below
+4. **Mark recommendations as ADDRESSED, PARTIAL, or OPEN**
+5. **Add new issues discovered**
+6. **Update Document History**
+
+### Critique Checklist
+
+```
+□ Tiered bus architecture defined? (cluster + swarm buses)
+□ Gateway sync logic specified?
+□ Self-reliance levels documented?
+□ Grounding scheme defined?
+□ Cable sizing calculated?
+□ Droop coefficients specified?
+□ Master election protocol described?
+□ High-power load connection guidance?
+□ Energy metering mentioned?
+□ Governance structure addressed?
+□ Failure modes documented?
+```
+
+---
+
+## Latest Critique Run
+
+**Date:** 2024-12-24
+**README Version:** After tiered bus architecture update
+**Run By:** Claude + User
+
+### Architecture Changes Since Last Review
+
+1. **NEW: Tiered AC Bus Design** - Cluster internal buses + swarm backbone bus
+2. **NEW: Gateway with Contactor** - Each cluster connects via ESP32-controlled contactor
+3. **NEW: Self-Reliance Levels** - 4 modes documented (house → cluster → swarm → within-cluster)
+4. **NEW: Inter-Cluster Power Flow** - 5-hop path explained
+5. **NEW: Gateway Sync Logic** - Frequency matching before contactor closes
+6. **NEW: High-Power Load Guide** - Where to connect >6kW loads
+7. **NEW: Energy as Work** - Using surplus solar for productive tasks
+
+### Recommendation Status
+
+| ID | Recommendation | Status | Notes |
+|----|----------------|--------|-------|
+| R1 | Define grounding scheme | **OPEN** | Still not specified in README |
+| R2 | Test droop stability with 3 inverters | **OPEN** | Experiments added, but no results yet |
+| R3 | Implement master election | **PARTIAL** | Gateway ESP32 mentioned, election not detailed |
+| R4 | Calculate/verify cable sizing | **PARTIAL** | 80m intra-cluster mentioned, but inter-cluster sizing not calculated |
+| R5 | Add CAN repeaters for 800m | **OPEN** | 1000m site now, repeaters not mentioned |
+| R6 | Install energy metering | **OPEN** | Not in README |
+| R7 | Write governance document | **OPEN** | Not in README |
+| R8 | Install cluster isolation breakers | **ADDRESSED** | Gateway contactors provide isolation |
+| R9 | Install surge protection | **OPEN** | Not in README |
+| R10 | Document commissioning procedure | **OPEN** | Not in README |
+| R11 | Add per-inverter status display | **OPEN** | Not in README |
+| R12 | Create fault diagnosis guide | **OPEN** | Failure modes table exists in critique only |
+| R13 | Create Home Assistant dashboard | **OPEN** | Mentioned but not detailed |
+| R14 | Implement automatic load shedding | **OPEN** | Not in README |
+| R15 | Consider ring topology | **OPEN** | Linear only |
+| R16 | Implement symmetrical wiring | **OPEN** | Not specified |
+| R17 | Create droop calibration procedure | **PARTIAL** | Droop coefficient mentioned (k=0.25), calibration in experiments |
+| R18 | Add proactive alerting | **OPEN** | Not in README |
+| R19 | Designate community agents | **OPEN** | Not in README |
+| R20 | Consider consumption allocation | **OPEN** | Not in README |
+| R21 | Document battery end-of-life | **OPEN** | Not in README |
+| R22 | Consider DC for intra-cluster | **OPEN** | AC chosen, rationale not documented |
+
+### New Issues Identified
+
+**N1: Gateway Contactor Coordination**
+
+The gateway logic shows individual contactor decisions, but what if:
+- Gateway A opens while power is flowing through it?
+- Two gateways try to close simultaneously?
+- Swarm bus has no sources (all gateways open)?
+
+*Recommendation:* Document contactor coordination protocol. Consider "at least one gateway always closed" rule.
+
+**N2: Two Levels of Droop - Different Coefficients?**
+
+README mentions "two levels of droop" but doesn't specify if:
+- Cluster internal droop (k₁) is different from swarm droop (k₂)?
+- Gateway acts as a "virtual inverter" on swarm bus?
+- How does gateway droop interact with house inverter droop?
+
+*Recommendation:* Specify droop coefficients for both levels.
+
+**N3: 1000m Site Exceeds CAN Limits**
+
+README now shows 1000m site (was 800m). Standard CAN bus is marginal at 500m.
+
+*Recommendation:* Explicitly add CAN repeaters at each gateway, or switch to different protocol for swarm backbone.
+
+**N4: Contactor Rating for Bidirectional Flow**
+
+63A contactor specified, but:
+- Is it rated for bidirectional AC power?
+- What's the inrush current when closing onto loaded bus?
+- Pre-charge circuit needed?
+
+*Recommendation:* Specify contactor requirements including inrush handling.
+
+**N5: High-Power Load Connection Points Not Physically Defined**
+
+README says "connect to cluster bus" but:
+- Where physically is the cluster bus accessible?
+- Is there a dedicated breaker panel for community equipment?
+- Who owns/maintains this connection point?
+
+*Recommendation:* Add physical diagram of cluster bus access point.
+
+### What's Working Well
+
+1. **Tiered architecture reduces sync complexity** - Only 3 gateways sync instead of 12 inverters
+2. **Self-reliance levels clearly defined** - 99% of time no sharing needed
+3. **Gateway contactor provides clean isolation** - Clusters can operate independently
+4. **Energy-as-work concept** - Great insight for community productivity
+5. **Power flow path documented** - Clear 5-hop explanation
+
+### Priority for Next Phase
+
+1. **CRITICAL:** Define grounding scheme (R1) - must be decided before any multi-house connection
+2. **CRITICAL:** Specify CAN repeater locations for 1000m (R5, N3)
+3. **HIGH:** Document contactor coordination protocol (N1)
+4. **HIGH:** Specify both droop coefficients (N2)
+5. **MEDIUM:** Add physical cluster bus access point diagram (N5)
+
+---
+
 ## TLDR
 
 This section provides a quick overview for those who need the key points immediately. The full analysis follows in subsequent sections.
@@ -1512,6 +1648,19 @@ This is a major architectural change - not recommended for initial deployment, b
 | 2024-12-24 | Initial version | Claude + User |
 | 2024-12-24 | Added exhaustive detail to all sections | Claude + User |
 | 2024-12-24 | Added Victron and African microgrid lessons (R16-R22) | Claude + User |
+| 2024-12-24 | Added Critique Process section with periodic run procedure | Claude + User |
+| 2024-12-24 | First critique run: reviewed tiered bus architecture, identified N1-N5 new issues | Claude + User |
+
+---
+
+### 9. NEXT CRITIQUE SCHEDULED
+
+**Trigger:** Run critique when any of these occur:
+- Major README architecture update
+- Before starting Phase 3 (first cluster)
+- Before starting Phase 4 (full swarm)
+- After completing droop stability testing (R2)
+- After defining grounding scheme (R1)
 
 ---
 
