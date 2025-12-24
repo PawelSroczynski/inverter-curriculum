@@ -521,16 +521,26 @@ What happens when you connect more houses and clusters:
 ├── Emergency shelter for 50+ people
 ```
 
-**Battery perspective (180 kWh total swarm storage):**
+**Battery perspective (15 kWh per house):**
 
 ```
-Average house uses ~10 kWh/day
+Typical day:
+  Night consumption (16h): ~5 kWh
+  15 kWh battery = 3 nights reserve
 
-15 kWh  = 1 house for 1.5 days (no sun)
-60 kWh  = 1 cluster for 1.5 days
-180 kWh = full swarm for 1.5 days
-        = 6 houses for 3 days (cloudy spell)
-        = critical loads only for 1 week
+Cloudy winter day:
+  Solar produces: ~2 kWh (vs 6 kWh normal)
+  Consumption: 10 kWh
+  Deficit: 8 kWh → covered by battery, still 7 kWh left
+
+3 consecutive cloudy days:
+  Deficit: 8 kWh × 3 = 24 kWh per house
+  15 kWh battery alone: NOT ENOUGH
+  But cluster sharing helps: sunny neighbor covers your deficit
+
+180 kWh swarm total:
+  Community event (5 hours × 20 kW): 100 kWh → still 80 kWh reserve
+  Winter evening peak (all cooking): 40 kW for 2h = 80 kWh → covered
 ```
 
 The swarm becomes a **small village grid** - completely independent from utility.
