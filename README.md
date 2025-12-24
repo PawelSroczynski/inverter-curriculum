@@ -1,8 +1,8 @@
-# Droop-Controlled AC Microgrid
+# From Zero Electronics to Community Energy Independence
 
-**From Zero Electronics to Community Energy Independence**
+**Build droop-controlled inverters. Connect them into a tiered AC swarm grid.**
 
-Learn electronics from scratch, build 6-15kW inverters, connect them into a self-organizing swarm grid that powers your whole community—no utility required.
+Learn electronics from scratch, build 6-15kW inverters, connect them into a self-organizing microgrid that powers your whole community—no utility required.
 
 [![License: Open Source](https://img.shields.io/badge/License-Open%20Source-green.svg)](#license)
 [![House: 6kW](https://img.shields.io/badge/House-6kW-blue.svg)](#level-3-house-detail)
