@@ -22,18 +22,49 @@
 
 ### Critique Checklist
 
+**ELECTRICAL (Phase 2-3)**
 ```
-□ Tiered bus architecture defined? (cluster + swarm buses)
-□ Gateway sync logic specified?
-□ Self-reliance levels documented?
-□ Grounding scheme defined?
-□ Cable sizing calculated?
-□ Droop coefficients specified?
-□ Master election protocol described?
-□ High-power load connection guidance?
-□ Energy metering mentioned?
-□ Governance structure addressed?
-□ Failure modes documented?
+□ R1:  Grounding scheme defined? (N-G bond location per cluster)
+□ R2:  Droop stability tested with 3+ inverters?
+□ R4:  Cable sizing calculated? (intra-cluster + inter-cluster)
+□ R16: Symmetrical wiring specified? (equal lengths to busbar)
+□ R9:  Surge protection (SPD) locations defined?
+□ N4:  Contactor specs? (rating, inrush, bidirectional)
+```
+
+**COMMUNICATION (Phase 3-4)**
+```
+□ R3:  Master election protocol described?
+□ R5:  CAN repeaters for >500m? (1000m site needs them)
+□ N3:  CAN bus topology drawn? (termination, routing)
+```
+
+**ARCHITECTURE (Phase 3-4)**
+```
+□      Tiered bus architecture defined? (cluster + swarm)
+□      Gateway sync logic specified? (frequency matching)
+□      Self-reliance levels documented? (4 modes)
+□ N1:  Contactor coordination protocol? (what if all open?)
+□ N2:  Both droop coefficients specified? (k₁ cluster, k₂ swarm)
+□ N5:  Physical cluster bus access point defined?
+□      High-power load connection guidance?
+```
+
+**OPERATIONAL (Phase 4)**
+```
+□ R6:  Energy metering at each house?
+□ R10: Commissioning procedure documented?
+□ R12: Fault diagnosis guide created?
+□ R18: Proactive alerting configured? (not just dashboard)
+□      Failure modes documented?
+```
+
+**SOCIAL/GOVERNANCE (Phase 4)**
+```
+□ R7:  Governance document written?
+□ R19: Community agents designated and trained?
+□ R20: Consumption allocation system defined?
+□ R21: Battery end-of-life plan documented?
 ```
 
 ---
