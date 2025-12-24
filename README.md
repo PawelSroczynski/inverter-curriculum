@@ -280,6 +280,102 @@ Internal wiring of one house, showing connection to cluster AC bus.
 
 ---
 
+### When AC Bus Power Sharing Kicks In
+
+With 6-15kW inverters, normal household loads won't trigger sharing. The real value is resilience:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  SCENARIO 1: Low Battery Protection                                        │
+│                                                                             │
+│  House 2: SOC at 15% → BMS limits discharge to 1kW                          │
+│  House 2 load: 3kW (fridge + pump + lights)                                 │
+│  ───────────────────────────────────────────────────────────────            │
+│  House 1 & 3 push 2kW through AC bus → House 2 stays powered                │
+│                                                                             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  SCENARIO 2: Inverter Failure / Maintenance                                 │
+│                                                                             │
+│  House 2: Inverter offline (fault or repair)                                │
+│  House 2 loads: still connected to AC bus via breaker                       │
+│  ───────────────────────────────────────────────────────────────            │
+│  House 1 & 3 supply House 2 entirely → no blackout during repair            │
+│                                                                             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  SCENARIO 3: Uneven Solar (shade, orientation, dust)                        │
+│                                                                             │
+│  Morning: House 1 (east panels) has full sun, House 3 (west) has none       │
+│  Evening: reversed                                                          │
+│  ───────────────────────────────────────────────────────────────            │
+│  Power flows from sunny house → saves battery cycles across cluster         │
+│                                                                             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  SCENARIO 4: Big Transient Loads (motor startup, welder)                    │
+│                                                                             │
+│  House 2: Starts 3kW water pump (startup surge 9kW for 2 seconds)           │
+│  Single 6kW inverter might trip on overcurrent                              │
+│  ───────────────────────────────────────────────────────────────            │
+│  AC bus absorbs surge → all three inverters share the spike                 │
+│                                                                             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  SCENARIO 5: EV Charging / Heavy Scheduled Loads                            │
+│                                                                             │
+│  House 2 wants to charge EV at 7kW                                          │
+│  Their 6kW inverter can't do it alone                                       │
+│  ───────────────────────────────────────────────────────────────            │
+│  Neighbor's excess solar flows through AC bus → 7kW charging possible       │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+The AC bus is **community resilience** - nobody goes dark because of one failure.
+
+---
+
+### Swarm Capacity at Scale
+
+What happens when you connect more houses and clusters:
+
+**Per house baseline:**
+- Inverter: 6-15 kW
+- Solar: 6 kW
+- Battery: 5-10 kWh
+
+| Scale | Houses | Inverter Capacity | Solar | Battery Storage |
+|-------|--------|-------------------|-------|-----------------|
+| Single house | 1 | 6-15 kW | 6 kW | 5-10 kWh |
+| **Cluster (4 houses)** | 4 | 24-60 kW | 24 kW | 20-40 kWh |
+| **Swarm (12 houses)** | 12 | 72-180 kW | 72 kW | 60-120 kWh |
+
+**What 72-180 kW powers simultaneously:**
+
+```
+72 kW (minimum swarm config):
+├── 12× electric ovens (3kW each)
+├── 3× EV chargers (7kW each)
+├── 24× washing machines running at once
+├── or one small workshop (welders + compressors)
+
+180 kW (maximum swarm config):
+├── Small factory level power
+├── Community event (PA, lights, food trucks)
+├── Emergency shelter for 50+ people
+```
+
+**Battery perspective (60-120 kWh):**
+
+```
+Average house uses ~10 kWh/day
+
+60 kWh  = 6 houses for 1 full day (no sun)
+120 kWh = 12 houses for 1 day
+        = 6 houses for 2 days (cloudy spell)
+```
+
+The swarm becomes a **small village grid** - completely independent from utility.
+
+---
+
 ## Learning Path
 
 ```
