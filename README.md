@@ -68,27 +68,36 @@ Build your own 6-15kW pure sine wave inverters that communicate, share power aut
 │  │  │   router    │  │ │  │   garage    │  │  │  │    shop     │  │ │  │  office   │  │
 │  │  └─────────────┘  │ │  └─────────────┘  │  │  └─────────────┘  │ │  └───────────┘  │
 │  │                   │ │                   │  │                   │ │                 │
-│  └─────────┬─────────┘ └─────────┬─────────┘  └─────────┬─────────┘ └────────┬────────┘
-│            │                     │                      │                    │
-│            │    48V DC BUS       │                      │    48V DC BUS      │
-│            └──────────┬──────────┘                      └─────────┬──────────┘
-│                       │                                           │
-│    ═══════════════════╧═══════════════════       ═════════════════╧═════════════════
-│    ║    CLUSTER A: 230V AC BUS           ║       ║    CLUSTER B: 230V AC BUS       ║
-│    ═══════════════════╤═══════════════════       ═════════════════╤═════════════════
-│                       │                                           │
-│                       │      ┌──────────────────────┐             │
-│                       └──────┤    63A CONTACTOR     ├─────────────┘
-│                              │    (DIN rail box)    │
-│                              │                      │
-│                              │  ┌────┐    ┌────┐    │
-│                              │  │ L  │    │ N  │    │   230V AC cable
-│                              │  │────│    │────│    │   between clusters
-│                              │  │ ○  │    │ ○  │    │   (underground or overhead)
-│                              │  └────┘    └────┘    │
-│                              │  Coil: 230V          │
-│                              │  Contacts: 63A       │
-│                              └──────────────────────┘
+│  └──────┬──────────────┘ └─────────┬────────────┘  └──────┬──────────────┘ └───────┬───────┘
+│         │                         │                      │                        │
+│         │                         │                      │                        │
+│  ┄┄┄┄┄┄┄┴┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┴┄┄┄┄┄┄┄┄┄┄┄    ┄┄┄┄┄┄┄┴┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┴┄┄┄┄┄┄┄
+│  48V DC BUS (within Cluster A only)               48V DC BUS (within Cluster B only)
+│  Batteries can share charge within cluster        Batteries can share charge within cluster
+│  THIS BUS DOES NOT CROSS TO OTHER CLUSTER         THIS BUS DOES NOT CROSS TO OTHER CLUSTER
+│  ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄    ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
+│
+│                    ▲                                              ▲
+│                    │ INVERTERS CONVERT                            │ INVERTERS CONVERT
+│                    │ 48V DC → 230V AC                             │ 48V DC → 230V AC
+│                    ▼                                              ▼
+│
+│  ═══════════════════════════════════════════     ═══════════════════════════════════════════
+│  ║    CLUSTER A: 230V AC BUS               ║     ║    CLUSTER B: 230V AC BUS               ║
+│  ═══════════════════╤═══════════════════════     ═══════════════════╤═══════════════════════
+│                     │                                               │
+│                     │                                               │
+│                     │         ┌─────────────────────────┐           │
+│                     │         │   230V AC CABLE         │           │
+│                     └─────────┤   (4mm², 50-100m)       ├───────────┘
+│                               │                         │
+│                               │   + BREAKER 63A each    │
+│                               │     side for safety     │
+│                               │                         │
+│                               │   This is the ONLY      │
+│                               │   connection between    │
+│                               │   clusters              │
+│                               └─────────────────────────┘
 │
 │  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─
 │  CAN BUS (RJ45 cables between all houses, handles SYNC + STATUS via ThingSet)
@@ -119,18 +128,19 @@ HARDWARE PER HOUSE:
 
 SHARED BETWEEN CLUSTERS:
 ┌────────────────┬─────────────────────────────────────────────────────────────────┐
-│ 63A Contactor  │ DIN-rail box, 230V coil, connects cluster AC buses              │
-│ AC Cable       │ 4mm² underground or overhead cable between clusters             │
+│ 63A Breakers   │ One breaker on each cluster side (safety disconnect)            │
+│ AC Cable       │ 4mm² underground or overhead cable, 50-100m between clusters    │
 └────────────────┴─────────────────────────────────────────────────────────────────┘
 ```
 
 **How it works:**
 - Each house is self-contained: Solar → MPPT → Battery → Inverter → Loads
-- 48V DC bus shared within cluster (batteries can help each other)
+- 48V DC bus shared within cluster (batteries can share charge, stays LOCAL)
+- Inverters convert 48V DC → 230V AC (this is where voltage changes)
 - 230V AC bus shared within cluster (inverters parallel via CAN sync)
-- Clusters connected via 63A contactor + droop control balances power
+- Clusters connected via 230V AC cable ONLY (DC never crosses between clusters)
+- Droop control balances power automatically between clusters
 - CAN bus daisy-chains all houses: RJ45 from House 1 → 2 → 3 → 4
-- One master ESP32 broadcasts sync, all slaves follow
 
 ---
 
