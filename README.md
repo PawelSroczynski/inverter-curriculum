@@ -1,25 +1,26 @@
-# Inverter Building Curriculum
+# DIY Swarm Microgrid
 
-**From LED Blinker to Swarm-Networked Community Microgrid**
+**From Zero Electronics to Community Energy Independence**
 
-Build your own 6-15kW pure sine wave inverters that communicate, share power automatically, and create resilient off-grid communities.
+Learn electronics from scratch, build 6-15kW inverters, connect them into a self-organizing swarm grid that powers your whole community—no utility required.
 
 [![License: Open Source](https://img.shields.io/badge/License-Open%20Source-green.svg)](#license)
 [![Parts: 7](https://img.shields.io/badge/Parts-7-blue.svg)](#learning-path)
-[![Power: 20kW](https://img.shields.io/badge/Max%20Power-20kW-orange.svg)](#what-youll-build)
+[![Power: 72kW](https://img.shields.io/badge/Swarm%20Capacity-72kW-orange.svg)](#what-youll-build)
 
 ---
 
-## Why This Curriculum?
+## Why Build This?
 
-| Problem | Solution |
-|---------|----------|
+| Problem | This Project |
+|---------|--------------|
 | Commercial inverters cost $3,000+ each | Build for ~$775 per unit |
 | Proprietary systems, no repair possible | Open source, fully repairable |
-| Single inverter = single point of failure | Swarm of inverters = resilient |
+| Single inverter = single point of failure | Swarm shares load automatically |
 | Grid dependency | Complete energy independence |
+| Complex microgrid controllers | Self-organizing via droop control |
 
-**End Goal:** 9-household microgrid with 54kW capacity, automatic power sharing, no utility grid required.
+**End Goal:** 12-household swarm microgrid with 72kW capacity, tiered AC buses, automatic power sharing between clusters.
 
 ---
 
@@ -1042,6 +1043,6 @@ Open source. Build for yourself, your community, or teach others.
 ---
 
 <p align="center">
-<strong>From LED blinker to swarm-powered communities.</strong><br>
-<em>No utility grid required.</em>
+<strong>From zero electronics to community energy independence.</strong><br>
+<em>Build it. Connect it. Power your village.</em>
 </p>
