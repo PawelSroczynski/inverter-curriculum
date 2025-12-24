@@ -5,8 +5,9 @@
 Learn electronics from scratch, build 6-15kW inverters, connect them into a self-organizing swarm grid that powers your whole community—no utility required.
 
 [![License: Open Source](https://img.shields.io/badge/License-Open%20Source-green.svg)](#license)
-[![Parts: 7](https://img.shields.io/badge/Parts-7-blue.svg)](#learning-path)
-[![Power: 72kW](https://img.shields.io/badge/Swarm%20Capacity-72kW-orange.svg)](#what-youll-build)
+[![House: 6kW](https://img.shields.io/badge/House-6kW-blue.svg)](#level-3-house-detail)
+[![Cluster: 24kW](https://img.shields.io/badge/Cluster-24kW-yellow.svg)](#level-2-cluster-internal-detail)
+[![Swarm: 72kW](https://img.shields.io/badge/Swarm-72kW-orange.svg)](#level-1-tiered-bus-overview)
 
 ---
 
