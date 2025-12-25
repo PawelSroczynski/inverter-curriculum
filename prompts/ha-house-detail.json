@@ -1,73 +1,201 @@
 {
   "image_type": "software_screenshot",
-  "title": "Home Assistant House Detail View",
+  "title": "Home Assistant House Detail View - Premium",
   "style": {
     "theme": "home_assistant_dark",
-    "color_palette": ["#111111", "#1c1c1c", "#303030", "#03a9f4", "#4caf50", "#ff9800", "#f44336", "#9c27b0", "#ffffff"],
-    "aesthetic": "production Home Assistant dashboard, single house deep dive, BMS monitoring, Mushroom cards",
-    "mood": "detailed, technical but accessible, homeowner-friendly"
+    "color_palette": ["#0d1117", "#161b22", "#21262d", "#03a9f4", "#4caf50", "#ff9800", "#f44336", "#9c27b0", "#ffeb3b", "#ffffff"],
+    "aesthetic": "premium Home Assistant dashboard, Victron-killer, comprehensive single-house monitoring, touch-optimized, information-dense but clean",
+    "mood": "professional, premium feel, complete visibility, residential power station"
   },
   "layout": {
-    "type": "lovelace_panel",
-    "structure": "sidebar + scrollable content"
+    "type": "lovelace_sections",
+    "view_type": "sections (new HA layout)",
+    "max_columns": 4,
+    "card_spacing": "8px"
   },
   "content": {
     "ha_chrome": {
       "sidebar": {
+        "width": "60px (collapsed)",
+        "background": "#161b22",
+        "icons_only": true,
         "menu_items": [
-          {"icon": "mdi:home-group", "label": "Microgrid"},
-          {"icon": "mdi:home", "label": "House 1", "indent": true},
-          {"icon": "mdi:home", "label": "House 7", "active": true, "indent": true},
-          {"icon": "mdi:home", "label": "House 12", "indent": true}
+          {"icon": "mdi:home-group", "label": "Swarm"},
+          {"icon": "mdi:home", "label": "House 7", "active": true, "badge": "7"},
+          {"icon": "mdi:battery-heart", "label": "Cells"},
+          {"icon": "mdi:chart-line", "label": "History"}
         ]
       },
       "top_bar": {
-        "left": {"title": "House 7 - Cluster B"},
-        "right": {"edit_button": true}
+        "background": "#161b22",
+        "left": {"title": "House 7", "subtitle_chip": "Cluster B"},
+        "center": {"live_badge": "LIVE", "live_color": "green, pulsing dot"},
+        "right": {"items": ["refresh", "fullscreen", "settings"]}
       }
     },
     "dashboard_content": {
       "sections": [
         {
           "title": null,
+          "width": "full",
           "cards": [
             {
-              "type": "custom:mushroom-title-card",
-              "visual": {"title": "House 7", "subtitle": "Cluster B | Online | 49.95 Hz"}
-            },
+              "type": "custom:mushroom-chips-card",
+              "visual": {
+                "alignment": "center",
+                "chips": [
+                  {"icon": "mdi:check-circle", "label": "Online", "color": "green"},
+                  {"icon": "mdi:sine-wave", "label": "49.95 Hz", "color": "green"},
+                  {"icon": "mdi:flash", "label": "230.1 V", "color": "green"},
+                  {"icon": "mdi:thermometer", "label": "32°C", "color": "green"},
+                  {"icon": "mdi:delta", "label": "Δ 50mV", "color": "green"},
+                  {"icon": "mdi:connection", "label": "Cluster B", "color": "blue"}
+                ],
+                "style": "centered row, touch-friendly chips"
+              }
+            }
+          ]
+        },
+        {
+          "title": "Power Flow",
+          "width": "full",
+          "cards": [
             {
-              "type": "horizontal-stack",
+              "type": "custom:power-flow-card-plus",
+              "position": "prominent, centered",
+              "size": "large (400px height)",
+              "visual": {
+                "description": "Premium power flow visualization - the centerpiece",
+                "layout": "circular with house in center",
+                "background": "#0d1117",
+                "animation": "smooth flowing dots along paths",
+                "entities": {
+                  "solar": {
+                    "position": "top",
+                    "icon": "mdi:solar-power",
+                    "value": "4.2 kW",
+                    "secondary": "Today: 18.3 kWh",
+                    "color": "#ffeb3b",
+                    "size": "large icon, 48px",
+                    "flow_to_home": {"active": true, "animated": true, "width": "4px"},
+                    "flow_to_battery": {"active": true, "animated": true}
+                  },
+                  "battery": {
+                    "position": "left",
+                    "icon": "mdi:battery-charging-70",
+                    "value": "72%",
+                    "secondary": "+1.8 kW",
+                    "tertiary": "10.8 / 15 kWh",
+                    "color": "#4caf50",
+                    "size": "large",
+                    "soc_bar": "circular progress ring around icon, 72% filled",
+                    "flow_direction": "charging (into battery)"
+                  },
+                  "home": {
+                    "position": "center",
+                    "icon": "mdi:home",
+                    "value": "2.4 kW",
+                    "secondary": "House Load",
+                    "color": "#03a9f4",
+                    "size": "largest, 64px",
+                    "glow": "subtle blue glow"
+                  },
+                  "inverter": {
+                    "position": "center-bottom",
+                    "icon": "mdi:current-ac",
+                    "value": "230V",
+                    "secondary": "49.95 Hz",
+                    "color": "#9c27b0",
+                    "size": "medium"
+                  },
+                  "grid_bus": {
+                    "position": "right",
+                    "icon": "mdi:transmission-tower",
+                    "value": "→ 1.8 kW",
+                    "secondary": "To Cluster",
+                    "tertiary": "Exporting",
+                    "color": "#4caf50",
+                    "flow_direction": "out to grid/bus"
+                  }
+                },
+                "flow_paths": {
+                  "solar_to_home": {"color": "#ffeb3b", "width": "4px", "animated_dots": true},
+                  "solar_to_battery": {"color": "#4caf50", "width": "3px", "animated_dots": true},
+                  "battery_to_inverter": {"color": "#4caf50", "width": "3px", "animated_dots": false},
+                  "inverter_to_home": {"color": "#03a9f4", "width": "4px", "animated_dots": true},
+                  "inverter_to_bus": {"color": "#4caf50", "width": "3px", "animated_dots": true}
+                },
+                "style": "HA power-flow-card-plus, premium dark theme, large touch targets"
+              }
+            }
+          ]
+        },
+        {
+          "title": "Battery Status",
+          "cards": [
+            {
+              "type": "vertical-stack",
               "cards": [
                 {
                   "type": "gauge",
                   "visual": {
-                    "entity": "SOC",
+                    "name": "State of Charge",
                     "value": 72,
                     "min": 0,
                     "max": 100,
-                    "severity": {"green": 50, "yellow": 20, "red": 0},
+                    "unit": "%",
                     "needle": true,
-                    "style": "HA gauge card, large circular"
+                    "severity": {
+                      "green": 50,
+                      "yellow": 20,
+                      "red": 0
+                    },
+                    "size": "large, prominent",
+                    "segments": [
+                      {"from": 0, "to": 10, "color": "#f44336"},
+                      {"from": 10, "to": 20, "color": "#ff9800"},
+                      {"from": 20, "to": 50, "color": "#ffeb3b"},
+                      {"from": 50, "to": 100, "color": "#4caf50"}
+                    ],
+                    "style": "HA gauge with needle, large circular dial"
                   }
                 },
                 {
-                  "type": "custom:mushroom-template-card",
+                  "type": "entities",
                   "visual": {
-                    "layout": "vertical",
-                    "icon": "mdi:battery-70",
-                    "icon_color": "green",
-                    "primary": "10.8 kWh",
-                    "secondary": "of 15 kWh remaining"
+                    "entities": [
+                      {"icon": "mdi:battery-charging", "name": "Current", "state": "+12.5 A", "state_color": "green"},
+                      {"icon": "mdi:lightning-bolt", "name": "Power", "state": "+1.8 kW", "state_color": "green"},
+                      {"icon": "mdi:clock-outline", "name": "Time to Full", "state": "2h 15m"}
+                    ],
+                    "style": "compact entities card"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "vertical-stack",
+              "cards": [
+                {
+                  "type": "gauge",
+                  "visual": {
+                    "name": "State of Health",
+                    "value": 96,
+                    "min": 0,
+                    "max": 100,
+                    "unit": "%",
+                    "severity": {"green": 80, "yellow": 60, "red": 0},
+                    "style": "smaller gauge"
                   }
                 },
                 {
-                  "type": "custom:mushroom-template-card",
+                  "type": "entities",
                   "visual": {
-                    "layout": "vertical",
-                    "icon": "mdi:lightning-bolt",
-                    "icon_color": "orange",
-                    "primary": "-3.2 kW",
-                    "secondary": "Discharging"
+                    "entities": [
+                      {"icon": "mdi:calendar-check", "name": "Cycles", "state": "127"},
+                      {"icon": "mdi:counter", "name": "Total Throughput", "state": "1.9 MWh"},
+                      {"icon": "mdi:clock-start", "name": "Installed", "state": "2024-03-15"}
+                    ]
                   }
                 }
               ]
@@ -75,68 +203,141 @@
           ]
         },
         {
-          "title": "Energy Flow",
-          "cards": [
-            {
-              "type": "custom:power-flow-card-plus",
-              "visual": {
-                "description": "House-level power flow diagram",
-                "entities": {
-                  "solar": {"icon": "mdi:solar-panel", "value": "2.8 kW", "color": "yellow"},
-                  "battery": {"icon": "mdi:battery-70", "value": "72%", "secondary": "-3.2 kW", "color": "orange"},
-                  "inverter": {"icon": "mdi:current-ac", "value": "230V", "secondary": "49.95 Hz"},
-                  "home": {"icon": "mdi:home", "value": "3.2 kW", "color": "blue"},
-                  "grid": {"icon": "mdi:transmission-tower", "value": "To bus: +0.5 kW", "color": "green"}
-                },
-                "flow_paths": "animated dots showing power from solar to battery and load"
-              }
-            }
-          ]
-        },
-        {
-          "title": "Battery Cells",
+          "title": "Cell Voltages — 16S LiFePO4",
+          "width": "full",
           "cards": [
             {
               "type": "custom:bar-card",
               "visual": {
-                "title": "Cell Voltages (16S LiFePO4)",
                 "direction": "horizontal",
+                "height": "28px per bar",
+                "columns": 2,
                 "entities": [
-                  {"name": "C1", "value": 3.24, "color": "green"},
-                  {"name": "C2", "value": 3.25, "color": "green"},
-                  {"name": "C3", "value": 3.24, "color": "green"},
-                  {"name": "C4", "value": 3.26, "color": "green"},
-                  {"name": "C5", "value": 3.25, "color": "green"},
-                  {"name": "C6", "value": 3.23, "color": "green"},
-                  {"name": "C7", "value": 3.25, "color": "green"},
-                  {"name": "C8", "value": 3.24, "color": "green"},
-                  {"name": "C9", "value": 3.25, "color": "green"},
-                  {"name": "C10", "value": 3.26, "color": "green"},
-                  {"name": "C11", "value": 3.24, "color": "green"},
-                  {"name": "C12", "value": 3.25, "color": "green"},
-                  {"name": "C13", "value": 3.21, "color": "yellow", "note": "lowest"},
-                  {"name": "C14", "value": 3.25, "color": "green"},
-                  {"name": "C15", "value": 3.24, "color": "green"},
-                  {"name": "C16", "value": 3.25, "color": "green"}
+                  {"name": "C1", "value": 3.24, "unit": "V", "color": "#4caf50"},
+                  {"name": "C2", "value": 3.25, "unit": "V", "color": "#4caf50"},
+                  {"name": "C3", "value": 3.24, "unit": "V", "color": "#4caf50"},
+                  {"name": "C4", "value": 3.26, "unit": "V", "color": "#4caf50", "badge": "MAX"},
+                  {"name": "C5", "value": 3.25, "unit": "V", "color": "#4caf50"},
+                  {"name": "C6", "value": 3.23, "unit": "V", "color": "#4caf50"},
+                  {"name": "C7", "value": 3.25, "unit": "V", "color": "#4caf50"},
+                  {"name": "C8", "value": 3.24, "unit": "V", "color": "#4caf50"},
+                  {"name": "C9", "value": 3.25, "unit": "V", "color": "#4caf50"},
+                  {"name": "C10", "value": 3.26, "unit": "V", "color": "#4caf50"},
+                  {"name": "C11", "value": 3.24, "unit": "V", "color": "#4caf50"},
+                  {"name": "C12", "value": 3.25, "unit": "V", "color": "#4caf50"},
+                  {"name": "C13", "value": 3.21, "unit": "V", "color": "#ffeb3b", "badge": "MIN", "badge_color": "yellow"},
+                  {"name": "C14", "value": 3.25, "unit": "V", "color": "#4caf50"},
+                  {"name": "C15", "value": 3.24, "unit": "V", "color": "#4caf50"},
+                  {"name": "C16", "value": 3.25, "unit": "V", "color": "#4caf50"}
                 ],
-                "min": 2.8,
-                "max": 3.6,
-                "severity": [{"from": 2.8, "to": 3.0, "color": "red"}, {"from": 3.0, "to": 3.15, "color": "yellow"}, {"from": 3.15, "to": 3.6, "color": "green"}],
-                "style": "HA bar-card with colored bars based on voltage"
+                "min": 2.5,
+                "max": 3.65,
+                "severity": [
+                  {"from": 2.5, "to": 2.8, "color": "#f44336"},
+                  {"from": 2.8, "to": 3.0, "color": "#ff9800"},
+                  {"from": 3.0, "to": 3.15, "color": "#ffeb3b"},
+                  {"from": 3.15, "to": 3.45, "color": "#4caf50"},
+                  {"from": 3.45, "to": 3.65, "color": "#ff9800"}
+                ],
+                "show_value": true,
+                "animation": "smooth transitions",
+                "style": "HA bar-card, two-column layout, value labels, touch-friendly rows"
               }
             },
             {
-              "type": "entities",
-              "visual": {
-                "title": "Cell Statistics",
-                "entities": [
-                  {"name": "Min Cell", "state": "3.21V (C13)", "icon": "mdi:arrow-down"},
-                  {"name": "Max Cell", "state": "3.26V (C4, C10)", "icon": "mdi:arrow-up"},
-                  {"name": "Delta", "state": "50mV", "icon": "mdi:delta"},
-                  {"name": "Warning Threshold", "state": "100mV", "icon": "mdi:alert-outline"},
-                  {"name": "Balancer", "state": "Active on C13", "icon": "mdi:scale-balance", "state_color": "blue"}
-                ]
-              }
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:arrow-down",
+                    "icon_color": "yellow",
+                    "primary": "3.21V",
+                    "secondary": "Min (C13)",
+                    "layout": "vertical"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:arrow-up",
+                    "icon_color": "green",
+                    "primary": "3.26V",
+                    "secondary": "Max (C4)",
+                    "layout": "vertical"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:delta",
+                    "icon_color": "green",
+                    "primary": "50mV",
+                    "secondary": "Delta",
+                    "layout": "vertical"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:scale-balance",
+                    "icon_color": "blue",
+                    "primary": "Active",
+                    "secondary": "Balancer on C13",
+                    "layout": "vertical"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Temperature Sensors",
+          "cards": [
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:thermometer",
+                    "icon_color": "green",
+                    "primary": "32°C",
+                    "secondary": "Cell Pack",
+                    "tertiary": "Range: 30-34°C"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:thermometer",
+                    "icon_color": "green",
+                    "primary": "38°C",
+                    "secondary": "Inverter",
+                    "tertiary": "Normal"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:thermometer",
+                    "icon_color": "green",
+                    "primary": "29°C",
+                    "secondary": "BMS Board",
+                    "tertiary": "Normal"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:thermometer",
+                    "icon_color": "blue",
+                    "primary": "24°C",
+                    "secondary": "Ambient",
+                    "tertiary": "Room temp"
+                  }
+                }
+              ]
             }
           ]
         },
@@ -148,55 +349,234 @@
               "cards": [
                 {
                   "type": "custom:mushroom-template-card",
-                  "visual": {"icon": "mdi:white-balance-sunny", "icon_color": "amber", "primary": "18.3 kWh", "secondary": "Solar"}
+                  "visual": {
+                    "icon": "mdi:solar-power",
+                    "icon_color": "amber",
+                    "primary": "18.3 kWh",
+                    "secondary": "Solar Generated",
+                    "tertiary": "Peak: 4.8 kW @ 12:34"
+                  }
                 },
                 {
                   "type": "custom:mushroom-template-card",
-                  "visual": {"icon": "mdi:flash", "icon_color": "orange", "primary": "14.7 kWh", "secondary": "Consumed"}
+                  "visual": {
+                    "icon": "mdi:home-lightning-bolt",
+                    "icon_color": "blue",
+                    "primary": "14.7 kWh",
+                    "secondary": "House Consumed",
+                    "tertiary": "Peak: 5.2 kW @ 08:15"
+                  }
                 },
                 {
                   "type": "custom:mushroom-template-card",
-                  "visual": {"icon": "mdi:arrow-up-bold", "icon_color": "green", "primary": "3.1 kWh", "secondary": "Exported"}
+                  "visual": {
+                    "icon": "mdi:arrow-up-bold-circle",
+                    "icon_color": "green",
+                    "primary": "3.1 kWh",
+                    "secondary": "Exported to Cluster",
+                    "tertiary": "Helped neighbors"
+                  }
                 },
                 {
                   "type": "custom:mushroom-template-card",
-                  "visual": {"icon": "mdi:arrow-down-bold", "icon_color": "blue", "primary": "0.2 kWh", "secondary": "Imported"}
+                  "visual": {
+                    "icon": "mdi:arrow-down-bold-circle",
+                    "icon_color": "purple",
+                    "primary": "0.2 kWh",
+                    "secondary": "Imported from Cluster",
+                    "tertiary": "During cloud cover"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "custom:mushroom-template-card",
+              "visual": {
+                "icon": "mdi:percent",
+                "icon_color": "green",
+                "primary": "Self-Sufficiency: 98.7%",
+                "secondary": "Today's autonomy rate",
+                "layout": "horizontal",
+                "fill_container": true
+              }
+            }
+          ]
+        },
+        {
+          "title": "24-Hour History",
+          "width": "full",
+          "cards": [
+            {
+              "type": "custom:mini-graph-card",
+              "visual": {
+                "name": "SOC & Power",
+                "entities": [
+                  {"name": "SOC", "color": "#4caf50", "y_axis": "left", "show_fill": true},
+                  {"name": "Power", "color": "#03a9f4", "y_axis": "right", "show_fill": false}
+                ],
+                "hours_to_show": 24,
+                "points_per_hour": 6,
+                "line_width": 2,
+                "height": 150,
+                "show": {
+                  "labels": true,
+                  "labels_secondary": true,
+                  "extrema": true,
+                  "average": true,
+                  "legend": true
+                },
+                "data_description": {
+                  "soc": "Started at 35% midnight, rose to 100% by 10am solar peak, now dropping at 72%",
+                  "power": "Negative overnight (discharge), positive during day (charge/export)"
+                },
+                "annotations": [
+                  {"time": "06:00", "label": "Sunrise"},
+                  {"time": "10:15", "label": "100% Full"},
+                  {"time": "18:30", "label": "Sunset"}
+                ],
+                "style": "dual-axis mini-graph with legend and time markers"
+              }
+            }
+          ]
+        },
+        {
+          "title": "Inverter Status",
+          "cards": [
+            {
+              "type": "entities",
+              "visual": {
+                "entities": [
+                  {"icon": "mdi:current-ac", "name": "AC Voltage", "state": "230.1 V", "state_color": "green"},
+                  {"icon": "mdi:sine-wave", "name": "Frequency", "state": "49.95 Hz", "state_color": "green"},
+                  {"icon": "mdi:current-dc", "name": "DC Bus", "state": "51.8 V", "state_color": "green"},
+                  {"icon": "mdi:lightning-bolt", "name": "Output Power", "state": "2.4 kW"},
+                  {"icon": "mdi:chart-line-variant", "name": "THD", "state": "1.2%", "state_color": "green"},
+                  {"icon": "mdi:thermometer", "name": "Heatsink Temp", "state": "38°C", "state_color": "green"},
+                  {"icon": "mdi:fan", "name": "Cooling Fan", "state": "Auto (45%)", "state_color": "green"}
+                ],
+                "style": "HA entities card, compact rows"
+              }
+            },
+            {
+              "type": "custom:mushroom-chips-card",
+              "visual": {
+                "chips": [
+                  {"icon": "mdi:check", "label": "Anti-Island: OK", "color": "green"},
+                  {"icon": "mdi:sync", "label": "Grid-Forming", "color": "blue"},
+                  {"icon": "mdi:lightning-bolt", "label": "6kW Rated", "color": "blue"}
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "title": "Cluster Connection",
+          "cards": [
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:home-group",
+                    "icon_color": "green",
+                    "primary": "Cluster B",
+                    "secondary": "Connected",
+                    "tertiary": "4 houses online"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:swap-horizontal",
+                    "icon_color": "green",
+                    "primary": "→ 1.8 kW",
+                    "secondary": "Exporting",
+                    "tertiary": "Helping H5, H8"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:sine-wave",
+                    "icon_color": "green",
+                    "primary": "50.01 Hz",
+                    "secondary": "Cluster Freq",
+                    "tertiary": "Δ +0.06 Hz"
+                  }
                 }
               ]
             }
           ]
         },
         {
-          "title": "SOC History - 24h",
+          "title": "Recent Events",
           "cards": [
             {
-              "type": "custom:mini-graph-card",
+              "type": "logbook",
               "visual": {
-                "entities": [{"name": "SOC", "color": "#4caf50"}],
-                "hours_to_show": 24,
-                "line_width": 2,
-                "fill": true,
-                "show": {"labels": true, "points": false, "legend": false},
-                "data_description": "SOC starts ~40% at midnight, rises to 100% by 10am, now at 72%",
-                "style": "area chart with gradient, shows charge/discharge cycles"
+                "hours_to_show": 12,
+                "entries": [
+                  {"time": "14:52", "icon": "mdi:arrow-right", "message": "Exporting 1.8kW to cluster", "color": "green"},
+                  {"time": "14:23", "icon": "mdi:scale-balance", "message": "Balancer activated on C13", "color": "blue"},
+                  {"time": "12:34", "icon": "mdi:solar-power", "message": "Peak solar: 4.8 kW", "color": "amber"},
+                  {"time": "10:15", "icon": "mdi:battery-charging-100", "message": "100% SOC reached", "color": "green"},
+                  {"time": "08:15", "icon": "mdi:flash-alert", "message": "Peak load: 5.2 kW (breakfast)", "color": "orange"},
+                  {"time": "06:12", "icon": "mdi:weather-sunny", "message": "Solar production started", "color": "amber"},
+                  {"time": "03:45", "icon": "mdi:arrow-left", "message": "Imported 0.2kWh from cluster", "color": "purple"}
+                ],
+                "style": "HA logbook card with color-coded icons and timestamps"
               }
             }
           ]
         },
         {
-          "title": "Events Today",
+          "title": "Quick Actions",
           "cards": [
             {
-              "type": "logbook",
-              "visual": {
-                "entries": [
-                  {"time": "14:23", "icon": "mdi:alert", "message": "Cell 13 delta warning", "color": "orange"},
-                  {"time": "14:00", "icon": "mdi:flash", "message": "Heavy load: 5.8kW"},
-                  {"time": "10:15", "icon": "mdi:arrow-up", "message": "Export to cluster: 2kW", "color": "green"},
-                  {"time": "09:30", "icon": "mdi:battery", "message": "100% SOC reached", "color": "green"},
-                  {"time": "06:12", "icon": "mdi:weather-sunny", "message": "Sunrise, charging started"}
-                ]
-              }
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:battery-sync",
+                    "icon_color": "blue",
+                    "primary": "Force Balance",
+                    "layout": "vertical",
+                    "tap_action": "call-service"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:power-settings",
+                    "icon_color": "orange",
+                    "primary": "Limit Export",
+                    "layout": "vertical",
+                    "tap_action": "call-service"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:chart-box-outline",
+                    "icon_color": "purple",
+                    "primary": "Full History",
+                    "layout": "vertical",
+                    "tap_action": "navigate"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:cog",
+                    "icon_color": "gray",
+                    "primary": "Settings",
+                    "layout": "vertical",
+                    "tap_action": "navigate"
+                  }
+                }
+              ]
             }
           ]
         }
@@ -206,12 +586,37 @@
   "technical_details": {
     "resolution": "1920x1080",
     "aspect_ratio": "16:9",
-    "render_style": "photorealistic Home Assistant screenshot",
-    "lighting": "flat screen, no reflections",
-    "context": "Home Assistant Lovelace with Mushroom, bar-card, mini-graph-card, power-flow-card-plus",
-    "accuracy": "exact HA styling, proper HACS card appearances"
+    "render_style": "photorealistic Home Assistant screenshot, premium dashboard",
+    "lighting": "flat screen, no reflections, matte display",
+    "context": "Home Assistant 2024.x with premium card collection",
+    "accuracy": "exact HA styling, touch-optimized, better than Victron VRM",
+    "custom_cards_used": [
+      "mushroom-cards (all types)",
+      "power-flow-card-plus",
+      "bar-card",
+      "mini-graph-card",
+      "layout-card"
+    ],
+    "design_principles": [
+      "Information hierarchy - most important data largest",
+      "Touch-friendly - large tap targets, proper spacing",
+      "Color-coded status - green/yellow/orange/red",
+      "Complete visibility - all data accessible without scrolling",
+      "Premium feel - subtle animations, proper typography"
+    ]
   },
   "negative_prompts": [
-    "curved monitor", "control room", "reflections", "cinematic", "neon glow", "SCADA", "industrial", "monitor bezel", "room background"
+    "curved monitor",
+    "control room",
+    "reflections",
+    "cinematic",
+    "neon glow",
+    "Victron",
+    "industrial SCADA",
+    "monitor bezel",
+    "room background",
+    "cluttered",
+    "too many colors",
+    "cheap looking"
   ]
 }
