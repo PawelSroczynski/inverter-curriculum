@@ -1,0 +1,134 @@
+{
+  "image_type": "software_screenshot",
+  "title": "Home Assistant Cluster Detail View",
+  "style": {
+    "theme": "home_assistant_dark",
+    "color_palette": ["#111111", "#1c1c1c", "#303030", "#03a9f4", "#4caf50", "#ff9800", "#f44336", "#ffffff"],
+    "aesthetic": "real Home Assistant dashboard, Lovelace UI, cluster monitoring",
+    "mood": "clean, organized, user-friendly, realistic software"
+  },
+  "layout": {
+    "type": "lovelace_sections",
+    "structure": "sidebar + vertical sections for cluster"
+  },
+  "content": {
+    "ha_chrome": {
+      "sidebar": {
+        "items": ["Overview", "Energy", "Cluster A", "Cluster B", "Cluster C"],
+        "active": "Cluster A highlighted"
+      },
+      "top_bar": {
+        "left": "'Cluster A - 4 Houses' title",
+        "right": "edit dashboard icon"
+      }
+    },
+    "sections": [
+      {
+        "title": "Cluster Status",
+        "cards": [
+          {
+            "type": "custom:mushroom-template-card",
+            "visual": "large card with cluster icon",
+            "primary": "Cluster A",
+            "secondary": "Gateway: Connected | 49.92 Hz",
+            "icon": "mdi:home-group",
+            "badge": "green checkmark"
+          },
+          {
+            "type": "gauge",
+            "title": "Total SOC",
+            "visual": "HA gauge card showing 71%",
+            "segments": "green/yellow/red"
+          },
+          {
+            "type": "entity",
+            "title": "Net Power",
+            "visual": "+0.8 kW to swarm",
+            "icon": "mdi:arrow-up"
+          }
+        ]
+      },
+      {
+        "title": "Houses",
+        "layout": "horizontal-stack of 4 cards",
+        "cards": [
+          {
+            "type": "custom:mushroom-entity-card",
+            "entity": "House 1",
+            "primary": "H1",
+            "secondary": "82% | +1.2kW",
+            "icon": "mdi:home",
+            "icon_color": "green",
+            "visual": "compact mushroom card"
+          },
+          {
+            "type": "custom:mushroom-entity-card",
+            "entity": "House 2",
+            "primary": "H2",
+            "secondary": "45% | -2.8kW",
+            "icon": "mdi:home",
+            "icon_color": "orange"
+          },
+          {
+            "type": "custom:mushroom-entity-card",
+            "entity": "House 3",
+            "primary": "H3",
+            "secondary": "91% | +2.1kW",
+            "icon": "mdi:home",
+            "icon_color": "green"
+          },
+          {
+            "type": "custom:mushroom-entity-card",
+            "entity": "House 4",
+            "primary": "H4",
+            "secondary": "67% | +0.3kW",
+            "icon": "mdi:home",
+            "icon_color": "green"
+          }
+        ]
+      },
+      {
+        "title": "Power Distribution",
+        "cards": [
+          {
+            "type": "custom:sankey-chart-card",
+            "visual": "simple HA sankey showing power flow between houses",
+            "style": "Home Assistant sankey card plugin"
+          }
+        ]
+      },
+      {
+        "title": "Gateway",
+        "cards": [
+          {
+            "type": "entities",
+            "entities": [
+              {"name": "Contactor", "state": "Closed", "icon": "mdi:electric-switch-closed"},
+              {"name": "Cluster Frequency", "state": "49.92 Hz"},
+              {"name": "Swarm Frequency", "state": "49.95 Hz"},
+              {"name": "Delta", "state": "0.03 Hz"}
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "technical_details": {
+    "resolution": "1920x1080",
+    "aspect_ratio": "16:9",
+    "render_style": "realistic software screenshot, actual Home Assistant interface",
+    "lighting": "flat screen, no reflections",
+    "context": "Home Assistant Lovelace dashboard, Mushroom cards, dark theme",
+    "accuracy": "exact HA card styling, Mushroom card appearance, proper icons"
+  },
+  "negative_prompts": [
+    "curved monitor",
+    "control room",
+    "reflections",
+    "cinematic",
+    "neon glow",
+    "SCADA",
+    "industrial",
+    "monitor frame"
+  ]
+}

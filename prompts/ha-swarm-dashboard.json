@@ -1,0 +1,113 @@
+{
+  "image_type": "software_screenshot",
+  "title": "Home Assistant Swarm Overview Dashboard",
+  "style": {
+    "theme": "home_assistant_dark",
+    "color_palette": ["#111111", "#1c1c1c", "#303030", "#03a9f4", "#4caf50", "#ff9800", "#f44336", "#ffffff"],
+    "aesthetic": "real Home Assistant dashboard, Lovelace UI, card-based layout, Material Design",
+    "mood": "clean, user-friendly, smart home interface, realistic software"
+  },
+  "layout": {
+    "type": "lovelace_masonry",
+    "structure": "sidebar left + card grid right",
+    "card_style": "rounded corners, subtle shadows"
+  },
+  "content": {
+    "ha_chrome": {
+      "sidebar": {
+        "visual": "Home Assistant sidebar with icons",
+        "items": ["Overview", "Energy", "Map", "Logbook", "History", "Microgrid"],
+        "active": "Microgrid highlighted",
+        "bottom": "Settings, Notifications icons"
+      },
+      "top_bar": {
+        "left": "hamburger menu, 'Microgrid Overview' title",
+        "right": "search icon, user avatar"
+      }
+    },
+    "cards": [
+      {
+        "type": "custom:power-flow-card",
+        "position": "top-left, large",
+        "title": "Power Flow",
+        "visual": "Home Assistant power flow card showing Solar -> House -> Battery -> Grid",
+        "values": {
+          "solar": "52 kW",
+          "house": "38 kW",
+          "battery": "+5 kW charging",
+          "grid": "0 kW"
+        },
+        "style": "animated dots showing power direction, circular icons"
+      },
+      {
+        "type": "entities",
+        "position": "top-right",
+        "title": "System Status",
+        "entities": [
+          {"name": "Grid Status", "state": "Off-Grid", "icon": "mdi:transmission-tower-off"},
+          {"name": "Total SOC", "state": "78%", "icon": "mdi:battery-70"},
+          {"name": "Active Faults", "state": "0", "icon": "mdi:alert-circle-outline"}
+        ],
+        "style": "HA entities card with icons and states"
+      },
+      {
+        "type": "custom:mushroom-chips-card",
+        "position": "below power flow",
+        "chips": [
+          {"label": "Cluster A: 78%", "color": "green"},
+          {"label": "Cluster B: 95%", "color": "green"},
+          {"label": "Cluster C: 65%", "color": "orange"}
+        ],
+        "style": "Mushroom chips in a row"
+      },
+      {
+        "type": "grid",
+        "position": "middle",
+        "title": "Houses",
+        "visual": "3x4 grid of mini house cards",
+        "cards": [
+          {"house": "H1", "soc": "82%", "power": "+1.2kW", "color": "green"},
+          {"house": "H2", "soc": "75%", "power": "-2.8kW", "color": "orange"},
+          {"house": "H3", "soc": "88%", "power": "+0.5kW", "color": "green"}
+        ],
+        "style": "Mushroom template cards, compact, colored based on state"
+      },
+      {
+        "type": "custom:mini-graph-card",
+        "position": "bottom-left",
+        "title": "Power History - 24h",
+        "visual": "area chart with solar (green) and consumption (orange)",
+        "style": "mini-graph-card with gradient fill"
+      },
+      {
+        "type": "logbook",
+        "position": "bottom-right",
+        "title": "Recent Events",
+        "entries": [
+          "14:23 - Gateway B opened",
+          "13:45 - House 5 reached 100%",
+          "12:12 - Cell delta warning H9"
+        ],
+        "style": "HA logbook card with timestamps"
+      }
+    ]
+  },
+  "technical_details": {
+    "resolution": "1920x1080",
+    "aspect_ratio": "16:9",
+    "render_style": "realistic software screenshot, actual Home Assistant interface",
+    "lighting": "flat screen, no reflections",
+    "context": "Home Assistant running in browser, dark theme, Lovelace dashboard",
+    "accuracy": "exact HA card styling, sidebar icons, Material Design elements"
+  },
+  "negative_prompts": [
+    "curved monitor",
+    "control room",
+    "reflections",
+    "cinematic",
+    "neon glow",
+    "SCADA",
+    "industrial",
+    "monitor frame"
+  ]
+}

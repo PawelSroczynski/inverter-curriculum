@@ -1,0 +1,118 @@
+{
+  "image_type": "software_screenshot",
+  "title": "Grafana Gateway Synchronization Monitor",
+  "style": {
+    "theme": "grafana_dark",
+    "color_palette": ["#111217", "#181b1f", "#22252a", "#73bf69", "#5794f2", "#fade2a", "#ff9830", "#f2495c"],
+    "aesthetic": "real Grafana dashboard screenshot, time series monitoring, frequency analysis",
+    "mood": "professional, real-time monitoring, realistic software"
+  },
+  "layout": {
+    "type": "grafana_grid",
+    "structure": "3 columns for 3 gateways, rows for different metrics"
+  },
+  "content": {
+    "grafana_chrome": {
+      "top_bar": {
+        "left": "Grafana logo, breadcrumb: Dashboards > Microgrid > Gateway Sync",
+        "right": "time picker showing 'Last 5 minutes', auto-refresh 5s"
+      },
+      "left_sidebar": "collapsed"
+    },
+    "dashboard_title": {
+      "text": "Gateway Synchronization Monitor",
+      "status_badge": "green dot with 'Live'"
+    },
+    "row_1": {
+      "title": "Frequency Delta from Swarm Bus",
+      "panels": [
+        {
+          "title": "Gateway A",
+          "type": "time_series",
+          "visual": "line hovering near 0, range -0.5 to +0.5 Hz",
+          "current": "-0.03 Hz",
+          "color": "#73bf69",
+          "thresholds": "red bands at ±0.5Hz"
+        },
+        {
+          "title": "Gateway B",
+          "type": "time_series",
+          "visual": "line very close to 0",
+          "current": "+0.01 Hz",
+          "color": "#73bf69"
+        },
+        {
+          "title": "Gateway C",
+          "type": "time_series",
+          "visual": "line showing drift, approaching -0.5Hz",
+          "current": "-0.38 Hz",
+          "color": "#fade2a",
+          "thresholds": "approaching yellow zone"
+        }
+      ]
+    },
+    "row_2": {
+      "title": "Contactor State",
+      "panels": [
+        {
+          "title": "GW-A Contactor",
+          "type": "state_timeline",
+          "visual": "Grafana state timeline, green bar labeled CLOSED",
+          "style": "state-timeline panel"
+        },
+        {
+          "title": "GW-B Contactor",
+          "type": "state_timeline",
+          "visual": "green bar CLOSED"
+        },
+        {
+          "title": "GW-C Contactor",
+          "type": "state_timeline",
+          "visual": "orange bar OPEN for last 8 minutes, was green before",
+          "annotation": "marker showing 'Opened - freq mismatch'"
+        }
+      ]
+    },
+    "row_3": {
+      "title": "Sync Quality",
+      "panels": [
+        {
+          "title": "GW-A",
+          "type": "gauge",
+          "visual": "Grafana gauge at 99.4%",
+          "color": "green"
+        },
+        {
+          "title": "GW-B",
+          "type": "gauge",
+          "visual": "gauge at 99.9%",
+          "color": "green"
+        },
+        {
+          "title": "GW-C",
+          "type": "gauge",
+          "visual": "gauge at 76.2%",
+          "color": "yellow"
+        }
+      ]
+    }
+  },
+  "technical_details": {
+    "resolution": "1920x1080",
+    "aspect_ratio": "16:9",
+    "render_style": "realistic software screenshot, actual Grafana interface",
+    "lighting": "flat screen, no reflections",
+    "context": "direct Grafana screenshot with time series and state-timeline panels",
+    "accuracy": "exact Grafana panel headers, axis labels, legend style"
+  },
+  "negative_prompts": [
+    "curved monitor",
+    "oscilloscope",
+    "control room",
+    "reflections",
+    "cinematic",
+    "neon glow",
+    "waveform overlay",
+    "monitor frame"
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "image_type": "software_screenshot",
+  "title": "Home Assistant Energy Dashboard",
+  "style": {
+    "theme": "home_assistant_dark",
+    "color_palette": ["#111111", "#1c1c1c", "#303030", "#ffc107", "#4caf50", "#2196f3", "#ff5722", "#ffffff"],
+    "aesthetic": "real Home Assistant Energy Dashboard, built-in energy view",
+    "mood": "clean, official HA style, energy monitoring, realistic software"
+  },
+  "layout": {
+    "type": "ha_energy_dashboard",
+    "structure": "HA built-in energy dashboard layout"
+  },
+  "content": {
+    "ha_chrome": {
+      "sidebar": {
+        "items": ["Overview", "Energy", "Map", "Logbook"],
+        "active": "Energy highlighted with lightning icon"
+      },
+      "top_bar": {
+        "left": "'Energy' title",
+        "center": "date picker showing 'Today'",
+        "right": "compare toggle, configure button"
+      }
+    },
+    "energy_sections": [
+      {
+        "title": "Energy distribution today",
+        "type": "ha_energy_distribution",
+        "visual": "Official HA energy distribution card with house in center",
+        "flows": {
+          "solar": {"value": "52 kWh", "color": "yellow", "position": "top"},
+          "battery_in": {"value": "8 kWh", "color": "green", "label": "from battery"},
+          "battery_out": {"value": "5 kWh", "color": "purple", "label": "to battery"},
+          "home": {"value": "55 kWh", "color": "blue", "position": "center"},
+          "grid_export": {"value": "0 kWh", "color": "gray"},
+          "grid_import": {"value": "0 kWh", "color": "gray"}
+        },
+        "style": "exact HA energy distribution card with animated flows"
+      },
+      {
+        "title": "Solar production",
+        "type": "ha_energy_solar",
+        "visual": "bar chart showing hourly solar production, yellow bars",
+        "peak": "highest bar at noon showing ~8kW",
+        "style": "HA energy solar chart style"
+      },
+      {
+        "title": "Energy usage",
+        "type": "ha_energy_usage",
+        "visual": "stacked bar chart by device/category",
+        "categories": ["Appliances", "HVAC", "Lighting", "Other"],
+        "style": "HA energy usage chart with legend"
+      },
+      {
+        "title": "Battery",
+        "type": "ha_battery_card",
+        "visual": "area chart showing battery level over day + charge/discharge bars",
+        "soc_line": "line showing 40% at night rising to 100% midday, back to 70% evening",
+        "style": "HA energy battery chart"
+      },
+      {
+        "title": "Sources",
+        "type": "entities",
+        "visual": "list showing energy sources with icons",
+        "entities": [
+          {"name": "Solar Panels", "value": "52.3 kWh", "icon": "mdi:solar-power"},
+          {"name": "Battery Discharge", "value": "8.1 kWh", "icon": "mdi:battery-arrow-down"}
+        ]
+      }
+    ]
+  },
+  "technical_details": {
+    "resolution": "1920x1080",
+    "aspect_ratio": "16:9",
+    "render_style": "realistic software screenshot, actual Home Assistant Energy Dashboard",
+    "lighting": "flat screen, no reflections",
+    "context": "Home Assistant built-in Energy dashboard, official styling",
+    "accuracy": "exact HA energy dashboard appearance, official chart styles, correct icons"
+  },
+  "negative_prompts": [
+    "curved monitor",
+    "control room",
+    "reflections",
+    "cinematic",
+    "neon glow",
+    "custom cards",
+    "SCADA",
+    "monitor frame"
+  ]
+}

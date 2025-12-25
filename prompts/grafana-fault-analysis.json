@@ -1,0 +1,104 @@
+{
+  "image_type": "software_screenshot",
+  "title": "Grafana Fault Analysis Dashboard",
+  "style": {
+    "theme": "grafana_dark",
+    "color_palette": ["#111217", "#181b1f", "#22252a", "#ff5286", "#73bf69", "#5794f2", "#fade2a", "#b877d9"],
+    "aesthetic": "real Grafana dashboard screenshot, actual software interface, production monitoring tool",
+    "mood": "professional, utilitarian, data-focused, realistic software"
+  },
+  "layout": {
+    "type": "grafana_grid",
+    "structure": "top time selector + 2x3 panel grid",
+    "panel_borders": "thin dark gray lines"
+  },
+  "content": {
+    "grafana_chrome": {
+      "top_bar": {
+        "left": "Grafana logo, breadcrumb: Dashboards > Microgrid > Fault Analysis",
+        "right": "time picker showing 'Last 30 seconds', refresh icon, share icon"
+      },
+      "left_sidebar": "collapsed, showing icons for Search, Dashboards, Alerting, etc."
+    },
+    "dashboard_title": {
+      "text": "Fault Analysis - F006 DC Undervoltage",
+      "style": "white text, small star icon for favorite"
+    },
+    "panels": [
+      {
+        "position": "top-left, wide",
+        "type": "time_series",
+        "title": "DC Bus Voltage",
+        "visual": "Grafana time series panel with red line dropping from 51V to 44V, annotation marker at fault point, legend at bottom",
+        "y_axis": "Voltage (V)",
+        "colors": "#ff5286 for line",
+        "features": "threshold line at 45V shown as dashed red"
+      },
+      {
+        "position": "top-right",
+        "type": "stat",
+        "title": "Fault Code",
+        "visual": "large F006 text in red, subtitle 'DC UNDERVOLTAGE'",
+        "style": "Grafana stat panel with colored background"
+      },
+      {
+        "position": "middle-left",
+        "type": "time_series",
+        "title": "Discharge Current",
+        "visual": "orange line showing current, dropping to 0 at fault",
+        "colors": "#fade2a"
+      },
+      {
+        "position": "middle-center",
+        "type": "gauge",
+        "title": "SOC at Fault",
+        "visual": "Grafana gauge showing 12%, red zone",
+        "thresholds": "green >50, yellow 20-50, red <20"
+      },
+      {
+        "position": "middle-right",
+        "type": "table",
+        "title": "Similar Past Faults",
+        "visual": "Grafana table panel with columns: Time, House, Code, Cell",
+        "rows": "3-4 rows of fault history"
+      },
+      {
+        "position": "bottom-left",
+        "type": "bar_gauge",
+        "title": "Cell Voltages at Fault",
+        "visual": "16 horizontal bars, Grafana bar gauge style, Cell 14 in red (2.85V)",
+        "colors": "gradient green to red based on voltage"
+      },
+      {
+        "position": "bottom-right",
+        "type": "text",
+        "title": "AI Analysis",
+        "visual": "Grafana text panel with markdown, monospace text showing root cause analysis",
+        "content": "bullet points with findings"
+      }
+    ],
+    "annotations": {
+      "visual": "vertical red dashed line on time series panels marking fault moment",
+      "label": "F006 Triggered"
+    }
+  },
+  "technical_details": {
+    "resolution": "1920x1080",
+    "aspect_ratio": "16:9",
+    "render_style": "realistic software screenshot, actual Grafana interface, not stylized",
+    "lighting": "flat screen lighting, no reflections, no monitor frame",
+    "context": "direct screenshot of Grafana running in browser, dark theme",
+    "accuracy": "use exact Grafana UI elements, panel headers, time picker style"
+  },
+  "negative_prompts": [
+    "curved monitor",
+    "control room",
+    "reflections",
+    "cinematic",
+    "neon glow",
+    "stylized",
+    "3D",
+    "monitor bezel",
+    "room background"
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "image_type": "software_screenshot",
+  "title": "Grafana Cell Voltage Heatmap",
+  "style": {
+    "theme": "grafana_dark",
+    "color_palette": ["#111217", "#181b1f", "#22252a", "#73bf69", "#fade2a", "#f2495c", "#5794f2"],
+    "aesthetic": "real Grafana dashboard screenshot, heatmap visualization, BMS monitoring",
+    "mood": "professional, cell-level analysis, realistic software"
+  },
+  "layout": {
+    "type": "grafana_grid",
+    "structure": "large heatmap + detail panels"
+  },
+  "content": {
+    "grafana_chrome": {
+      "top_bar": {
+        "left": "Grafana logo, breadcrumb: Dashboards > Microgrid > Cell Voltages",
+        "right": "time picker 'Last 1 hour', variable dropdown 'House: All'"
+      },
+      "left_sidebar": "collapsed"
+    },
+    "dashboard_title": {
+      "text": "Battery Cell Voltages - All Houses"
+    },
+    "panels": [
+      {
+        "position": "top, full width",
+        "type": "heatmap",
+        "title": "Cell Voltage Heatmap (12 Houses x 16 Cells)",
+        "visual": "Grafana heatmap panel, Y-axis: H1-H12, X-axis: Cell 1-16",
+        "colors": "green (3.2-3.3V), yellow (edges), red (<3.0V or >3.5V)",
+        "style": "actual Grafana heatmap with color scale legend on right",
+        "highlight": "one cell showing red (H3-C14)"
+      },
+      {
+        "position": "bottom-left",
+        "type": "bar_gauge",
+        "title": "House 3 - Cell Voltages",
+        "visual": "16 horizontal bars, Grafana bar gauge style",
+        "highlight": "Cell 14 at 2.85V in red, others green around 3.2V"
+      },
+      {
+        "position": "bottom-center",
+        "type": "stat",
+        "title": "Max Delta",
+        "visual": "large text showing '350mV' in yellow",
+        "subtitle": "H3: Cell 7 vs Cell 14"
+      },
+      {
+        "position": "bottom-right",
+        "type": "time_series",
+        "title": "Cell 14 History (House 3)",
+        "visual": "line chart showing voltage decline over days",
+        "annotation": "markers for past LVP events"
+      }
+    ],
+    "alert_banner": {
+      "position": "below title",
+      "visual": "Grafana alert banner: orange background, 'ALERTING: H3-Cell14 below 2.9V'",
+      "style": "actual Grafana alerting UI"
+    }
+  },
+  "technical_details": {
+    "resolution": "1920x1080",
+    "aspect_ratio": "16:9",
+    "render_style": "realistic software screenshot, actual Grafana interface",
+    "lighting": "flat screen, no reflections",
+    "context": "direct Grafana screenshot with heatmap panel",
+    "accuracy": "exact Grafana heatmap colors, panel borders, axis styling"
+  },
+  "negative_prompts": [
+    "curved monitor",
+    "control room",
+    "reflections",
+    "cinematic",
+    "neon glow",
+    "3D cells",
+    "monitor frame",
+    "stylized"
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "image_type": "software_screenshot",
+  "title": "Home Assistant House Detail View",
+  "style": {
+    "theme": "home_assistant_dark",
+    "color_palette": ["#111111", "#1c1c1c", "#303030", "#03a9f4", "#4caf50", "#ff9800", "#f44336", "#ffffff"],
+    "aesthetic": "real Home Assistant dashboard, single house monitoring, BMS data",
+    "mood": "clean, detailed, user-friendly, realistic software"
+  },
+  "layout": {
+    "type": "lovelace_panel",
+    "structure": "sidebar + detailed house view"
+  },
+  "content": {
+    "ha_chrome": {
+      "sidebar": {
+        "items": ["Overview", "House 1", "House 2", "House 3", "..."],
+        "active": "House 7 highlighted"
+      },
+      "top_bar": "'House 7 - Cluster B' title"
+    },
+    "sections": [
+      {
+        "title": "System Overview",
+        "layout": "horizontal-stack",
+        "cards": [
+          {
+            "type": "custom:mushroom-template-card",
+            "visual": "large SOC display",
+            "primary": "72%",
+            "secondary": "10.8 kWh remaining",
+            "icon": "mdi:battery-70",
+            "icon_color": "green"
+          },
+          {
+            "type": "gauge",
+            "title": "Power",
+            "visual": "gauge showing -3.2kW (discharging)",
+            "min": "-6kW",
+            "max": "+6kW",
+            "style": "HA gauge with needle"
+          },
+          {
+            "type": "entity",
+            "title": "Frequency",
+            "visual": "49.95 Hz",
+            "icon": "mdi:sine-wave"
+          }
+        ]
+      },
+      {
+        "title": "Energy Flow",
+        "cards": [
+          {
+            "type": "custom:power-flow-card",
+            "visual": "HA power flow showing Solar(2.8kW) -> Battery(72%) -> Inverter -> Load(3.2kW)",
+            "style": "power-flow-card with animated dots"
+          }
+        ]
+      },
+      {
+        "title": "Battery Cells",
+        "cards": [
+          {
+            "type": "custom:bar-card",
+            "title": "Cell Voltages",
+            "visual": "16 horizontal bars, Home Assistant bar-card style",
+            "values": "3.24V, 3.25V, 3.24V... showing slight variations",
+            "colors": "all green except one yellow (Cell 13: 3.21V)",
+            "style": "HA bar-card with value labels"
+          },
+          {
+            "type": "entities",
+            "title": "Cell Stats",
+            "entities": [
+              {"name": "Min Cell", "state": "3.21V (C13)"},
+              {"name": "Max Cell", "state": "3.26V (C6)"},
+              {"name": "Delta", "state": "50mV"},
+              {"name": "Avg Temp", "state": "28°C"}
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Today's Stats",
+        "layout": "horizontal-stack",
+        "cards": [
+          {
+            "type": "statistic",
+            "title": "Solar",
+            "visual": "18.3 kWh with sun icon"
+          },
+          {
+            "type": "statistic",
+            "title": "Consumed",
+            "visual": "14.7 kWh"
+          },
+          {
+            "type": "statistic",
+            "title": "Exported",
+            "visual": "3.1 kWh"
+          },
+          {
+            "type": "statistic",
+            "title": "Imported",
+            "visual": "0.2 kWh"
+          }
+        ]
+      },
+      {
+        "title": "History",
+        "cards": [
+          {
+            "type": "custom:mini-graph-card",
+            "title": "SOC - 24h",
+            "visual": "line chart showing SOC over day, dip at night, rise during day",
+            "style": "mini-graph-card with color gradient"
+          }
+        ]
+      }
+    ]
+  },
+  "technical_details": {
+    "resolution": "1920x1080",
+    "aspect_ratio": "16:9",
+    "render_style": "realistic software screenshot, actual Home Assistant interface",
+    "lighting": "flat screen, no reflections",
+    "context": "Home Assistant Lovelace, Mushroom + custom cards, dark theme",
+    "accuracy": "exact HA card styling, proper MDI icons, real card layouts"
+  },
+  "negative_prompts": [
+    "curved monitor",
+    "control room",
+    "reflections",
+    "cinematic",
+    "neon glow",
+    "SCADA",
+    "industrial",
+    "monitor frame"
+  ]
+}
