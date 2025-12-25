@@ -117,9 +117,10 @@
   "technical_details": {
     "resolution": "4K landscape",
     "aspect_ratio": "16:9",
-    "render_style": "photorealistic curved ultrawide monitor, SCADA interface, control room, bicycle chain visualization",
-    "lighting": "cyan and green screen glow mixed with dark ambient, glowing chain links, subtle reflections on glass, dramatic",
-    "context": "viewed on large curved monitor in ENKLAVA industrial operations center, cinematic"
+    "render_style": "photorealistic curved ultrawide monitor filling most of the frame, SCADA interface, bicycle chain visualization, close-up view",
+    "lighting": "cyan and green screen glow, glowing chain links, dark background, subtle edge reflections on monitor bezel",
+    "context": "monitor fills 90% of frame, minimal room visible, focus on power sharing diagram, cinematic",
+    "framing": "tight shot on monitor, shallow depth of field blurring any background"
   },
   "negative_prompts": [
     "cartoon characters",
@@ -127,6 +128,10 @@
     "cluttered",
     "blurry text",
     "confusing arrows",
-    "too many colors"
+    "too many colors",
+    "wide shot",
+    "room visible",
+    "background room",
+    "people"
   ]
 }

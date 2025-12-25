@@ -95,9 +95,10 @@
   "technical_details": {
     "resolution": "4K landscape",
     "aspect_ratio": "16:9",
-    "render_style": "photorealistic curved ultrawide monitor, SCADA interface, control room",
-    "lighting": "cyan and green screen glow mixed with dark ambient, subtle reflections on glass, dramatic",
-    "context": "viewed on large curved monitor in ENKLAVA industrial operations center, cinematic"
+    "render_style": "photorealistic curved ultrawide monitor filling most of the frame, SCADA interface, close-up view",
+    "lighting": "cyan and green screen glow, dark background, subtle edge reflections on monitor bezel",
+    "context": "monitor fills 90% of frame, minimal room visible, focus on screen content, cinematic",
+    "framing": "tight shot on monitor, shallow depth of field blurring any background"
   },
-  "negative_prompts": ["cartoon", "sketch", "blurry text", "cluttered", "hand-drawn", "low resolution"]
+  "negative_prompts": ["cartoon", "sketch", "blurry text", "cluttered", "hand-drawn", "low resolution", "wide shot", "room visible", "background room", "people"]
 }
