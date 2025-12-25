@@ -217,7 +217,7 @@
       "title": "Cell Analysis & History",
       "panels": [
         {
-          "position": "span 2",
+          "position": "span 3",
           "type": "bar_gauge",
           "title": "Cell Voltages at Fault",
           "visual": {
@@ -237,7 +237,7 @@
               {"label": "C11", "value": 3.08},
               {"label": "C12", "value": 3.11},
               {"label": "C13", "value": 2.92},
-              {"label": "C14", "value": 2.85, "highlight": "red, lowest cell"},
+              {"label": "C14", "value": 2.85, "highlight": "red, pulsing glow, lowest cell"},
               {"label": "C15", "value": 3.05},
               {"label": "C16", "value": 3.07}
             ],
@@ -251,37 +251,126 @@
           "style": "Grafana bar gauge with gradient colors"
         },
         {
-          "position": "span 2",
+          "position": "span 3",
           "type": "table",
-          "title": "Similar Past Faults",
+          "title": "Fault Pattern History",
           "visual": {
             "columns": [
-              {"name": "Date", "width": "100px"},
-              {"name": "House", "width": "60px"},
-              {"name": "Code", "width": "60px"},
-              {"name": "Root Cause", "width": "auto"}
+              {"name": "Date", "width": "90px"},
+              {"name": "House", "width": "50px"},
+              {"name": "Code", "width": "50px"},
+              {"name": "Root Cause", "width": "120px"},
+              {"name": "Cell", "width": "50px"},
+              {"name": "Recurrence", "width": "70px"}
             ],
             "rows": [
-              {"date": "2024-01-03", "house": "H3", "code": "F006", "cause": "Cell 14 LVP", "row_color": "slight red tint"},
-              {"date": "2023-12-15", "house": "H3", "code": "F011", "cause": "Cell 14 undervolt"},
-              {"date": "2023-11-28", "house": "H9", "code": "F006", "cause": "High load + low SOC"},
-              {"date": "2023-11-12", "house": "H3", "code": "F006", "cause": "Cell imbalance"}
+              {"date": "2024-01-15", "house": "H3", "code": "F006", "cause": "Cell 14 LVP", "cell": "C14", "recurrence": "4th time", "row_color": "red tint, current"},
+              {"date": "2024-01-03", "house": "H3", "code": "F006", "cause": "Cell 14 LVP", "cell": "C14", "recurrence": "3rd time"},
+              {"date": "2023-12-15", "house": "H3", "code": "F011", "cause": "Cell undervolt", "cell": "C14", "recurrence": "2nd time"},
+              {"date": "2023-11-28", "house": "H9", "code": "F006", "cause": "High load", "cell": "C7", "recurrence": "1st time"},
+              {"date": "2023-11-12", "house": "H3", "code": "F006", "cause": "Cell imbalance", "cell": "C14", "recurrence": "1st time"}
             ],
-            "style": "alternating row colors, sortable headers"
+            "style": "alternating row colors, sortable headers, first row highlighted"
           },
           "style": "Grafana table panel"
-        },
+        }
+      ]
+    },
+    "row_5": {
+      "title": "AI Diagnostics Engine",
+      "collapsed": false,
+      "panels": [
         {
-          "position": "span 2",
+          "position": "span 6 (full width)",
           "type": "text",
-          "title": "AI Root Cause Analysis",
+          "title": "🧠 AI Root Cause Analysis — Model: fault-predictor-v3.2 | Confidence: 94.7%",
           "visual": {
             "mode": "markdown",
-            "content": "**ROOT CAUSE:**\nBattery reached LVP threshold due to high discharge rate (95A) combined with critically low SOC (12%).\n\n**EVIDENCE:**\n- DC bus dropped 51.2V → 44.8V in 8s\n- Cell 14 reached 2.85V first (weakest)\n- Discharge was 95A (near BMS limit)\n- Neighbors supplied 2.5kW, insufficient\n\n**PATTERN:**\nCell 14 triggered in 3 of last 4 H3 faults.\n\n**ACTION:**\n1. Check Cell 14 capacity\n2. Verify active balancer\n3. Consider cell replacement",
-            "font": "monospace",
-            "background": "#181b1f"
+            "height": "350px",
+            "background": "gradient from #181b1f to #1a1d23",
+            "border": "1px solid #2a2d35",
+            "content_layout": "three columns with dividers",
+            "content": {
+              "column_1_diagnosis": {
+                "header": "⚡ PRIMARY DIAGNOSIS",
+                "items": [
+                  "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+                  "FAULT TYPE: DC Bus Undervoltage (F006)",
+                  "ROOT CAUSE: Degraded Cell Capacity",
+                  "CONFIDENCE: ████████████░░ 94.7%",
+                  "",
+                  "📊 ANALYSIS SUMMARY:",
+                  "Cell 14 internal resistance increased",
+                  "47% above pack average (measured: 12.3mΩ)",
+                  "Capacity degraded to estimated 71% SOH",
+                  "",
+                  "⏱️ FAULT CHAIN (reconstructed):",
+                  "T-8.2s: Load spike 78A → 95A",
+                  "T-5.1s: C14 voltage divergence begins",
+                  "T-2.3s: C14 drops below 3.0V threshold",
+                  "T-0.0s: Pack voltage hits 44.8V LVP",
+                  "T+0.1s: BMS triggers protective disconnect"
+                ]
+              },
+              "column_2_patterns": {
+                "header": "🔍 PATTERN RECOGNITION",
+                "items": [
+                  "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+                  "RECURRING CELL: C14 flagged 4x in 67 days",
+                  "MTBF TREND: Decreasing (31d → 12d → 8d)",
+                  "",
+                  "📈 CORRELATION MATRIX:",
+                  "├─ High load (>80A) + C14 weak: 0.94",
+                  "├─ Low SOC (<20%) + C14 weak: 0.89",
+                  "├─ Temperature >35°C + fault: 0.23",
+                  "└─ Time of day correlation: 0.12",
+                  "",
+                  "🏠 NEIGHBOR RESPONSE:",
+                  "H1 supplied: 1.2kW (max available)",
+                  "H2 supplied: 0.8kW (limited by SOC)",
+                  "H4 supplied: 0.5kW (limited by load)",
+                  "TOTAL: 2.5kW — needed 4.2kW",
+                  "SHORTFALL: 1.7kW (40% gap)"
+                ]
+              },
+              "column_3_actions": {
+                "header": "🛠️ RECOMMENDED ACTIONS",
+                "items": [
+                  "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+                  "PRIORITY 1 — IMMEDIATE:",
+                  "☐ Verify active balancer targeting C14",
+                  "☐ Check C14 physical connections",
+                  "☐ Run impedance test when SOC > 50%",
+                  "",
+                  "PRIORITY 2 — THIS WEEK:",
+                  "☐ Schedule capacity test for H3 pack",
+                  "☐ Order replacement cell (EVE 280Ah)",
+                  "☐ Review H3 load profile for peaks",
+                  "",
+                  "PRIORITY 3 — PREVENTIVE:",
+                  "☐ Add C14 to watchlist (15min polling)",
+                  "☐ Set alert: C14 < 3.05V during discharge",
+                  "☐ Consider pack rebalancing procedure",
+                  "",
+                  "📋 AUTO-GENERATED TICKET: #MG-2024-0892",
+                  "🔗 Similar case: KB-4421 (H7, Oct 2023)"
+                ]
+              }
+            },
+            "footer": {
+              "left": "Model trained on 2,847 fault events | Last updated: 2024-01-14 03:00 UTC",
+              "right": "Processing time: 127ms | Data points analyzed: 14,392"
+            },
+            "font": "JetBrains Mono, monospace",
+            "text_color": "#e0e0e0",
+            "accent_colors": {
+              "headers": "#5794f2",
+              "confidence_bar": "#73bf69",
+              "warnings": "#fade2a",
+              "critical": "#f2495c"
+            }
           },
-          "style": "Grafana text panel with markdown, dark code-block style"
+          "style": "Grafana text panel, dark terminal aesthetic, three-column layout with monospace font, subtle gradient background, professional AI analysis output"
         }
       ]
     }
