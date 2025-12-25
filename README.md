@@ -630,6 +630,48 @@ This turns the microgrid into a **productive community tool**, not just househol
 
 ---
 
+### Monitoring Layer (Home Assistant)
+
+![Swarm Microgrid Dashboard](assets/swarm-dashboard-concept.jpeg)
+*AI-generated concept: Swarm grid monitoring dashboard showing clusters, power flow, and cell health*
+
+The microgrid has two control layers with different responsibilities:
+
+| Layer | Tool | Response Time | Purpose |
+|-------|------|---------------|---------|
+| **Hard** | Inverter/BMS firmware | <1ms | Droop control, protection, contactor |
+| **Soft** | Home Assistant | seconds | Dashboards, logging, alerts, analysis |
+
+**Keep in firmware (hard layer):**
+- Droop frequency control
+- Protection disconnects
+- Contactor decisions
+- Cell balancing
+
+**Good for Home Assistant (soft layer):**
+- SOC monitoring across all 12 houses
+- Energy production/consumption dashboards
+- Cell imbalance alerts
+- Historical data and trends
+- AI-assisted failure analysis
+
+**Integration points:**
+
+| Device | HA Integration |
+|--------|----------------|
+| NEEY balancer | Bluetooth via ESPHome |
+| JK BMS | [esphome-jk-bms](https://github.com/syssi/esphome-jk-bms) |
+| ENNOID BMS | CAN → ESP32 → HA |
+| Inverter ESP32 | MQTT / CAN → WiFi bridge |
+
+**AI-assisted configuration:**
+[HA Vibecode Agent](https://github.com/Coolver/home-assistant-vibecode-agent) enables natural language Home Assistant configuration via Claude Code MCP integration.
+
+**Deep logging and debugging:**
+See [LOGGING.md](LOGGING.md) for the 3-tier logging architecture with local house logs, cluster aggregation, and AI-powered failure analysis.
+
+---
+
 ## Practical Droop Control Experiments
 
 These hands-on experiments let you discover how droop control works. Each builds on the previous.
@@ -1115,6 +1157,8 @@ The curriculum uses incremental voltage progression: **9V → 12V → 220V**
 | BMS-C1 | [Libre Solar](https://libre.solar) | 16S/100A battery management |
 | MPPT-2420-HC | [Libre Solar](https://libre.solar) | 20A solar charge controller |
 | ThingSet | [thingset.io](https://thingset.io) | Open communication protocol |
+| HA Vibecode Agent | [GitHub](https://github.com/Coolver/home-assistant-vibecode-agent) | AI-assisted HA configuration |
+| ESPHome JK-BMS | [GitHub](https://github.com/syssi/esphome-jk-bms) | JK BMS integration for HA |
 
 ---
 

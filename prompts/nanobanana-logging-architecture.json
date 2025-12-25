@@ -1,0 +1,143 @@
+{
+  "image_type": "technical_diagram",
+  "title": "3-Tier Logging Architecture",
+  "style": {
+    "theme": "blueprint_technical",
+    "color_palette": ["#0d1b2a", "#1b263b", "#415a77", "#778da9", "#e0e1dd", "#00d9ff", "#00ff88", "#e94560"],
+    "aesthetic": "system architecture diagram, network topology, infrastructure blueprint",
+    "mood": "professional, technical documentation, enterprise architecture"
+  },
+  "layout": {
+    "type": "hierarchical_layers",
+    "orientation": "vertical",
+    "layers": 3
+  },
+  "content": {
+    "title_block": {
+      "main": "MICROGRID OBSERVABILITY STACK",
+      "subtitle": "3-Tier Edge-to-Cloud Logging Architecture",
+      "version": "v1.0"
+    },
+    "tier_3": {
+      "name": "TIER 3: CENTRAL",
+      "position": "top",
+      "color": "#00d9ff",
+      "description": "Long-term storage, visualization, AI analysis",
+      "components": [
+        {
+          "name": "Raspberry Pi 4",
+          "icon": "server box",
+          "contains": ["Home Assistant", "InfluxDB", "Grafana", "AI Pipeline"]
+        }
+      ],
+      "storage": "256GB SSD, 1+ year retention",
+      "connections_down": ["WiFi to 3 gateways"]
+    },
+    "tier_2": {
+      "name": "TIER 2: GATEWAYS",
+      "position": "middle",
+      "color": "#00ff88",
+      "description": "Cluster aggregation, local buffering",
+      "components": [
+        {
+          "name": "Gateway A",
+          "icon": "ESP32 chip with antenna",
+          "storage": "64GB SD, 30 days",
+          "label": "Cluster A"
+        },
+        {
+          "name": "Gateway B",
+          "icon": "ESP32 chip with antenna",
+          "storage": "64GB SD, 30 days",
+          "label": "Cluster B"
+        },
+        {
+          "name": "Gateway C",
+          "icon": "ESP32 chip with antenna",
+          "storage": "64GB SD, 30 days",
+          "label": "Cluster C"
+        }
+      ],
+      "connections_down": ["CAN bus to 4 houses each"]
+    },
+    "tier_1": {
+      "name": "TIER 1: HOUSE NODES",
+      "position": "bottom",
+      "color": "#ffaa00",
+      "description": "High-frequency local logging, fault capture",
+      "components": [
+        {
+          "name": "12× House ESP32",
+          "visual": "grid of 12 small controller icons, arranged as 3 groups of 4",
+          "each_contains": ["SD Card", "RTC", "CAN"],
+          "storage": "32GB SD, 7 days rolling"
+        }
+      ],
+      "data_sources": ["Inverter 100Hz", "BMS 10Hz", "MPPT 1Hz", "Temps 1Hz"]
+    },
+    "data_flows": [
+      {
+        "from": "House Nodes",
+        "to": "Gateways",
+        "protocol": "CAN Bus",
+        "frequency": "Real-time 10Hz + events",
+        "visual": "multiple thin lines going up"
+      },
+      {
+        "from": "Gateways",
+        "to": "Central",
+        "protocol": "WiFi / MQTT",
+        "frequency": "Aggregated 1Hz + alerts",
+        "visual": "thick arrows going up"
+      },
+      {
+        "from": "Central",
+        "to": "Gateways",
+        "protocol": "NTP Sync",
+        "frequency": "Every 10 seconds",
+        "visual": "dashed lines going down",
+        "color": "#778da9"
+      }
+    ],
+    "side_annotations": [
+      {
+        "position": "left",
+        "title": "FAULT SNAPSHOT",
+        "content": "On any fault:\n• 10s pre-fault @ 100Hz\n• 10s post-fault @ 100Hz\n• ~500KB per event\n• Never deleted"
+      },
+      {
+        "position": "right",
+        "title": "AI ANALYSIS",
+        "content": "On fault detection:\n• Query similar past faults\n• Correlate with neighbors\n• Claude API analysis\n• Root cause report"
+      }
+    ],
+    "legend": {
+      "items": [
+        {"symbol": "solid arrow", "meaning": "Data flow up"},
+        {"symbol": "dashed line", "meaning": "Time sync down"},
+        {"symbol": "blue", "meaning": "Central / Cloud tier"},
+        {"symbol": "green", "meaning": "Gateway / Edge tier"},
+        {"symbol": "orange", "meaning": "Node / Device tier"}
+      ]
+    },
+    "footer": {
+      "total_cost": "$370 total infrastructure",
+      "data_rate": "~50MB/day/house → ~600MB/day swarm"
+    }
+  },
+  "technical_details": {
+    "resolution": "4K",
+    "aspect_ratio": "16:9",
+    "render_style": "clean technical diagram, infographic quality, presentation-ready",
+    "background": "dark gradient, subtle grid pattern",
+    "text": "crisp, readable, monospace for technical labels"
+  },
+  "negative_prompts": [
+    "cluttered",
+    "hand-drawn",
+    "cartoon",
+    "3D perspective",
+    "realistic photos",
+    "people"
+  ]
+}

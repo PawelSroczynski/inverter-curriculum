@@ -1,0 +1,143 @@
+{
+  "image_type": "technical_dashboard",
+  "title": "Swarm Microgrid Monitoring System",
+  "style": {
+    "theme": "dark_tech",
+    "color_palette": ["#0a0a0f", "#1a1a2e", "#16213e", "#0f3460", "#e94560", "#00d9ff", "#00ff88", "#ffaa00"],
+    "aesthetic": "industrial control room, SCADA interface, professional energy monitoring",
+    "mood": "high-tech, clean, functional, futuristic power grid control"
+  },
+  "layout": {
+    "type": "grid_dashboard",
+    "columns": 3,
+    "rows": 4,
+    "spacing": "tight"
+  },
+  "content": {
+    "header": {
+      "text": "ENKLAVA SWARM GRID — LIVE MONITORING",
+      "subtext": "12 Houses • 3 Clusters • 72kW Capacity • 180kWh Storage",
+      "indicators": ["GRID STATUS: ONLINE", "SYNC: OK", "FAULTS: 0"]
+    },
+    "main_visualization": {
+      "type": "network_topology",
+      "description": "Central swarm bus backbone connecting three cluster nodes, each cluster showing 4 house nodes as smaller circles. Power flow arrows between clusters. Glowing connections indicate active power transfer.",
+      "elements": [
+        {
+          "name": "SWARM BUS",
+          "visual": "horizontal glowing line at top, 1000m backbone",
+          "color": "#00d9ff"
+        },
+        {
+          "name": "CLUSTER A",
+          "visual": "node with 4 smaller house nodes below, gateway connector to swarm bus",
+          "status": "78% SOC, 12.3kW load",
+          "color": "#00ff88"
+        },
+        {
+          "name": "CLUSTER B",
+          "visual": "node with 4 smaller house nodes below, gateway connector to swarm bus",
+          "status": "95% SOC, 8.1kW load",
+          "color": "#00ff88"
+        },
+        {
+          "name": "CLUSTER C",
+          "visual": "node with 4 smaller house nodes below, gateway connector to swarm bus",
+          "status": "65% SOC, 15.7kW load",
+          "color": "#ffaa00"
+        },
+        {
+          "name": "power_flow_arrows",
+          "visual": "animated arrows showing: Cluster B → Cluster A (2.1kW), Cluster B → Cluster C (1.5kW)",
+          "color": "#e94560"
+        }
+      ]
+    },
+    "panels": [
+      {
+        "position": "left_column",
+        "type": "gauge_cluster",
+        "title": "FREQUENCY",
+        "gauges": [
+          {"label": "Cluster A", "value": "49.92 Hz", "range": "48-52", "color": "#00ff88"},
+          {"label": "Cluster B", "value": "50.01 Hz", "range": "48-52", "color": "#00ff88"},
+          {"label": "Cluster C", "value": "49.85 Hz", "range": "48-52", "color": "#ffaa00"}
+        ]
+      },
+      {
+        "position": "center_column",
+        "type": "line_chart",
+        "title": "POWER FLOW — 24H",
+        "description": "Time series graph showing power production (green area above zero) and consumption (red area below zero) over 24 hours. Solar peak visible at midday.",
+        "y_axis": "+72kW to -72kW",
+        "x_axis": "00:00 to 24:00"
+      },
+      {
+        "position": "right_column",
+        "type": "battery_bank",
+        "title": "STORAGE — 180kWh TOTAL",
+        "visual": "12 vertical battery bars arranged in 3 groups of 4, each bar showing fill level with gradient from red (empty) to green (full)",
+        "values": [
+          {"house": "H1", "soc": 82}, {"house": "H2", "soc": 75},
+          {"house": "H3", "soc": 88}, {"house": "H4", "soc": 71},
+          {"house": "H5", "soc": 95}, {"house": "H6", "soc": 92},
+          {"house": "H7", "soc": 98}, {"house": "H8", "soc": 91},
+          {"house": "H9", "soc": 65}, {"house": "H10", "soc": 58},
+          {"house": "H11", "soc": 72}, {"house": "H12", "soc": 61}
+        ]
+      },
+      {
+        "position": "bottom_left",
+        "type": "kpi_cards",
+        "cards": [
+          {"label": "Solar Today", "value": "312 kWh", "icon": "sun", "trend": "+12%"},
+          {"label": "Consumption", "value": "287 kWh", "icon": "bolt", "trend": "-3%"},
+          {"label": "Grid Export", "value": "0 kWh", "icon": "disconnect", "status": "OFF-GRID"}
+        ]
+      },
+      {
+        "position": "bottom_center",
+        "type": "cell_health_matrix",
+        "title": "CELL VOLTAGES — 192 CELLS",
+        "description": "12x16 grid of small squares, each representing one cell. Color coded: green (3.2-3.3V), yellow (3.1-3.2V or 3.3-3.4V), red (<3.0V or >3.5V). Most cells green, a few yellow scattered.",
+        "dimensions": "12 rows (houses) × 16 columns (cells)"
+      },
+      {
+        "position": "bottom_right",
+        "type": "event_log",
+        "title": "RECENT EVENTS",
+        "events": [
+          {"time": "14:23", "type": "info", "message": "Gateway B opened — freq mismatch"},
+          {"time": "13:45", "type": "success", "message": "House 5 reached 100% SOC"},
+          {"time": "12:12", "type": "warning", "message": "House 9 cell delta > 30mV"},
+          {"time": "11:30", "type": "info", "message": "Peak solar: 58kW achieved"}
+        ]
+      }
+    ],
+    "footer": {
+      "elements": [
+        "Last update: 14:25:03 UTC",
+        "Uptime: 47 days",
+        "Data points: 2.3M",
+        "InfluxDB: HEALTHY",
+        "AI Analysis: READY"
+      ]
+    }
+  },
+  "technical_details": {
+    "resolution": "4K landscape",
+    "aspect_ratio": "16:9",
+    "render_style": "photorealistic control room monitor display",
+    "lighting": "screen glow in dark room, subtle reflections",
+    "context": "viewed on large curved monitor in control room"
+  },
+  "negative_prompts": [
+    "cartoon",
+    "sketch",
+    "hand-drawn",
+    "blurry text",
+    "low resolution",
+    "cluttered",
+    "confusing layout"
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "image_type": "technical_dashboard",
+  "title": "House Energy System Detail View",
+  "style": {
+    "theme": "dark_tech",
+    "color_palette": ["#0a0a0f", "#1a1a2e", "#16213e", "#0f3460", "#e94560", "#00d9ff", "#00ff88", "#ffaa00"],
+    "aesthetic": "industrial monitoring, SCADA single-asset view, battery management system interface",
+    "mood": "focused, technical, diagnostic"
+  },
+  "layout": {
+    "type": "single_asset_detail",
+    "structure": "left sidebar + main area + right sidebar"
+  },
+  "content": {
+    "header": {
+      "text": "HOUSE 7 — CLUSTER B — DETAILED VIEW",
+      "status_badge": "ONLINE",
+      "breadcrumb": "Swarm > Cluster B > House 7"
+    },
+    "left_sidebar": {
+      "title": "SYSTEM DIAGRAM",
+      "visual": "vertical flow diagram showing: Solar Panels (top) → MPPT → Battery with BMS → Inverter → AC Bus. Each component as a rounded rectangle with connection lines. Data values shown next to each.",
+      "components": [
+        {"name": "SOLAR", "value": "2.8 kW", "icon": "sun panels on roof"},
+        {"name": "MPPT", "value": "In: 98V / Out: 52V", "efficiency": "97%"},
+        {"name": "BATTERY", "value": "48V / 15kWh / 72% SOC"},
+        {"name": "BMS", "value": "16S LiFePO4 / 45A discharge"},
+        {"name": "INVERTER", "value": "230V / 49.95Hz / 3.2kW"},
+        {"name": "TO BUS", "value": "0.5kW export"}
+      ]
+    },
+    "main_area": {
+      "type": "cell_voltage_chart",
+      "title": "CELL VOLTAGES — 16S LiFePO4",
+      "description": "Bar chart showing 16 cells. Each bar is a vertical column with voltage label on top. Color gradient from cell voltage: 3.10V=red, 3.20V=yellow, 3.25V=green, 3.30V=green, 3.40V=yellow.",
+      "data": {
+        "cells": [3.24, 3.25, 3.24, 3.26, 3.25, 3.23, 3.25, 3.24, 3.25, 3.26, 3.24, 3.25, 3.21, 3.25, 3.24, 3.25],
+        "min": 3.21,
+        "max": 3.26,
+        "delta": "50mV",
+        "warning_threshold": "100mV"
+      },
+      "below_chart": {
+        "type": "temperature_row",
+        "description": "Row of 5 temperature indicators for different cell groups",
+        "values": ["28°C", "29°C", "27°C", "28°C", "30°C"]
+      }
+    },
+    "right_sidebar": {
+      "panels": [
+        {
+          "type": "gauge",
+          "title": "STATE OF CHARGE",
+          "visual": "large circular gauge, 72% filled, green arc",
+          "value": "72%",
+          "subtext": "10.8 kWh remaining"
+        },
+        {
+          "type": "power_meter",
+          "title": "POWER FLOW",
+          "visual": "horizontal bar centered at zero, showing power direction",
+          "value": "-3.2 kW",
+          "direction": "DISCHARGING",
+          "color": "#ffaa00"
+        },
+        {
+          "type": "mini_chart",
+          "title": "24H HISTORY",
+          "visual": "small area chart showing SOC over time, dipping at night, rising during day"
+        },
+        {
+          "type": "stats_table",
+          "title": "TODAY",
+          "rows": [
+            {"label": "Solar Production", "value": "18.3 kWh"},
+            {"label": "Consumption", "value": "14.7 kWh"},
+            {"label": "To Cluster", "value": "3.1 kWh"},
+            {"label": "From Cluster", "value": "0.2 kWh"}
+          ]
+        }
+      ]
+    },
+    "bottom_bar": {
+      "type": "timeline",
+      "title": "EVENTS TODAY",
+      "events": [
+        {"time": "06:12", "event": "Sunrise, charging started"},
+        {"time": "09:30", "event": "100% SOC reached"},
+        {"time": "10:15", "event": "Export to cluster: 2kW"},
+        {"time": "14:00", "event": "Heavy load: 5.8kW"},
+        {"time": "14:23", "event": "Cell 13 delta warning"}
+      ]
+    }
+  },
+  "technical_details": {
+    "resolution": "4K landscape",
+    "aspect_ratio": "16:9",
+    "render_style": "photorealistic monitor display, control room aesthetic",
+    "lighting": "screen glow, dark environment"
+  }
+}

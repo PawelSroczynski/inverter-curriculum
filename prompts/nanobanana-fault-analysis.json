@@ -1,0 +1,156 @@
+{
+  "image_type": "technical_dashboard",
+  "title": "AI-Powered Fault Analysis Interface",
+  "style": {
+    "theme": "dark_alert",
+    "color_palette": ["#0a0a0f", "#1a0a0a", "#2d1f1f", "#e94560", "#ff6b6b", "#00d9ff", "#00ff88", "#ffd93d"],
+    "aesthetic": "incident response dashboard, root cause analysis tool, debugging interface",
+    "mood": "urgent but controlled, diagnostic, forensic analysis"
+  },
+  "layout": {
+    "type": "incident_analysis",
+    "structure": "timeline top + dual column analysis"
+  },
+  "content": {
+    "header": {
+      "alert_banner": {
+        "type": "fault_notification",
+        "code": "F006",
+        "message": "DC BUS UNDERVOLTAGE — HOUSE 3",
+        "timestamp": "2024-01-15 10:23:47 UTC",
+        "severity": "HIGH",
+        "color": "#e94560"
+      }
+    },
+    "timeline_section": {
+      "title": "FAULT TIMELINE — ±10 SECONDS",
+      "description": "Two stacked time series charts showing the 20-second window around the fault. Vertical red line marks fault moment.",
+      "charts": [
+        {
+          "label": "DC BUS VOLTAGE",
+          "visual": "line chart starting at 51.2V, stable for 5 seconds, then dropping sharply to 44.8V at fault line, continuing down to 42V after",
+          "y_range": "40V - 54V",
+          "fault_point": "44.8V — LVP TRIGGERED",
+          "color": "#e94560"
+        },
+        {
+          "label": "INVERTER FREQUENCY",
+          "visual": "line chart starting at 49.95Hz, slight drop as voltage drops, then sharp drop to 48.5Hz at fault, flatline after (inverter stopped)",
+          "y_range": "48Hz - 51Hz",
+          "color": "#00d9ff"
+        },
+        {
+          "label": "DISCHARGE CURRENT",
+          "visual": "line chart showing steady 95A, slight increase before fault, then drop to 0A at fault",
+          "y_range": "0A - 120A",
+          "color": "#ffaa00"
+        }
+      ],
+      "time_axis": "-10s ... -5s ... 0 (FAULT) ... +5s ... +10s"
+    },
+    "left_column": {
+      "title": "SYSTEM STATE AT FAULT",
+      "panels": [
+        {
+          "type": "snapshot_data",
+          "title": "HOUSE 3 — FAULT MOMENT",
+          "data": [
+            {"label": "DC Bus", "value": "44.8V", "status": "CRITICAL"},
+            {"label": "Current", "value": "95A", "status": "HIGH"},
+            {"label": "SOC", "value": "12%", "status": "LOW"},
+            {"label": "Cell Min", "value": "2.85V (Cell 14)", "status": "CRITICAL"},
+            {"label": "Cell Max", "value": "3.18V (Cell 7)", "status": "OK"},
+            {"label": "Temp", "value": "32°C", "status": "OK"}
+          ]
+        },
+        {
+          "type": "cell_heatmap",
+          "title": "CELL VOLTAGES AT FAULT",
+          "visual": "16 cells as colored squares, mostly yellow/orange (2.9-3.1V), Cell 14 bright red (2.85V)",
+          "highlight": "Cell 14: 2.85V — WEAKEST"
+        },
+        {
+          "type": "neighbor_status",
+          "title": "CLUSTER A NEIGHBORS",
+          "houses": [
+            {"name": "House 1", "soc": "45%", "power": "+1.2kW to bus", "status": "HELPING"},
+            {"name": "House 2", "soc": "52%", "power": "+0.8kW to bus", "status": "HELPING"},
+            {"name": "House 4", "soc": "38%", "power": "+0.5kW to bus", "status": "HELPING"}
+          ],
+          "note": "Neighbors were supplying power but couldn't prevent LVP"
+        }
+      ]
+    },
+    "right_column": {
+      "title": "AI ANALYSIS",
+      "panels": [
+        {
+          "type": "ai_report",
+          "visual": "text box with monospace font, dark background, looking like terminal output",
+          "content": {
+            "header": "CLAUDE ROOT CAUSE ANALYSIS",
+            "sections": [
+              {
+                "title": "ROOT CAUSE",
+                "text": "Battery reached Low Voltage Protection (LVP) threshold due to high discharge rate (95A) combined with low SOC (12%) and weak Cell 14."
+              },
+              {
+                "title": "EVIDENCE",
+                "bullets": [
+                  "DC bus dropped from 51.2V to 44.8V over 8 seconds",
+                  "Cell 14 reached 2.85V first (weakest cell)",
+                  "Discharge current was 95A (near BMS limit)",
+                  "Neighbors were already pushing 2.5kW total"
+                ]
+              },
+              {
+                "title": "PATTERN MATCH",
+                "text": "Similar to fault on 2024-01-03 (House 3) — Cell 14 was also first to trigger. Cell capacity degradation suspected."
+              },
+              {
+                "title": "RECOMMENDATION",
+                "bullets": [
+                  "Check Cell 14 capacity vs others",
+                  "Verify active balancer is functioning",
+                  "Consider reducing max discharge to 80A",
+                  "Schedule Cell 14 replacement if capacity <80%"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "type": "similar_faults",
+          "title": "SIMILAR PAST FAULTS",
+          "table": [
+            {"date": "2024-01-03", "house": "H3", "code": "F006", "cause": "Cell 14 LVP"},
+            {"date": "2023-12-15", "house": "H3", "code": "F011", "cause": "Cell 14 undervolt"},
+            {"date": "2023-11-28", "house": "H9", "code": "F006", "cause": "High load + low SOC"}
+          ]
+        }
+      ]
+    },
+    "action_bar": {
+      "buttons": [
+        {"label": "DOWNLOAD SNAPSHOT", "icon": "download"},
+        {"label": "QUERY INFLUXDB", "icon": "database"},
+        {"label": "MARK RESOLVED", "icon": "checkmark"},
+        {"label": "CREATE TICKET", "icon": "ticket"}
+      ]
+    }
+  },
+  "technical_details": {
+    "resolution": "4K landscape",
+    "aspect_ratio": "16:9",
+    "render_style": "photorealistic control room monitor, incident management interface",
+    "lighting": "red alert ambient glow mixed with blue screen light",
+    "context": "operations center during active incident"
+  },
+  "negative_prompts": [
+    "cartoon",
+    "playful",
+    "bright cheerful colors",
+    "blurry",
+    "low resolution text"
+  ]
+}
