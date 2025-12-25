@@ -632,8 +632,8 @@ This turns the microgrid into a **productive community tool**, not just househol
 
 ### Monitoring Layer (Home Assistant)
 
-![Swarm Microgrid Dashboard](assets/swarm-dashboard-concept.jpeg)
-*AI-generated concept: Swarm grid monitoring dashboard showing clusters, power flow, and cell health*
+![Swarm Microgrid Dashboard](https://enklava.co/files/1963eB3rpV7vEEp1zKn49w/Generated%20Image%20December%2026,%202025%20-%2012_10AM.jpeg)
+*Home Assistant dashboard concept: Swarm grid monitoring showing clusters, power flow, and cell health*
 
 The microgrid has two control layers with different responsibilities:
 
