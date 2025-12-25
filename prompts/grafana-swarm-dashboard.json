@@ -3,14 +3,14 @@
   "title": "Grafana Swarm Microgrid Overview Dashboard",
   "style": {
     "theme": "grafana_dark",
-    "color_palette": ["#111217", "#181b1f", "#22252a", "#ff5286", "#73bf69", "#5794f2", "#fade2a", "#b877d9", "#ff9830"],
-    "aesthetic": "production Grafana dashboard, real software interface, enterprise monitoring, InfluxDB data source",
-    "mood": "professional, data-dense, operational monitoring, realistic enterprise software"
+    "color_palette": ["#111217", "#181b1f", "#22252a", "#73bf69", "#5794f2", "#fade2a", "#ff9830", "#f2495c", "#b877d9", "#ff5286"],
+    "aesthetic": "production Grafana dashboard, enterprise SCADA-style, multi-cluster monitoring, network topology visualization",
+    "mood": "epic overview, command center, data-dense but organized, professional operations"
   },
   "layout": {
     "type": "grafana_grid",
-    "rows": 4,
-    "columns": 6,
+    "rows": 6,
+    "columns": 12,
     "panel_spacing": "8px",
     "panel_borders": "1px solid #22252a"
   },
@@ -19,274 +19,560 @@
       "top_bar": {
         "background": "#111217",
         "left": {
-          "elements": ["Grafana logo (orange)", "breadcrumb: 'Dashboards / Microgrid / Swarm Overview'"],
-          "style": "white text, subtle separators"
+          "elements": ["Grafana logo (orange)", "breadcrumb: 'Dashboards / Microgrid / Swarm Command'"]
         },
         "center": {
-          "elements": ["dashboard title: 'ENKLAVA Swarm Grid - Live'"],
-          "style": "larger white text"
+          "elements": ["dashboard title: 'ENKLAVA SWARM — 3 Clusters • 12 Houses • 180 kWh'"],
+          "style": "large white text with subtle glow"
         },
         "right": {
           "elements": [
-            "time range picker: 'Last 6 hours' with dropdown arrow",
-            "zoom out icon",
-            "refresh dropdown: '5s'",
-            "sync icon",
-            "share icon",
-            "star icon (favorited, filled)",
-            "settings cog"
-          ],
-          "style": "icon buttons with hover states"
+            "time range: 'Last 1 hour'",
+            "refresh: '5s' (animated spinner)",
+            "fullscreen icon",
+            "share icon"
+          ]
         }
       },
       "left_sidebar": {
         "state": "collapsed",
-        "width": "60px",
-        "icons": ["Search (magnifier)", "Home", "Dashboards", "Explore", "Alerting (bell with dot)", "Connections", "Administration"],
-        "bottom_icons": ["Help", "User avatar"],
-        "style": "dark background, icons only, active indicator line"
+        "icons": ["Search", "Home", "Dashboards", "Explore", "Alerting (green checkmark)"]
       }
     },
-    "variable_row": {
-      "position": "below top bar",
-      "background": "#181b1f",
-      "variables": [
-        {"name": "Cluster", "value": "All", "type": "dropdown"},
-        {"name": "House", "value": "All", "type": "dropdown"},
-        {"name": "Metric", "value": "Power", "type": "dropdown"}
-      ],
-      "style": "Grafana variable selectors with labels"
-    },
     "row_1": {
-      "title": "System Status",
-      "collapsed": false,
+      "title": null,
+      "height": "80px",
       "panels": [
         {
           "position": "span 2",
           "type": "stat",
-          "title": "Grid Status",
+          "title": "Swarm Status",
           "visual": {
-            "value": "OFF-GRID",
+            "value": "AUTONOMOUS",
+            "subtitle": "OFF-GRID",
             "color": "#73bf69",
-            "background": "gradient green",
-            "sparkline": false
-          },
-          "style": "Grafana stat panel, large centered text, colored background mode"
-        },
-        {
-          "position": "span 1",
-          "type": "stat",
-          "title": "Total Power",
-          "visual": {
-            "value": "+3.2 kW",
-            "subtitle": "surplus",
-            "color": "#73bf69",
-            "sparkline": "small line chart below value showing last hour"
+            "background": "solid green gradient",
+            "icon_overlay": "shield-check"
           }
         },
         {
-          "position": "span 1",
+          "position": "span 2",
           "type": "stat",
-          "title": "Solar Now",
+          "title": "Total Solar",
           "visual": {
             "value": "52.3 kW",
-            "icon": "none (Grafana stats don't have icons)",
             "color": "#fade2a",
-            "sparkline": "yellow area chart"
+            "sparkline": "rising curve, yellow area fill",
+            "trend": "↑ 12% from yesterday"
           }
         },
         {
-          "position": "span 1",
+          "position": "span 2",
           "type": "stat",
-          "title": "Load Now",
+          "title": "Total Load",
           "visual": {
             "value": "49.1 kW",
             "color": "#ff9830",
-            "sparkline": "orange area chart"
+            "sparkline": "relatively flat, orange area",
+            "trend": "avg: 45 kW"
           }
         },
         {
-          "position": "span 1",
+          "position": "span 2",
           "type": "stat",
-          "title": "Active Alerts",
+          "title": "Net Power",
           "visual": {
-            "value": "0",
+            "value": "+3.2 kW",
+            "subtitle": "charging",
             "color": "#73bf69",
-            "sparkline": false
+            "sparkline": "oscillating around zero"
+          }
+        },
+        {
+          "position": "span 2",
+          "type": "stat",
+          "title": "Swarm SOC",
+          "visual": {
+            "value": "79%",
+            "subtitle": "142 / 180 kWh",
+            "color": "#73bf69",
+            "sparkline": "slowly rising"
+          }
+        },
+        {
+          "position": "span 2",
+          "type": "stat",
+          "title": "Bus Frequency",
+          "visual": {
+            "value": "49.97 Hz",
+            "subtitle": "Δmax: 0.15 Hz",
+            "color": "#5794f2"
           }
         }
       ]
     },
     "row_2": {
-      "title": "Cluster Overview",
+      "title": "Swarm Topology",
+      "height": "320px",
+      "collapsed": false,
       "panels": [
         {
-          "position": "span 2",
-          "type": "gauge",
-          "title": "Cluster A - SOC",
+          "position": "span 12 (full width)",
+          "type": "node_graph",
+          "title": "Live Swarm Topology — Power Flow Visualization",
           "visual": {
-            "value": "78%",
-            "min": 0,
-            "max": 100,
-            "thresholds": [
-              {"value": 0, "color": "#f2495c"},
-              {"value": 20, "color": "#ff9830"},
-              {"value": 50, "color": "#fade2a"},
-              {"value": 70, "color": "#73bf69"}
-            ],
-            "style": "Grafana gauge with threshold colors, needle pointing to 78"
+            "description": "Network topology diagram showing all clusters, gateways, and houses with real-time power flow",
+            "layout": "hierarchical, top-to-bottom with horizontal spread",
+            "background": "#111217 with subtle grid pattern",
+            "nodes": {
+              "swarm_bus": {
+                "position": "top center",
+                "shape": "rounded rectangle, wide",
+                "color": "#b877d9",
+                "border": "2px solid #b877d9, glowing",
+                "label": "SWARM BUS",
+                "sublabel": "49.97 Hz | 230V",
+                "size": "large",
+                "icon": "mdi:sine-wave"
+              },
+              "gateways": [
+                {
+                  "id": "GW-A",
+                  "position": "below swarm bus, left third",
+                  "shape": "hexagon",
+                  "color": "#73bf69",
+                  "label": "GW-A",
+                  "sublabel": "CLOSED",
+                  "status_indicator": "green ring, pulsing",
+                  "power_flow": "→ 1.2 kW to bus"
+                },
+                {
+                  "id": "GW-B",
+                  "position": "below swarm bus, center",
+                  "shape": "hexagon",
+                  "color": "#73bf69",
+                  "label": "GW-B",
+                  "sublabel": "CLOSED",
+                  "status_indicator": "green ring, pulsing",
+                  "power_flow": "→ 2.8 kW to bus"
+                },
+                {
+                  "id": "GW-C",
+                  "position": "below swarm bus, right third",
+                  "shape": "hexagon",
+                  "color": "#fade2a",
+                  "label": "GW-C",
+                  "sublabel": "SYNCING",
+                  "status_indicator": "yellow ring, blinking",
+                  "power_flow": "waiting..."
+                }
+              ],
+              "clusters": [
+                {
+                  "id": "cluster_a",
+                  "position": "below GW-A",
+                  "shape": "rounded rectangle",
+                  "color": "#5794f2",
+                  "border": "2px solid #5794f2",
+                  "label": "CLUSTER A",
+                  "sublabel": "78% | 49.92 Hz",
+                  "contains": "4 houses"
+                },
+                {
+                  "id": "cluster_b",
+                  "position": "below GW-B",
+                  "shape": "rounded rectangle",
+                  "color": "#73bf69",
+                  "border": "2px solid #73bf69",
+                  "label": "CLUSTER B",
+                  "sublabel": "95% | 50.01 Hz",
+                  "contains": "4 houses"
+                },
+                {
+                  "id": "cluster_c",
+                  "position": "below GW-C",
+                  "shape": "rounded rectangle",
+                  "color": "#fade2a",
+                  "border": "2px solid #fade2a",
+                  "label": "CLUSTER C",
+                  "sublabel": "65% | 49.62 Hz",
+                  "contains": "4 houses"
+                }
+              ],
+              "houses": {
+                "cluster_a": [
+                  {"id": "H1", "soc": 82, "power": "+1.2kW", "status": "green", "icon": "house"},
+                  {"id": "H2", "soc": 75, "power": "-0.5kW", "status": "green", "icon": "house"},
+                  {"id": "H3", "soc": 88, "power": "+0.8kW", "status": "green", "icon": "house"},
+                  {"id": "H4", "soc": 71, "power": "+0.3kW", "status": "green", "icon": "house"}
+                ],
+                "cluster_b": [
+                  {"id": "H5", "soc": 95, "power": "+2.1kW", "status": "green", "icon": "house-flag"},
+                  {"id": "H6", "soc": 92, "power": "+1.5kW", "status": "green", "icon": "house"},
+                  {"id": "H7", "soc": 98, "power": "+0.2kW", "status": "green", "icon": "house"},
+                  {"id": "H8", "soc": 91, "power": "+0.9kW", "status": "green", "icon": "house"}
+                ],
+                "cluster_c": [
+                  {"id": "H9", "soc": 65, "power": "-2.1kW", "status": "yellow", "icon": "house"},
+                  {"id": "H10", "soc": 58, "power": "-1.8kW", "status": "yellow", "icon": "house"},
+                  {"id": "H11", "soc": 72, "power": "-0.9kW", "status": "green", "icon": "house"},
+                  {"id": "H12", "soc": 61, "power": "-1.5kW", "status": "yellow", "icon": "house"}
+                ],
+                "visual_style": "small rounded rectangles with SOC bar inside, color-coded by status"
+              }
+            },
+            "edges": {
+              "style": "animated dashed lines showing power flow direction",
+              "swarm_to_gateways": [
+                {"from": "swarm_bus", "to": "GW-A", "flow": "1.2 kW", "direction": "up", "color": "#73bf69", "animated": true},
+                {"from": "swarm_bus", "to": "GW-B", "flow": "2.8 kW", "direction": "up", "color": "#73bf69", "animated": true},
+                {"from": "swarm_bus", "to": "GW-C", "flow": "0", "direction": "none", "color": "#fade2a", "animated": false, "style": "dashed gray"}
+              ],
+              "gateways_to_clusters": "solid lines, color matches cluster",
+              "clusters_to_houses": "thin lines radiating to each house",
+              "animation": "dots moving along lines in direction of power flow"
+            },
+            "legend": {
+              "position": "bottom right corner",
+              "items": [
+                {"color": "#73bf69", "label": "Exporting power"},
+                {"color": "#ff9830", "label": "Importing power"},
+                {"color": "#fade2a", "label": "Warning/Syncing"},
+                {"color": "#f2495c", "label": "Fault/Offline"}
+              ]
+            }
           },
-          "subtitle": "12.3 kW load | 49.92 Hz"
-        },
-        {
-          "position": "span 2",
-          "type": "gauge",
-          "title": "Cluster B - SOC",
-          "visual": {
-            "value": "95%",
-            "color": "#73bf69",
-            "style": "gauge nearly full, bright green"
-          },
-          "subtitle": "8.1 kW load | 50.01 Hz"
-        },
-        {
-          "position": "span 2",
-          "type": "gauge",
-          "title": "Cluster C - SOC",
-          "visual": {
-            "value": "65%",
-            "color": "#fade2a",
-            "style": "gauge at yellow zone"
-          },
-          "subtitle": "15.7 kW load | 49.85 Hz"
+          "style": "Grafana Node Graph panel, flowchart plugin, or custom canvas panel with animated flows"
         }
       ]
     },
     "row_3": {
-      "title": "Power Flow - 24 Hours",
+      "title": "Cluster Details",
+      "height": "200px",
       "panels": [
         {
           "position": "span 4",
-          "type": "time_series",
-          "title": "Solar Production vs Consumption",
+          "type": "panel_group",
+          "title": "Cluster A — 4 Houses",
           "visual": {
-            "description": "Grafana time series with two overlapping area charts",
-            "series": [
-              {
-                "name": "Solar",
-                "color": "#fade2a",
-                "fill": "gradient below line, 20% opacity",
-                "data": "curve rising from 0 at 6am, peak ~58kW at noon, declining to 0 at 6pm"
-              },
-              {
-                "name": "Consumption",
-                "color": "#ff9830",
-                "fill": "gradient below line, 20% opacity",
-                "data": "relatively flat ~35-50kW with peaks at morning and evening"
-              }
-            ],
-            "y_axis": {"label": "Power (kW)", "range": "0 to 72"},
-            "x_axis": {"label": "Time", "format": "HH:mm"},
-            "legend": {
-              "position": "bottom",
-              "mode": "table",
-              "values": ["last", "min", "max", "avg"]
+            "background": "#181b1f with #5794f2 left border accent",
+            "header": {
+              "title": "CLUSTER A",
+              "badges": ["4 houses", "60 kWh capacity", "GW-A: CLOSED"]
             },
-            "grid": "subtle gray grid lines"
-          },
-          "style": "standard Grafana time series panel with gradient fills"
+            "stats_row": [
+              {"label": "SOC", "value": "78%", "color": "#73bf69", "type": "gauge_mini"},
+              {"label": "Freq", "value": "49.92 Hz", "color": "#5794f2"},
+              {"label": "Power", "value": "+1.8 kW", "color": "#73bf69"},
+              {"label": "Cells", "value": "64 OK", "color": "#73bf69"}
+            ],
+            "house_grid": {
+              "layout": "2x2 grid of mini house cards",
+              "houses": [
+                {"id": "H1", "soc_bar": "82%", "power": "+1.2kW", "delta": "25mV", "status_dot": "green"},
+                {"id": "H2", "soc_bar": "75%", "power": "-0.5kW", "delta": "42mV", "status_dot": "green"},
+                {"id": "H3", "soc_bar": "88%", "power": "+0.8kW", "delta": "18mV", "status_dot": "green"},
+                {"id": "H4", "soc_bar": "71%", "power": "+0.3kW", "delta": "31mV", "status_dot": "green"}
+              ]
+            }
+          }
         },
         {
-          "position": "span 2",
-          "type": "bar_gauge",
-          "title": "House SOC Levels",
+          "position": "span 4",
+          "type": "panel_group",
+          "title": "Cluster B — 4 Houses",
           "visual": {
-            "orientation": "horizontal",
-            "bars": [
-              {"label": "H1", "value": 82, "color": "#73bf69"},
-              {"label": "H2", "value": 75, "color": "#73bf69"},
-              {"label": "H3", "value": 88, "color": "#73bf69"},
-              {"label": "H4", "value": 71, "color": "#73bf69"},
-              {"label": "H5", "value": 95, "color": "#73bf69"},
-              {"label": "H6", "value": 92, "color": "#73bf69"},
-              {"label": "H7", "value": 98, "color": "#73bf69"},
-              {"label": "H8", "value": 91, "color": "#73bf69"},
-              {"label": "H9", "value": 65, "color": "#fade2a"},
-              {"label": "H10", "value": 58, "color": "#fade2a"},
-              {"label": "H11", "value": 72, "color": "#73bf69"},
-              {"label": "H12", "value": 61, "color": "#fade2a"}
+            "background": "#181b1f with #73bf69 left border accent",
+            "header": {
+              "title": "CLUSTER B",
+              "badges": ["4 houses", "60 kWh capacity", "GW-B: CLOSED", "★ BEST"]
+            },
+            "stats_row": [
+              {"label": "SOC", "value": "95%", "color": "#73bf69", "type": "gauge_mini"},
+              {"label": "Freq", "value": "50.01 Hz", "color": "#73bf69"},
+              {"label": "Power", "value": "+4.7 kW", "color": "#73bf69"},
+              {"label": "Cells", "value": "64 OK", "color": "#73bf69"}
             ],
-            "thresholds": "green >70, yellow 40-70, red <40"
-          },
-          "style": "Grafana bar gauge, horizontal, value labels on right"
-        }
-      ]
-    },
-    "row_4": {
-      "title": "Frequency & Events",
-      "panels": [
-        {
-          "position": "span 3",
-          "type": "time_series",
-          "title": "Cluster Frequencies",
-          "visual": {
-            "series": [
-              {"name": "Cluster A", "color": "#5794f2", "value": "49.92 Hz"},
-              {"name": "Cluster B", "color": "#73bf69", "value": "50.01 Hz"},
-              {"name": "Cluster C", "color": "#fade2a", "value": "49.85 Hz"},
-              {"name": "Swarm Bus", "color": "#b877d9", "value": "49.95 Hz", "style": "dashed line"}
-            ],
-            "y_axis": {"range": "49.5 to 50.5 Hz", "decimals": 2},
-            "thresholds": {"lines": [{"value": 49.5, "color": "red"}, {"value": 50.5, "color": "red"}]}
-          },
-          "style": "multi-line time series with reference lines"
+            "house_grid": {
+              "layout": "2x2 grid",
+              "houses": [
+                {"id": "H5", "soc_bar": "95%", "power": "+2.1kW", "delta": "15mV", "status_dot": "green", "flag": "highest output"},
+                {"id": "H6", "soc_bar": "92%", "power": "+1.5kW", "delta": "22mV", "status_dot": "green"},
+                {"id": "H7", "soc_bar": "98%", "power": "+0.2kW", "delta": "8mV", "status_dot": "green", "flag": "fully charged"},
+                {"id": "H8", "soc_bar": "91%", "power": "+0.9kW", "delta": "19mV", "status_dot": "green"}
+              ]
+            }
+          }
         },
         {
-          "position": "span 3",
-          "type": "table",
-          "title": "Recent Events",
+          "position": "span 4",
+          "type": "panel_group",
+          "title": "Cluster C — 4 Houses",
           "visual": {
-            "columns": ["Time", "Source", "Event", "Severity"],
-            "rows": [
-              {"time": "14:23:45", "source": "Gateway B", "event": "Opened - freq mismatch", "severity": "warning", "color": "#fade2a"},
-              {"time": "13:45:12", "source": "House 5", "event": "100% SOC reached", "severity": "info", "color": "#5794f2"},
-              {"time": "12:12:33", "source": "House 9", "event": "Cell delta > 30mV", "severity": "warning", "color": "#fade2a"},
-              {"time": "11:30:00", "source": "System", "event": "Peak solar: 58kW", "severity": "info", "color": "#5794f2"},
-              {"time": "09:15:22", "source": "House 3", "event": "Inverter temp warning", "severity": "warning", "color": "#fade2a"}
+            "background": "#181b1f with #fade2a left border accent",
+            "header": {
+              "title": "CLUSTER C",
+              "badges": ["4 houses", "60 kWh capacity", "GW-C: SYNCING", "⚠ LOAD"],
+              "alert_badge": "Heavy load - syncing to bus"
+            },
+            "stats_row": [
+              {"label": "SOC", "value": "65%", "color": "#fade2a", "type": "gauge_mini"},
+              {"label": "Freq", "value": "49.62 Hz", "color": "#fade2a"},
+              {"label": "Power", "value": "-6.3 kW", "color": "#ff9830"},
+              {"label": "Cells", "value": "62 OK, 2 ⚠", "color": "#fade2a"}
             ],
-            "style": "Grafana table with colored severity column, alternating row colors"
+            "house_grid": {
+              "layout": "2x2 grid",
+              "houses": [
+                {"id": "H9", "soc_bar": "65%", "power": "-2.1kW", "delta": "95mV", "status_dot": "yellow", "flag": "high delta"},
+                {"id": "H10", "soc_bar": "58%", "power": "-1.8kW", "delta": "45mV", "status_dot": "yellow"},
+                {"id": "H11", "soc_bar": "72%", "power": "-0.9kW", "delta": "33mV", "status_dot": "green"},
+                {"id": "H12", "soc_bar": "61%", "power": "-1.5kW", "delta": "52mV", "status_dot": "yellow"}
+              ]
+            }
           }
         }
       ]
     },
-    "footer": {
-      "position": "bottom of viewport",
-      "content": "Grafana v10.2.0 | InfluxDB | Last refresh: 14:25:03",
-      "style": "subtle gray text"
+    "row_4": {
+      "title": "All Houses — Key Metrics",
+      "height": "180px",
+      "panels": [
+        {
+          "position": "span 6",
+          "type": "table",
+          "title": "House Status Matrix",
+          "visual": {
+            "columns": [
+              {"name": "House", "width": "60px", "style": "bold"},
+              {"name": "Cluster", "width": "70px"},
+              {"name": "SOC", "width": "80px", "style": "bar inside cell"},
+              {"name": "Power", "width": "80px", "style": "color-coded +/-"},
+              {"name": "Freq", "width": "70px"},
+              {"name": "Cell Δ", "width": "70px", "style": "threshold colors"},
+              {"name": "Temp", "width": "60px"},
+              {"name": "Status", "width": "70px", "style": "icon + text"}
+            ],
+            "rows": [
+              {"house": "H1", "cluster": "A", "soc": 82, "soc_bar": "green", "power": "+1.2kW", "power_color": "green", "freq": "49.95", "delta": "25mV", "delta_color": "green", "temp": "28°C", "status": "● OK"},
+              {"house": "H2", "cluster": "A", "soc": 75, "soc_bar": "green", "power": "-0.5kW", "power_color": "orange", "freq": "49.88", "delta": "42mV", "delta_color": "green", "temp": "31°C", "status": "● OK"},
+              {"house": "H3", "cluster": "A", "soc": 88, "soc_bar": "green", "power": "+0.8kW", "power_color": "green", "freq": "49.92", "delta": "18mV", "delta_color": "green", "temp": "27°C", "status": "● OK"},
+              {"house": "H4", "cluster": "A", "soc": 71, "soc_bar": "green", "power": "+0.3kW", "power_color": "green", "freq": "49.90", "delta": "31mV", "delta_color": "green", "temp": "29°C", "status": "● OK"},
+              {"house": "H5", "cluster": "B", "soc": 95, "soc_bar": "bright green", "power": "+2.1kW", "power_color": "green", "freq": "50.02", "delta": "15mV", "delta_color": "green", "temp": "26°C", "status": "★ BEST"},
+              {"house": "H6", "cluster": "B", "soc": 92, "soc_bar": "green", "power": "+1.5kW", "power_color": "green", "freq": "50.00", "delta": "22mV", "delta_color": "green", "temp": "27°C", "status": "● OK"},
+              {"house": "H7", "cluster": "B", "soc": 98, "soc_bar": "bright green", "power": "+0.2kW", "power_color": "green", "freq": "50.01", "delta": "8mV", "delta_color": "green", "temp": "25°C", "status": "● FULL"},
+              {"house": "H8", "cluster": "B", "soc": 91, "soc_bar": "green", "power": "+0.9kW", "power_color": "green", "freq": "49.99", "delta": "19mV", "delta_color": "green", "temp": "28°C", "status": "● OK"},
+              {"house": "H9", "cluster": "C", "soc": 65, "soc_bar": "yellow", "power": "-2.1kW", "power_color": "orange", "freq": "49.65", "delta": "95mV", "delta_color": "orange", "temp": "33°C", "status": "⚠ DELTA"},
+              {"house": "H10", "cluster": "C", "soc": 58, "soc_bar": "yellow", "power": "-1.8kW", "power_color": "orange", "freq": "49.60", "delta": "45mV", "delta_color": "green", "temp": "32°C", "status": "⚠ LOAD"},
+              {"house": "H11", "cluster": "C", "soc": 72, "soc_bar": "green", "power": "-0.9kW", "power_color": "orange", "freq": "49.68", "delta": "33mV", "delta_color": "green", "temp": "30°C", "status": "● OK"},
+              {"house": "H12", "cluster": "C", "soc": 61, "soc_bar": "yellow", "power": "-1.5kW", "power_color": "orange", "freq": "49.58", "delta": "52mV", "delta_color": "green", "temp": "31°C", "status": "⚠ LOAD"}
+            ],
+            "footer": "Click any row to drill down to house detail",
+            "style": "alternating row colors, sortable headers, frozen first column"
+          }
+        },
+        {
+          "position": "span 3",
+          "type": "bar_gauge",
+          "title": "SOC by House",
+          "visual": {
+            "orientation": "horizontal",
+            "display_mode": "gradient",
+            "show_unfilled": true,
+            "bars": [
+              {"label": "H7", "value": 98, "color": "#73bf69"},
+              {"label": "H5", "value": 95, "color": "#73bf69"},
+              {"label": "H6", "value": 92, "color": "#73bf69"},
+              {"label": "H8", "value": 91, "color": "#73bf69"},
+              {"label": "H3", "value": 88, "color": "#73bf69"},
+              {"label": "H1", "value": 82, "color": "#73bf69"},
+              {"label": "H2", "value": 75, "color": "#73bf69"},
+              {"label": "H11", "value": 72, "color": "#73bf69"},
+              {"label": "H4", "value": 71, "color": "#73bf69"},
+              {"label": "H9", "value": 65, "color": "#fade2a"},
+              {"label": "H12", "value": 61, "color": "#fade2a"},
+              {"label": "H10", "value": 58, "color": "#fade2a"}
+            ],
+            "sorted": "descending",
+            "thresholds": [
+              {"value": 0, "color": "#f2495c"},
+              {"value": 30, "color": "#ff9830"},
+              {"value": 50, "color": "#fade2a"},
+              {"value": 70, "color": "#73bf69"}
+            ]
+          }
+        },
+        {
+          "position": "span 3",
+          "type": "bar_gauge",
+          "title": "Cell Delta by House",
+          "visual": {
+            "orientation": "horizontal",
+            "display_mode": "gradient",
+            "unit": "mV",
+            "bars": [
+              {"label": "H9", "value": 95, "color": "#ff9830", "highlight": "worst"},
+              {"label": "H12", "value": 52, "color": "#fade2a"},
+              {"label": "H10", "value": 45, "color": "#fade2a"},
+              {"label": "H2", "value": 42, "color": "#fade2a"},
+              {"label": "H11", "value": 33, "color": "#73bf69"},
+              {"label": "H4", "value": 31, "color": "#73bf69"},
+              {"label": "H1", "value": 25, "color": "#73bf69"},
+              {"label": "H6", "value": 22, "color": "#73bf69"},
+              {"label": "H8", "value": 19, "color": "#73bf69"},
+              {"label": "H3", "value": 18, "color": "#73bf69"},
+              {"label": "H5", "value": 15, "color": "#73bf69"},
+              {"label": "H7", "value": 8, "color": "#73bf69", "highlight": "best"}
+            ],
+            "sorted": "descending (worst first)",
+            "thresholds": [
+              {"value": 0, "color": "#73bf69"},
+              {"value": 50, "color": "#fade2a"},
+              {"value": 80, "color": "#ff9830"},
+              {"value": 100, "color": "#f2495c"}
+            ]
+          }
+        }
+      ]
+    },
+    "row_5": {
+      "title": "Power & Frequency Trends",
+      "height": "180px",
+      "panels": [
+        {
+          "position": "span 6",
+          "type": "time_series",
+          "title": "Cluster Power Balance — Last Hour",
+          "visual": {
+            "series": [
+              {"name": "Cluster A", "color": "#5794f2", "data": "oscillating around +2kW, stable"},
+              {"name": "Cluster B", "color": "#73bf69", "data": "steady +4 to +5kW, highest producer"},
+              {"name": "Cluster C", "color": "#fade2a", "data": "negative, around -5 to -7kW, consuming"},
+              {"name": "Net Swarm", "color": "#b877d9", "data": "around +1 to +3kW, slightly positive", "style": "thicker line, dashed"}
+            ],
+            "y_axis": {"label": "Power (kW)", "range": "-10 to +10", "zero_line": "emphasized white"},
+            "fill": "gradient, 10% opacity",
+            "legend": {"position": "right", "values": ["last", "avg"]}
+          }
+        },
+        {
+          "position": "span 6",
+          "type": "time_series",
+          "title": "Cluster Frequencies — Last Hour",
+          "visual": {
+            "series": [
+              {"name": "Cluster A", "color": "#5794f2", "value": "49.92 Hz, stable"},
+              {"name": "Cluster B", "color": "#73bf69", "value": "50.01 Hz, very stable"},
+              {"name": "Cluster C", "color": "#fade2a", "value": "49.62 Hz, slightly depressed due to load"},
+              {"name": "Swarm Bus", "color": "#b877d9", "value": "49.97 Hz", "style": "reference line, thicker"}
+            ],
+            "y_axis": {"label": "Frequency (Hz)", "range": "49.4 to 50.6", "decimals": 2},
+            "thresholds": [
+              {"value": 49.5, "color": "#f2495c", "style": "dashed horizontal"},
+              {"value": 50.5, "color": "#f2495c", "style": "dashed horizontal"},
+              {"value": 50.0, "color": "#73bf69", "style": "solid, subtle"}
+            ],
+            "annotations": [
+              {"time": "-45min", "label": "GW-C opened", "color": "#fade2a"},
+              {"time": "-8min", "label": "C freq recovering", "color": "#73bf69"}
+            ]
+          }
+        }
+      ]
+    },
+    "row_6": {
+      "title": "Gateway Status & Events",
+      "height": "120px",
+      "panels": [
+        {
+          "position": "span 4",
+          "type": "state_timeline",
+          "title": "Gateway Contactor States — 24h",
+          "visual": {
+            "rows": [
+              {"label": "GW-A", "states": "mostly green (CLOSED), brief yellow (SYNCING) at 3am"},
+              {"label": "GW-B", "states": "solid green (CLOSED) all day"},
+              {"label": "GW-C", "states": "green until 45min ago, then yellow (SYNCING)"}
+            ],
+            "colors": {
+              "CLOSED": "#73bf69",
+              "SYNCING": "#fade2a",
+              "OPEN": "#ff9830",
+              "FAULT": "#f2495c"
+            },
+            "time_range": "24 hours",
+            "current_time_marker": "vertical line"
+          }
+        },
+        {
+          "position": "span 4",
+          "type": "stat_row",
+          "title": "Gateway Metrics",
+          "visual": {
+            "layout": "3 stat panels in a row",
+            "stats": [
+              {
+                "title": "GW-A",
+                "value": "CLOSED",
+                "color": "#73bf69",
+                "subtitle": "Δf: 0.05 Hz | 1.2 kW →"
+              },
+              {
+                "title": "GW-B",
+                "value": "CLOSED",
+                "color": "#73bf69",
+                "subtitle": "Δf: 0.04 Hz | 2.8 kW →"
+              },
+              {
+                "title": "GW-C",
+                "value": "SYNCING",
+                "color": "#fade2a",
+                "subtitle": "Δf: 0.35 Hz | waiting"
+              }
+            ]
+          }
+        },
+        {
+          "position": "span 4",
+          "type": "logs",
+          "title": "Recent Events",
+          "visual": {
+            "entries": [
+              {"time": "14:52:03", "level": "info", "message": "GW-C: freq delta reducing (0.35Hz)", "color": "#5794f2"},
+              {"time": "14:45:18", "level": "warn", "message": "H9: Cell delta 95mV exceeds threshold", "color": "#fade2a"},
+              {"time": "14:07:33", "level": "warn", "message": "GW-C: Opened - freq mismatch >0.5Hz", "color": "#fade2a"},
+              {"time": "13:45:12", "level": "info", "message": "H7: Reached 98% SOC - reducing charge", "color": "#5794f2"},
+              {"time": "12:30:00", "level": "info", "message": "Peak solar production: 58.2 kW", "color": "#73bf69"}
+            ],
+            "style": "Grafana logs panel with colored level indicators"
+          }
+        }
+      ]
     }
   },
   "technical_details": {
     "resolution": "1920x1080",
     "aspect_ratio": "16:9",
-    "render_style": "photorealistic software screenshot, actual Grafana 10.x interface",
-    "lighting": "flat LCD screen rendering, no reflections, matte finish",
-    "context": "Grafana running in Chrome/Firefox browser, dark theme, production environment",
-    "accuracy": "exact Grafana panel styling, correct fonts (Inter/Roboto), proper spacing, real UI components",
-    "browser_chrome": "minimal - just the Grafana interface, no browser tabs visible"
+    "render_style": "photorealistic software screenshot, Grafana 10.x interface",
+    "lighting": "flat LCD rendering, no reflections",
+    "context": "Grafana in browser, dark theme, enterprise monitoring, Node Graph plugin for topology",
+    "accuracy": "exact Grafana panel styling, proper fonts, correct spacing, real UI components",
+    "browser_chrome": "minimal - just the Grafana interface"
   },
   "negative_prompts": [
     "curved monitor",
-    "control room",
+    "control room with multiple screens",
     "reflections",
     "glare",
     "cinematic lighting",
     "neon glow",
-    "stylized",
-    "3D perspective",
+    "stylized 3D",
     "monitor bezel",
     "room background",
     "keyboard",
     "desk",
-    "person"
+    "person",
+    "simplified diagram",
+    "cartoon"
   ]
 }
