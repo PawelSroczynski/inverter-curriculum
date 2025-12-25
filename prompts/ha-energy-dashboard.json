@@ -3,89 +3,165 @@
   "title": "Home Assistant Energy Dashboard",
   "style": {
     "theme": "home_assistant_dark",
-    "color_palette": ["#111111", "#1c1c1c", "#303030", "#ffc107", "#4caf50", "#2196f3", "#ff5722", "#ffffff"],
-    "aesthetic": "real Home Assistant Energy Dashboard, built-in energy view",
-    "mood": "clean, official HA style, energy monitoring, realistic software"
+    "color_palette": ["#111111", "#1c1c1c", "#303030", "#ffc107", "#4caf50", "#2196f3", "#ff5722", "#9e9e9e", "#ffffff"],
+    "aesthetic": "official Home Assistant Energy Dashboard, built-in energy view, standard HA styling",
+    "mood": "clean, official, energy analytics, residential monitoring"
   },
   "layout": {
     "type": "ha_energy_dashboard",
-    "structure": "HA built-in energy dashboard layout"
+    "structure": "official HA energy layout with distribution card at top"
   },
   "content": {
     "ha_chrome": {
       "sidebar": {
-        "items": ["Overview", "Energy", "Map", "Logbook"],
-        "active": "Energy highlighted with lightning icon"
+        "menu_items": [
+          {"icon": "mdi:view-dashboard", "label": "Overview"},
+          {"icon": "mdi:lightning-bolt", "label": "Energy", "active": true, "highlight": "blue border"}
+        ]
       },
       "top_bar": {
-        "left": "'Energy' title",
-        "center": "date picker showing 'Today'",
-        "right": "compare toggle, configure button"
+        "left": {"title": "Energy"},
+        "center": {
+          "date_picker": {
+            "selected": "Today",
+            "style": "HA date navigation with arrows"
+          }
+        },
+        "right": {
+          "compare_toggle": "Compare checkbox",
+          "configure_button": "cog icon"
+        }
       }
     },
     "energy_sections": [
       {
-        "title": "Energy distribution today",
-        "type": "ha_energy_distribution",
-        "visual": "Official HA energy distribution card with house in center",
-        "flows": {
-          "solar": {"value": "52 kWh", "color": "yellow", "position": "top"},
-          "battery_in": {"value": "8 kWh", "color": "green", "label": "from battery"},
-          "battery_out": {"value": "5 kWh", "color": "purple", "label": "to battery"},
-          "home": {"value": "55 kWh", "color": "blue", "position": "center"},
-          "grid_export": {"value": "0 kWh", "color": "gray"},
-          "grid_import": {"value": "0 kWh", "color": "gray"}
-        },
-        "style": "exact HA energy distribution card with animated flows"
+        "type": "energy_distribution",
+        "position": "top, prominent",
+        "visual": {
+          "description": "Official HA energy distribution card - the centerpiece",
+          "layout": "house icon in center with flows around it",
+          "elements": {
+            "solar": {
+              "position": "top",
+              "icon": "mdi:solar-power in yellow circle",
+              "value": "52 kWh",
+              "flow_to_home": {"active": true, "animated": true, "color": "yellow"},
+              "flow_to_battery": {"active": true, "animated": true, "color": "green"}
+            },
+            "grid": {
+              "position": "left",
+              "icon": "mdi:transmission-tower in gray circle",
+              "import": "0 kWh",
+              "export": "0 kWh",
+              "flow": {"active": false, "label": "Off-Grid"}
+            },
+            "home": {
+              "position": "center",
+              "icon": "mdi:home in blue circle",
+              "value": "55 kWh",
+              "color": "#2196f3"
+            },
+            "battery": {
+              "position": "bottom",
+              "icon": "mdi:battery-70 in green circle",
+              "charge": "5 kWh",
+              "discharge": "8 kWh",
+              "flow_in": {"active": true, "animated": true},
+              "flow_out": {"active": true, "animated": true}
+            }
+          },
+          "style": "official HA energy-distribution card with animated dots on flow lines"
+        }
       },
       {
+        "type": "solar_production",
         "title": "Solar production",
-        "type": "ha_energy_solar",
-        "visual": "bar chart showing hourly solar production, yellow bars",
-        "peak": "highest bar at noon showing ~8kW",
-        "style": "HA energy solar chart style"
+        "visual": {
+          "chart_type": "bar chart",
+          "description": "Hourly solar production bars",
+          "bars": {
+            "color": "#ffc107",
+            "data": "0 kWh at night, rising from 6am, peak ~8kW at noon, declining to 0 by 6pm"
+          },
+          "x_axis": "hours of day (0-24)",
+          "y_axis": "kWh",
+          "total": "52.3 kWh",
+          "style": "official HA solar chart with yellow bars"
+        }
       },
       {
+        "type": "energy_usage",
         "title": "Energy usage",
-        "type": "ha_energy_usage",
-        "visual": "stacked bar chart by device/category",
-        "categories": ["Appliances", "HVAC", "Lighting", "Other"],
-        "style": "HA energy usage chart with legend"
+        "visual": {
+          "chart_type": "stacked bar chart",
+          "description": "Hourly consumption by device/category",
+          "categories": [
+            {"name": "HVAC", "color": "#f44336"},
+            {"name": "Appliances", "color": "#ff9800"},
+            {"name": "Lighting", "color": "#ffeb3b"},
+            {"name": "Other", "color": "#9e9e9e"}
+          ],
+          "x_axis": "hours of day",
+          "y_axis": "kWh",
+          "legend": "bottom, horizontal",
+          "style": "official HA energy usage stacked bars"
+        }
       },
       {
+        "type": "battery_usage",
         "title": "Battery",
-        "type": "ha_battery_card",
-        "visual": "area chart showing battery level over day + charge/discharge bars",
-        "soc_line": "line showing 40% at night rising to 100% midday, back to 70% evening",
-        "style": "HA energy battery chart"
+        "visual": {
+          "chart_type": "combined area + bar",
+          "description": "SOC line overlaid on charge/discharge bars",
+          "soc_line": {
+            "color": "#4caf50",
+            "data": "starts 40%, rises to 100% midday, drops to 70% evening"
+          },
+          "charge_bars": {"color": "#4caf50", "direction": "up"},
+          "discharge_bars": {"color": "#ff9800", "direction": "down"},
+          "x_axis": "hours",
+          "y_axis_left": "kWh",
+          "y_axis_right": "SOC %",
+          "style": "official HA battery chart"
+        }
       },
       {
+        "type": "sources_table",
         "title": "Sources",
-        "type": "entities",
-        "visual": "list showing energy sources with icons",
-        "entities": [
-          {"name": "Solar Panels", "value": "52.3 kWh", "icon": "mdi:solar-power"},
-          {"name": "Battery Discharge", "value": "8.1 kWh", "icon": "mdi:battery-arrow-down"}
-        ]
+        "position": "sidebar or below charts",
+        "visual": {
+          "rows": [
+            {"icon": "mdi:solar-power", "name": "Solar Panels", "value": "52.3 kWh", "color": "yellow"},
+            {"icon": "mdi:battery-arrow-up", "name": "Battery discharge", "value": "8.1 kWh", "color": "green"}
+          ],
+          "total": "60.4 kWh",
+          "style": "HA entity list with icons"
+        }
+      },
+      {
+        "type": "devices_table",
+        "title": "Devices",
+        "visual": {
+          "rows": [
+            {"icon": "mdi:air-conditioner", "name": "HVAC", "value": "18.5 kWh"},
+            {"icon": "mdi:washing-machine", "name": "Appliances", "value": "22.1 kWh"},
+            {"icon": "mdi:lightbulb", "name": "Lighting", "value": "8.3 kWh"},
+            {"icon": "mdi:help-circle", "name": "Other", "value": "6.1 kWh"}
+          ],
+          "total": "55.0 kWh"
+        }
       }
     ]
   },
   "technical_details": {
     "resolution": "1920x1080",
     "aspect_ratio": "16:9",
-    "render_style": "realistic software screenshot, actual Home Assistant Energy Dashboard",
+    "render_style": "photorealistic Home Assistant screenshot, official Energy dashboard",
     "lighting": "flat screen, no reflections",
-    "context": "Home Assistant built-in Energy dashboard, official styling",
-    "accuracy": "exact HA energy dashboard appearance, official chart styles, correct icons"
+    "context": "Home Assistant built-in Energy dashboard (not custom Lovelace)",
+    "accuracy": "exact official HA energy dashboard appearance, correct chart styles, proper date picker"
   },
   "negative_prompts": [
-    "curved monitor",
-    "control room",
-    "reflections",
-    "cinematic",
-    "neon glow",
-    "custom cards",
-    "SCADA",
-    "monitor frame"
+    "curved monitor", "control room", "reflections", "cinematic", "custom cards", "Mushroom", "SCADA", "monitor bezel", "room background"
   ]
 }

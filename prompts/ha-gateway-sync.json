@@ -1,0 +1,245 @@
+{
+  "image_type": "software_screenshot",
+  "title": "Home Assistant Gateway Sync View",
+  "style": {
+    "theme": "home_assistant_dark",
+    "color_palette": ["#111111", "#1c1c1c", "#303030", "#4caf50", "#2196f3", "#ff9800", "#f44336", "#9c27b0", "#ffffff"],
+    "aesthetic": "production Home Assistant dashboard, gateway monitoring, sync status, Mushroom cards",
+    "mood": "technical but accessible, real-time status, interconnection monitoring"
+  },
+  "layout": {
+    "type": "lovelace_panel",
+    "structure": "sidebar + gateway-focused content"
+  },
+  "content": {
+    "ha_chrome": {
+      "sidebar": {
+        "menu_items": [
+          {"icon": "mdi:home-group", "label": "Microgrid"},
+          {"icon": "mdi:gate", "label": "Gateways", "active": true}
+        ]
+      },
+      "top_bar": {
+        "left": {"title": "Gateway Synchronization"},
+        "right": {"refresh_indicator": "live updates"}
+      }
+    },
+    "dashboard_content": {
+      "sections": [
+        {
+          "title": null,
+          "cards": [
+            {
+              "type": "custom:mushroom-title-card",
+              "visual": {
+                "title": "Gateway Status",
+                "subtitle": "2 of 3 connected to swarm bus"
+              }
+            },
+            {
+              "type": "custom:mushroom-chips-card",
+              "visual": {
+                "chips": [
+                  {"icon": "mdi:sine-wave", "label": "Swarm: 50.00 Hz", "color": "blue"},
+                  {"icon": "mdi:flash", "label": "230.0V", "color": "green"},
+                  {"icon": "mdi:connection", "label": "2/3 Connected", "color": "orange"}
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "title": "Gateway A - Cluster A",
+          "cards": [
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:electric-switch-closed",
+                    "icon_color": "green",
+                    "primary": "Connected",
+                    "secondary": "Contactor Closed",
+                    "layout": "vertical"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:sine-wave",
+                    "icon_color": "green",
+                    "primary": "49.97 Hz",
+                    "secondary": "Δ -0.03 Hz"
+                  }
+                },
+                {
+                  "type": "gauge",
+                  "visual": {
+                    "title": "Sync Quality",
+                    "value": 99.4,
+                    "severity": {"green": 90, "yellow": 50, "red": 0},
+                    "style": "HA gauge, green zone"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:arrow-right",
+                    "icon_color": "green",
+                    "primary": "1.2 kW",
+                    "secondary": "→ to swarm"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Gateway B - Cluster B",
+          "cards": [
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:electric-switch-closed",
+                    "icon_color": "green",
+                    "primary": "Connected",
+                    "secondary": "Contactor Closed"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:sine-wave",
+                    "icon_color": "green",
+                    "primary": "50.01 Hz",
+                    "secondary": "Δ +0.01 Hz"
+                  }
+                },
+                {
+                  "type": "gauge",
+                  "visual": {
+                    "title": "Sync Quality",
+                    "value": 99.9,
+                    "severity": {"green": 90, "yellow": 50, "red": 0},
+                    "style": "HA gauge, bright green"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:arrow-right",
+                    "icon_color": "green",
+                    "primary": "2.8 kW",
+                    "secondary": "→ to swarm"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Gateway C - Cluster C",
+          "cards": [
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:electric-switch",
+                    "icon_color": "orange",
+                    "primary": "Disconnected",
+                    "secondary": "Contactor Open"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:sine-wave",
+                    "icon_color": "orange",
+                    "primary": "49.62 Hz",
+                    "secondary": "Δ -0.38 Hz"
+                  }
+                },
+                {
+                  "type": "gauge",
+                  "visual": {
+                    "title": "Sync Quality",
+                    "value": 76.2,
+                    "severity": {"green": 90, "yellow": 50, "red": 0},
+                    "style": "HA gauge, yellow zone"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:clock-outline",
+                    "icon_color": "orange",
+                    "primary": "Waiting",
+                    "secondary": "for sync"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "custom:mushroom-chips-card",
+              "visual": {
+                "chips": [
+                  {"icon": "mdi:alert", "label": "Heavy load pulling frequency down", "color": "orange"},
+                  {"icon": "mdi:information", "label": "Will reconnect when Δf < 0.1 Hz", "color": "blue"}
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "title": "Sync Rules",
+          "cards": [
+            {
+              "type": "entities",
+              "visual": {
+                "entities": [
+                  {"icon": "mdi:check-circle", "name": "|Δf| < 0.1 Hz", "state": "Close immediately", "state_color": "green"},
+                  {"icon": "mdi:check", "name": "|Δf| < 0.5 Hz", "state": "Close when phase aligns", "state_color": "green"},
+                  {"icon": "mdi:pause-circle", "name": "|Δf| > 0.5 Hz", "state": "Wait - do not close", "state_color": "orange"},
+                  {"icon": "mdi:alert-circle", "name": "f < 47.5 Hz", "state": "Emergency close", "state_color": "red"}
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "title": "Recent Events",
+          "cards": [
+            {
+              "type": "logbook",
+              "visual": {
+                "entries": [
+                  {"time": "8 min ago", "icon": "mdi:electric-switch", "message": "GW-C opened - freq delta exceeded", "color": "orange"},
+                  {"time": "5 min ago", "icon": "mdi:trending-down", "message": "GW-C cluster load increased", "color": "blue"},
+                  {"time": "3 min ago", "icon": "mdi:trending-up", "message": "GW-C frequency recovering", "color": "green"},
+                  {"time": "45 sec ago", "icon": "mdi:tune", "message": "GW-A minor phase adjustment", "color": "blue"}
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "technical_details": {
+    "resolution": "1920x1080",
+    "aspect_ratio": "16:9",
+    "render_style": "photorealistic Home Assistant screenshot",
+    "lighting": "flat screen, no reflections",
+    "context": "Home Assistant Lovelace with Mushroom cards, gateway monitoring",
+    "accuracy": "exact HA styling, proper gauge cards, entity formatting"
+  },
+  "negative_prompts": [
+    "curved monitor", "control room", "oscilloscope", "reflections", "cinematic", "neon glow", "waveforms", "monitor bezel", "room background"
+  ]
+}

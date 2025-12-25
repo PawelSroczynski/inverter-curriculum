@@ -1,0 +1,292 @@
+{
+  "image_type": "software_screenshot",
+  "title": "Grafana Swarm Microgrid Overview Dashboard",
+  "style": {
+    "theme": "grafana_dark",
+    "color_palette": ["#111217", "#181b1f", "#22252a", "#ff5286", "#73bf69", "#5794f2", "#fade2a", "#b877d9", "#ff9830"],
+    "aesthetic": "production Grafana dashboard, real software interface, enterprise monitoring, InfluxDB data source",
+    "mood": "professional, data-dense, operational monitoring, realistic enterprise software"
+  },
+  "layout": {
+    "type": "grafana_grid",
+    "rows": 4,
+    "columns": 6,
+    "panel_spacing": "8px",
+    "panel_borders": "1px solid #22252a"
+  },
+  "content": {
+    "grafana_chrome": {
+      "top_bar": {
+        "background": "#111217",
+        "left": {
+          "elements": ["Grafana logo (orange)", "breadcrumb: 'Dashboards / Microgrid / Swarm Overview'"],
+          "style": "white text, subtle separators"
+        },
+        "center": {
+          "elements": ["dashboard title: 'ENKLAVA Swarm Grid - Live'"],
+          "style": "larger white text"
+        },
+        "right": {
+          "elements": [
+            "time range picker: 'Last 6 hours' with dropdown arrow",
+            "zoom out icon",
+            "refresh dropdown: '5s'",
+            "sync icon",
+            "share icon",
+            "star icon (favorited, filled)",
+            "settings cog"
+          ],
+          "style": "icon buttons with hover states"
+        }
+      },
+      "left_sidebar": {
+        "state": "collapsed",
+        "width": "60px",
+        "icons": ["Search (magnifier)", "Home", "Dashboards", "Explore", "Alerting (bell with dot)", "Connections", "Administration"],
+        "bottom_icons": ["Help", "User avatar"],
+        "style": "dark background, icons only, active indicator line"
+      }
+    },
+    "variable_row": {
+      "position": "below top bar",
+      "background": "#181b1f",
+      "variables": [
+        {"name": "Cluster", "value": "All", "type": "dropdown"},
+        {"name": "House", "value": "All", "type": "dropdown"},
+        {"name": "Metric", "value": "Power", "type": "dropdown"}
+      ],
+      "style": "Grafana variable selectors with labels"
+    },
+    "row_1": {
+      "title": "System Status",
+      "collapsed": false,
+      "panels": [
+        {
+          "position": "span 2",
+          "type": "stat",
+          "title": "Grid Status",
+          "visual": {
+            "value": "OFF-GRID",
+            "color": "#73bf69",
+            "background": "gradient green",
+            "sparkline": false
+          },
+          "style": "Grafana stat panel, large centered text, colored background mode"
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Total Power",
+          "visual": {
+            "value": "+3.2 kW",
+            "subtitle": "surplus",
+            "color": "#73bf69",
+            "sparkline": "small line chart below value showing last hour"
+          }
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Solar Now",
+          "visual": {
+            "value": "52.3 kW",
+            "icon": "none (Grafana stats don't have icons)",
+            "color": "#fade2a",
+            "sparkline": "yellow area chart"
+          }
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Load Now",
+          "visual": {
+            "value": "49.1 kW",
+            "color": "#ff9830",
+            "sparkline": "orange area chart"
+          }
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Active Alerts",
+          "visual": {
+            "value": "0",
+            "color": "#73bf69",
+            "sparkline": false
+          }
+        }
+      ]
+    },
+    "row_2": {
+      "title": "Cluster Overview",
+      "panels": [
+        {
+          "position": "span 2",
+          "type": "gauge",
+          "title": "Cluster A - SOC",
+          "visual": {
+            "value": "78%",
+            "min": 0,
+            "max": 100,
+            "thresholds": [
+              {"value": 0, "color": "#f2495c"},
+              {"value": 20, "color": "#ff9830"},
+              {"value": 50, "color": "#fade2a"},
+              {"value": 70, "color": "#73bf69"}
+            ],
+            "style": "Grafana gauge with threshold colors, needle pointing to 78"
+          },
+          "subtitle": "12.3 kW load | 49.92 Hz"
+        },
+        {
+          "position": "span 2",
+          "type": "gauge",
+          "title": "Cluster B - SOC",
+          "visual": {
+            "value": "95%",
+            "color": "#73bf69",
+            "style": "gauge nearly full, bright green"
+          },
+          "subtitle": "8.1 kW load | 50.01 Hz"
+        },
+        {
+          "position": "span 2",
+          "type": "gauge",
+          "title": "Cluster C - SOC",
+          "visual": {
+            "value": "65%",
+            "color": "#fade2a",
+            "style": "gauge at yellow zone"
+          },
+          "subtitle": "15.7 kW load | 49.85 Hz"
+        }
+      ]
+    },
+    "row_3": {
+      "title": "Power Flow - 24 Hours",
+      "panels": [
+        {
+          "position": "span 4",
+          "type": "time_series",
+          "title": "Solar Production vs Consumption",
+          "visual": {
+            "description": "Grafana time series with two overlapping area charts",
+            "series": [
+              {
+                "name": "Solar",
+                "color": "#fade2a",
+                "fill": "gradient below line, 20% opacity",
+                "data": "curve rising from 0 at 6am, peak ~58kW at noon, declining to 0 at 6pm"
+              },
+              {
+                "name": "Consumption",
+                "color": "#ff9830",
+                "fill": "gradient below line, 20% opacity",
+                "data": "relatively flat ~35-50kW with peaks at morning and evening"
+              }
+            ],
+            "y_axis": {"label": "Power (kW)", "range": "0 to 72"},
+            "x_axis": {"label": "Time", "format": "HH:mm"},
+            "legend": {
+              "position": "bottom",
+              "mode": "table",
+              "values": ["last", "min", "max", "avg"]
+            },
+            "grid": "subtle gray grid lines"
+          },
+          "style": "standard Grafana time series panel with gradient fills"
+        },
+        {
+          "position": "span 2",
+          "type": "bar_gauge",
+          "title": "House SOC Levels",
+          "visual": {
+            "orientation": "horizontal",
+            "bars": [
+              {"label": "H1", "value": 82, "color": "#73bf69"},
+              {"label": "H2", "value": 75, "color": "#73bf69"},
+              {"label": "H3", "value": 88, "color": "#73bf69"},
+              {"label": "H4", "value": 71, "color": "#73bf69"},
+              {"label": "H5", "value": 95, "color": "#73bf69"},
+              {"label": "H6", "value": 92, "color": "#73bf69"},
+              {"label": "H7", "value": 98, "color": "#73bf69"},
+              {"label": "H8", "value": 91, "color": "#73bf69"},
+              {"label": "H9", "value": 65, "color": "#fade2a"},
+              {"label": "H10", "value": 58, "color": "#fade2a"},
+              {"label": "H11", "value": 72, "color": "#73bf69"},
+              {"label": "H12", "value": 61, "color": "#fade2a"}
+            ],
+            "thresholds": "green >70, yellow 40-70, red <40"
+          },
+          "style": "Grafana bar gauge, horizontal, value labels on right"
+        }
+      ]
+    },
+    "row_4": {
+      "title": "Frequency & Events",
+      "panels": [
+        {
+          "position": "span 3",
+          "type": "time_series",
+          "title": "Cluster Frequencies",
+          "visual": {
+            "series": [
+              {"name": "Cluster A", "color": "#5794f2", "value": "49.92 Hz"},
+              {"name": "Cluster B", "color": "#73bf69", "value": "50.01 Hz"},
+              {"name": "Cluster C", "color": "#fade2a", "value": "49.85 Hz"},
+              {"name": "Swarm Bus", "color": "#b877d9", "value": "49.95 Hz", "style": "dashed line"}
+            ],
+            "y_axis": {"range": "49.5 to 50.5 Hz", "decimals": 2},
+            "thresholds": {"lines": [{"value": 49.5, "color": "red"}, {"value": 50.5, "color": "red"}]}
+          },
+          "style": "multi-line time series with reference lines"
+        },
+        {
+          "position": "span 3",
+          "type": "table",
+          "title": "Recent Events",
+          "visual": {
+            "columns": ["Time", "Source", "Event", "Severity"],
+            "rows": [
+              {"time": "14:23:45", "source": "Gateway B", "event": "Opened - freq mismatch", "severity": "warning", "color": "#fade2a"},
+              {"time": "13:45:12", "source": "House 5", "event": "100% SOC reached", "severity": "info", "color": "#5794f2"},
+              {"time": "12:12:33", "source": "House 9", "event": "Cell delta > 30mV", "severity": "warning", "color": "#fade2a"},
+              {"time": "11:30:00", "source": "System", "event": "Peak solar: 58kW", "severity": "info", "color": "#5794f2"},
+              {"time": "09:15:22", "source": "House 3", "event": "Inverter temp warning", "severity": "warning", "color": "#fade2a"}
+            ],
+            "style": "Grafana table with colored severity column, alternating row colors"
+          }
+        }
+      ]
+    },
+    "footer": {
+      "position": "bottom of viewport",
+      "content": "Grafana v10.2.0 | InfluxDB | Last refresh: 14:25:03",
+      "style": "subtle gray text"
+    }
+  },
+  "technical_details": {
+    "resolution": "1920x1080",
+    "aspect_ratio": "16:9",
+    "render_style": "photorealistic software screenshot, actual Grafana 10.x interface",
+    "lighting": "flat LCD screen rendering, no reflections, matte finish",
+    "context": "Grafana running in Chrome/Firefox browser, dark theme, production environment",
+    "accuracy": "exact Grafana panel styling, correct fonts (Inter/Roboto), proper spacing, real UI components",
+    "browser_chrome": "minimal - just the Grafana interface, no browser tabs visible"
+  },
+  "negative_prompts": [
+    "curved monitor",
+    "control room",
+    "reflections",
+    "glare",
+    "cinematic lighting",
+    "neon glow",
+    "stylized",
+    "3D perspective",
+    "monitor bezel",
+    "room background",
+    "keyboard",
+    "desk",
+    "person"
+  ]
+}

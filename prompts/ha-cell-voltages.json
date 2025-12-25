@@ -1,0 +1,198 @@
+{
+  "image_type": "software_screenshot",
+  "title": "Home Assistant Battery Cells View",
+  "style": {
+    "theme": "home_assistant_dark",
+    "color_palette": ["#111111", "#1c1c1c", "#303030", "#4caf50", "#ff9800", "#f44336", "#2196f3", "#9c27b0", "#ffffff"],
+    "aesthetic": "production Home Assistant dashboard, battery cell monitoring, BMS integration, bar-card visualization",
+    "mood": "detailed, diagnostic, battery health focused, accessible to homeowners"
+  },
+  "layout": {
+    "type": "lovelace_panel",
+    "structure": "sidebar + cell monitoring content"
+  },
+  "content": {
+    "ha_chrome": {
+      "sidebar": {
+        "menu_items": [
+          {"icon": "mdi:home-group", "label": "Microgrid"},
+          {"icon": "mdi:battery-heart-variant", "label": "Battery Health", "active": true}
+        ]
+      },
+      "top_bar": {
+        "left": {"title": "Battery Cell Monitoring"},
+        "right": {"house_selector": "dropdown showing 'All Houses'"}
+      }
+    },
+    "notification_banner": {
+      "visible": true,
+      "type": "warning",
+      "visual": {
+        "icon": "mdi:alert",
+        "message": "House 3 Cell 14 voltage below threshold (2.85V)",
+        "action": "View Details",
+        "style": "HA persistent notification, orange/warning style"
+      }
+    },
+    "dashboard_content": {
+      "sections": [
+        {
+          "title": null,
+          "cards": [
+            {
+              "type": "custom:mushroom-title-card",
+              "visual": {
+                "title": "Battery Cell Health",
+                "subtitle": "192 cells across 12 houses"
+              }
+            },
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {"icon": "mdi:battery-check", "icon_color": "green", "primary": "189", "secondary": "Healthy"}
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {"icon": "mdi:battery-alert", "icon_color": "orange", "primary": "2", "secondary": "Warning"}
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {"icon": "mdi:battery-off", "icon_color": "red", "primary": "1", "secondary": "Critical"}
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {"icon": "mdi:delta", "icon_color": "orange", "primary": "350mV", "secondary": "Max Delta"}
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "House 3 - Needs Attention",
+          "cards": [
+            {
+              "type": "custom:bar-card",
+              "visual": {
+                "title": "Cell Voltages",
+                "direction": "horizontal",
+                "height": "30px per bar",
+                "entities": [
+                  {"name": "Cell 1", "value": 3.12, "color": "green"},
+                  {"name": "Cell 2", "value": 3.15, "color": "green"},
+                  {"name": "Cell 3", "value": 3.10, "color": "green"},
+                  {"name": "Cell 4", "value": 3.14, "color": "green"},
+                  {"name": "Cell 5", "value": 3.11, "color": "green"},
+                  {"name": "Cell 6", "value": 3.13, "color": "green"},
+                  {"name": "Cell 7", "value": 3.18, "color": "green", "note": "max"},
+                  {"name": "Cell 8", "value": 3.09, "color": "green"},
+                  {"name": "Cell 9", "value": 3.12, "color": "green"},
+                  {"name": "Cell 10", "value": 3.10, "color": "green"},
+                  {"name": "Cell 11", "value": 3.08, "color": "yellow"},
+                  {"name": "Cell 12", "value": 3.11, "color": "green"},
+                  {"name": "Cell 13", "value": 2.92, "color": "orange"},
+                  {"name": "Cell 14", "value": 2.85, "color": "red", "highlight": "pulsing/emphasized"},
+                  {"name": "Cell 15", "value": 3.05, "color": "yellow"},
+                  {"name": "Cell 16", "value": 3.07, "color": "yellow"}
+                ],
+                "min": 2.5,
+                "max": 3.6,
+                "severity": [
+                  {"from": 2.5, "to": 2.9, "color": "red"},
+                  {"from": 2.9, "to": 3.1, "color": "orange"},
+                  {"from": 3.1, "to": 3.4, "color": "green"},
+                  {"from": 3.4, "to": 3.6, "color": "orange"}
+                ],
+                "show_value": true,
+                "style": "HA bar-card with value labels and colored severity"
+              }
+            },
+            {
+              "type": "entities",
+              "visual": {
+                "title": "House 3 Statistics",
+                "entities": [
+                  {"icon": "mdi:arrow-down", "name": "Min Cell", "state": "2.85V (Cell 14)", "state_color": "red"},
+                  {"icon": "mdi:arrow-up", "name": "Max Cell", "state": "3.18V (Cell 7)", "state_color": "green"},
+                  {"icon": "mdi:delta", "name": "Delta", "state": "330mV", "state_color": "red"},
+                  {"icon": "mdi:scale-balance", "name": "Balancer", "state": "Active on C14", "state_color": "blue"},
+                  {"icon": "mdi:history", "name": "Last Balanced", "state": "2h 15m ago"}
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "title": "All Houses Overview",
+          "cards": [
+            {
+              "type": "grid",
+              "columns": 4,
+              "cards": [
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:battery-check", "icon_color": "green", "primary": "H1", "secondary": "Δ 25mV"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:battery-check", "icon_color": "green", "primary": "H2", "secondary": "Δ 42mV"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:battery-alert", "icon_color": "red", "primary": "H3", "secondary": "Δ 330mV"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:battery-check", "icon_color": "green", "primary": "H4", "secondary": "Δ 31mV"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:battery-check", "icon_color": "green", "primary": "H5", "secondary": "Δ 18mV"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:battery-check", "icon_color": "green", "primary": "H6", "secondary": "Δ 22mV"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:battery-check", "icon_color": "green", "primary": "H7", "secondary": "Δ 50mV"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:battery-check", "icon_color": "green", "primary": "H8", "secondary": "Δ 35mV"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:battery-alert", "icon_color": "orange", "primary": "H9", "secondary": "Δ 95mV"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:battery-check", "icon_color": "green", "primary": "H10", "secondary": "Δ 28mV"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:battery-check", "icon_color": "green", "primary": "H11", "secondary": "Δ 33mV"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:battery-check", "icon_color": "green", "primary": "H12", "secondary": "Δ 41mV"}}
+              ],
+              "style": "compact grid with status colors"
+            }
+          ]
+        },
+        {
+          "title": "Cell 14 History (House 3)",
+          "cards": [
+            {
+              "type": "custom:mini-graph-card",
+              "visual": {
+                "entities": [{"name": "Cell 14 Voltage", "color": "#f44336"}],
+                "hours_to_show": 168,
+                "points_per_hour": 1,
+                "line_width": 2,
+                "show": {"labels": true, "extrema": true},
+                "color_thresholds": [
+                  {"value": 2.9, "color": "#f44336"},
+                  {"value": 3.0, "color": "#ff9800"},
+                  {"value": 3.1, "color": "#4caf50"}
+                ],
+                "data_description": "Declining trend from 3.15V one week ago to 2.85V now",
+                "style": "HA mini-graph-card with threshold colors"
+              }
+            }
+          ]
+        },
+        {
+          "title": "Recommended Actions",
+          "cards": [
+            {
+              "type": "markdown",
+              "visual": {
+                "content": "### Cell 14 (House 3) Actions:\n\n1. ⚠️ **Monitor closely** - voltage declining over past week\n2. 🔧 **Check active balancer** - verify it's working on this cell\n3. 📊 **Capacity test** - schedule when convenient\n4. 🔄 **Consider replacement** if capacity < 80%\n\n*Cell 14 has triggered issues in 3 of last 4 H3 faults*",
+                "style": "HA markdown card"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "technical_details": {
+    "resolution": "1920x1080",
+    "aspect_ratio": "16:9",
+    "render_style": "photorealistic Home Assistant screenshot",
+    "lighting": "flat screen, no reflections",
+    "context": "Home Assistant Lovelace with bar-card, mini-graph-card, Mushroom cards",
+    "accuracy": "exact HA styling, proper bar-card appearance, notification banner"
+  },
+  "negative_prompts": [
+    "curved monitor", "control room", "heatmap", "reflections", "cinematic", "neon glow", "Grafana", "monitor bezel", "room background"
+  ]
+}

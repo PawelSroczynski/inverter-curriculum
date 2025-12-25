@@ -1,0 +1,193 @@
+{
+  "image_type": "software_screenshot",
+  "title": "Grafana Droop Control Power Sharing Dashboard",
+  "style": {
+    "theme": "grafana_dark",
+    "color_palette": ["#111217", "#181b1f", "#22252a", "#73bf69", "#5794f2", "#fade2a", "#ff9830", "#f2495c", "#b877d9"],
+    "aesthetic": "production Grafana dashboard, power sharing visualization, droop control analysis, educational technical dashboard",
+    "mood": "educational, analytical, physics-focused, real-time demonstration"
+  },
+  "layout": {
+    "type": "grafana_grid",
+    "rows": 4,
+    "columns": 6
+  },
+  "content": {
+    "grafana_chrome": {
+      "top_bar": {
+        "left": ["Grafana logo", "breadcrumb: 'Dashboards / Microgrid / Power Sharing'"],
+        "center": ["'Droop Control - Automatic Power Sharing'"],
+        "right": ["time range: 'Last 15 minutes'", "refresh: '5s'"]
+      },
+      "left_sidebar": {"state": "collapsed"}
+    },
+    "row_1": {
+      "title": "Current Scenario",
+      "panels": [
+        {
+          "position": "span 2",
+          "type": "stat",
+          "title": "Active Event",
+          "visual": {"value": "EV Charging", "subtitle": "House 2 - 7kW load spike", "color": "#ff9830", "background": "gradient"}
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Bus Frequency",
+          "visual": {"value": "49.85 Hz", "color": "#fade2a", "sparkline": "dipped recently"}
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Power Shared",
+          "visual": {"value": "3.0 kW", "subtitle": "from neighbors", "color": "#73bf69"}
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Response Time",
+          "visual": {"value": "85 ms", "subtitle": "to stabilize", "color": "#5794f2"}
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Sharing Mode",
+          "visual": {"value": "AUTO", "color": "#73bf69"}
+        }
+      ]
+    },
+    "row_2": {
+      "title": "House-by-House Power Flow",
+      "panels": [
+        {
+          "position": "span 4",
+          "type": "time_series",
+          "title": "Power Output per House (Cluster A)",
+          "visual": {
+            "description": "Shows each house's contribution during load event",
+            "series": [
+              {"name": "H1 (49.88 Hz)", "color": "#5794f2", "data": "steady at +3.5kW, arrow indicating export"},
+              {"name": "H2 (49.75 Hz)", "color": "#f2495c", "data": "at -6kW (MAX inverter output), receiving power"},
+              {"name": "H3 (49.92 Hz)", "color": "#73bf69", "data": "steady at +2kW"},
+              {"name": "H4 (49.90 Hz)", "color": "#b877d9", "data": "steady at +2.5kW"}
+            ],
+            "y_axis": {"label": "Power (kW)", "range": "-8 to +6", "zero_line": "emphasized white"},
+            "x_axis": {"label": "Time", "range": "last 15 minutes"},
+            "annotations": [
+              {"time": "-12 min", "label": "EV plugged in", "color": "#ff9830"},
+              {"time": "-12 min + 85ms", "label": "Sharing stabilized", "color": "#73bf69"}
+            ],
+            "legend": {"position": "bottom", "format": "table with last value"}
+          }
+        },
+        {
+          "position": "span 2",
+          "type": "table",
+          "title": "Current Sharing",
+          "visual": {
+            "columns": ["House", "Freq", "Output", "To H2"],
+            "rows": [
+              {"house": "H1", "freq": "49.88 Hz", "output": "3.5 kW", "to_h2": "1.5 kW →", "color": "#73bf69"},
+              {"house": "H2", "freq": "49.75 Hz", "output": "6 kW MAX", "to_h2": "← needs 3kW", "color": "#f2495c"},
+              {"house": "H3", "freq": "49.92 Hz", "output": "2.0 kW", "to_h2": "1.0 kW →", "color": "#73bf69"},
+              {"house": "H4", "freq": "49.90 Hz", "output": "2.5 kW", "to_h2": "0.5 kW →", "color": "#73bf69"}
+            ],
+            "footer": "Total shared: 3.0 kW"
+          }
+        }
+      ]
+    },
+    "row_3": {
+      "title": "Droop Curve Visualization",
+      "panels": [
+        {
+          "position": "span 3",
+          "type": "xy_chart",
+          "title": "Droop Curve - Frequency vs Power",
+          "visual": {
+            "description": "XY scatter/line showing the droop relationship",
+            "x_axis": {"label": "Power Output (kW)", "range": "0 to 6"},
+            "y_axis": {"label": "Frequency (Hz)", "range": "48.5 to 50.5"},
+            "series": [
+              {
+                "name": "Droop Curve",
+                "type": "line",
+                "color": "#5794f2",
+                "data": "diagonal line from (0kW, 50.0Hz) to (6kW, 48.5Hz)",
+                "equation": "f = 50.0 - (0.25 × P)"
+              }
+            ],
+            "annotations": [
+              {"x": 0, "y": 50.0, "label": "No Load", "marker": "circle"},
+              {"x": 2, "y": 49.5, "label": "Medium", "marker": "circle"},
+              {"x": 4, "y": 49.0, "label": "Heavy", "marker": "circle"},
+              {"x": 6, "y": 48.5, "label": "MAX", "marker": "circle", "color": "#f2495c"}
+            ],
+            "current_operating_points": [
+              {"house": "H1", "x": 3.5, "y": 49.88, "marker": "diamond", "color": "#5794f2"},
+              {"house": "H2", "x": 6.0, "y": 49.75, "marker": "diamond", "color": "#f2495c"},
+              {"house": "H3", "x": 2.0, "y": 49.92, "marker": "diamond", "color": "#73bf69"},
+              {"house": "H4", "x": 2.5, "y": 49.90, "marker": "diamond", "color": "#b877d9"}
+            ]
+          },
+          "style": "Grafana XY Chart or Plotly panel"
+        },
+        {
+          "position": "span 3",
+          "type": "text",
+          "title": "How Droop Control Works",
+          "visual": {
+            "mode": "markdown",
+            "content": "## The Physics of Power Sharing\n\n**Rule:** Every inverter follows the same droop curve:\n```\nf = 50.0 - (k × P)\nwhere k = 0.25 Hz/kW\n```\n\n**What happens:**\n1. H2 plugs in EV → local load increases\n2. H2 inverter works harder → frequency drops\n3. Other houses see lower bus frequency\n4. They increase output to match\n5. System finds new equilibrium\n\n**Result:**\n- Lower freq = more loaded = RECEIVES power\n- Higher freq = less loaded = SENDS power\n- No communication needed!\n- Settles in ~100ms",
+            "background": "#181b1f",
+            "font": "mixed markdown with code blocks"
+          }
+        }
+      ]
+    },
+    "row_4": {
+      "title": "Sharing Events Log",
+      "panels": [
+        {
+          "position": "span 4",
+          "type": "state_timeline",
+          "title": "Power Sharing States - Last Hour",
+          "visual": {
+            "rows": [
+              {"label": "H1", "states": [{"state": "Balanced", "color": "#73bf69", "duration": "45 min"}, {"state": "Exporting", "color": "#5794f2", "duration": "15 min"}]},
+              {"label": "H2", "states": [{"state": "Balanced", "color": "#73bf69", "duration": "45 min"}, {"state": "Importing", "color": "#ff9830", "duration": "15 min"}]},
+              {"label": "H3", "states": [{"state": "Balanced", "color": "#73bf69", "duration": "50 min"}, {"state": "Exporting", "color": "#5794f2", "duration": "10 min"}]},
+              {"label": "H4", "states": [{"state": "Balanced", "color": "#73bf69", "duration": "48 min"}, {"state": "Exporting", "color": "#5794f2", "duration": "12 min"}]}
+            ]
+          }
+        },
+        {
+          "position": "span 2",
+          "type": "table",
+          "title": "Common Triggers",
+          "visual": {
+            "columns": ["Scenario", "Effect"],
+            "rows": [
+              {"scenario": "EV Charging", "effect": "7-11kW spike"},
+              {"scenario": "Motor Startup", "effect": "9kW surge"},
+              {"scenario": "Low Battery", "effect": "BMS limits output"},
+              {"scenario": "Cloud Cover", "effect": "Uneven solar"},
+              {"scenario": "Inverter Fault", "effect": "House relies on bus"}
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "technical_details": {
+    "resolution": "1920x1080",
+    "aspect_ratio": "16:9",
+    "render_style": "photorealistic Grafana screenshot",
+    "lighting": "flat LCD, no reflections",
+    "context": "Grafana 10.x with XY chart for droop curve",
+    "accuracy": "exact Grafana panels, proper chart styling"
+  },
+  "negative_prompts": [
+    "curved monitor", "control room", "bicycle chain", "reflections", "cinematic", "neon glow", "stylized", "monitor bezel", "room background"
+  ]
+}

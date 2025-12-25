@@ -1,0 +1,235 @@
+{
+  "image_type": "software_screenshot",
+  "title": "Grafana House Detail Dashboard",
+  "style": {
+    "theme": "grafana_dark",
+    "color_palette": ["#111217", "#181b1f", "#22252a", "#73bf69", "#5794f2", "#fade2a", "#ff9830", "#b877d9", "#f2495c"],
+    "aesthetic": "production Grafana dashboard, single house deep dive, BMS cell-level monitoring",
+    "mood": "detailed, diagnostic, technical analysis"
+  },
+  "layout": {
+    "type": "grafana_grid",
+    "rows": 5,
+    "columns": 6
+  },
+  "content": {
+    "grafana_chrome": {
+      "top_bar": {
+        "left": ["Grafana logo", "breadcrumb: 'Dashboards / Microgrid / House Detail'"],
+        "center": ["'House 7 - Cluster B - Full Detail'"],
+        "right": ["time range: 'Last 3 hours'", "refresh: '5s'"]
+      },
+      "left_sidebar": {"state": "collapsed"}
+    },
+    "variable_row": {
+      "variables": [
+        {"name": "house", "value": "House 7", "options": ["House 1", "House 2", "...", "House 12"]},
+        {"name": "time_range", "value": "3h", "options": ["1h", "3h", "6h", "24h", "7d"]}
+      ]
+    },
+    "row_1": {
+      "title": "System Overview",
+      "panels": [
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Status",
+          "visual": {"value": "ONLINE", "color": "#73bf69", "background": "gradient"}
+        },
+        {
+          "position": "span 1",
+          "type": "gauge",
+          "title": "SOC",
+          "visual": {
+            "value": 72,
+            "unit": "%",
+            "thresholds": [{"value": 0, "color": "#f2495c"}, {"value": 20, "color": "#ff9830"}, {"value": 50, "color": "#fade2a"}, {"value": 70, "color": "#73bf69"}]
+          }
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Remaining",
+          "visual": {"value": "10.8 kWh", "subtitle": "of 15 kWh", "color": "#5794f2"}
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Power",
+          "visual": {"value": "-3.2 kW", "subtitle": "discharging", "color": "#ff9830", "sparkline": true}
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Frequency",
+          "visual": {"value": "49.95 Hz", "color": "#5794f2"}
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Temperature",
+          "visual": {"value": "28°C", "subtitle": "avg cells", "color": "#73bf69"}
+        }
+      ]
+    },
+    "row_2": {
+      "title": "Energy Flow",
+      "panels": [
+        {
+          "position": "span 4",
+          "type": "time_series",
+          "title": "Power Flow - Solar, Load, Battery",
+          "visual": {
+            "series": [
+              {"name": "Solar", "color": "#fade2a", "fill": "gradient", "data": "peaks at 2.8kW midday, now declining"},
+              {"name": "Load", "color": "#ff9830", "fill": "none", "data": "variable 1-4kW"},
+              {"name": "Battery", "color": "#5794f2", "fill": "gradient", "data": "negative when discharging, positive when charging"}
+            ],
+            "y_axis": {"label": "Power (kW)", "range": "-6 to +6"},
+            "legend": {"position": "bottom", "mode": "table", "values": ["last", "min", "max", "avg"]}
+          }
+        },
+        {
+          "position": "span 2",
+          "type": "stat",
+          "title": "Today's Summary",
+          "visual": {
+            "layout": "stacked stats",
+            "stats": [
+              {"label": "Solar Production", "value": "18.3 kWh", "color": "#fade2a"},
+              {"label": "Consumption", "value": "14.7 kWh", "color": "#ff9830"},
+              {"label": "To Cluster", "value": "3.1 kWh", "color": "#73bf69"},
+              {"label": "From Cluster", "value": "0.2 kWh", "color": "#5794f2"}
+            ]
+          },
+          "style": "multiple stat values stacked"
+        }
+      ]
+    },
+    "row_3": {
+      "title": "Battery Cells - 16S LiFePO4",
+      "panels": [
+        {
+          "position": "span 4",
+          "type": "bar_gauge",
+          "title": "Cell Voltages (Live)",
+          "visual": {
+            "orientation": "vertical",
+            "display_mode": "gradient",
+            "bars": [
+              {"label": "C1", "value": 3.24}, {"label": "C2", "value": 3.25},
+              {"label": "C3", "value": 3.24}, {"label": "C4", "value": 3.26},
+              {"label": "C5", "value": 3.25}, {"label": "C6", "value": 3.23},
+              {"label": "C7", "value": 3.25}, {"label": "C8", "value": 3.24},
+              {"label": "C9", "value": 3.25}, {"label": "C10", "value": 3.26},
+              {"label": "C11", "value": 3.24}, {"label": "C12", "value": 3.25},
+              {"label": "C13", "value": 3.21, "highlight": "slightly lower, yellow tint"},
+              {"label": "C14", "value": 3.25}, {"label": "C15", "value": 3.24},
+              {"label": "C16", "value": 3.25}
+            ],
+            "thresholds": [
+              {"value": 2.8, "color": "#f2495c"},
+              {"value": 3.0, "color": "#fade2a"},
+              {"value": 3.15, "color": "#73bf69"}
+            ],
+            "y_axis": {"min": 2.7, "max": 3.5, "label": "Voltage (V)"}
+          },
+          "style": "vertical bar gauge, each cell as column"
+        },
+        {
+          "position": "span 2",
+          "type": "table",
+          "title": "Cell Statistics",
+          "visual": {
+            "columns": ["Metric", "Value"],
+            "rows": [
+              {"metric": "Min Cell", "value": "3.21V (C13)"},
+              {"metric": "Max Cell", "value": "3.26V (C4, C10)"},
+              {"metric": "Delta", "value": "50mV"},
+              {"metric": "Warning Threshold", "value": "100mV"},
+              {"metric": "Balancer Status", "value": "Active on C13"}
+            ]
+          }
+        }
+      ]
+    },
+    "row_4": {
+      "title": "Temperature & Current",
+      "panels": [
+        {
+          "position": "span 3",
+          "type": "time_series",
+          "title": "Cell Temperatures",
+          "visual": {
+            "series": [
+              {"name": "Sensor 1", "color": "#f2495c", "data": "28°C"},
+              {"name": "Sensor 2", "color": "#ff9830", "data": "29°C"},
+              {"name": "Sensor 3", "color": "#fade2a", "data": "27°C"},
+              {"name": "Sensor 4", "color": "#73bf69", "data": "28°C"},
+              {"name": "Sensor 5", "color": "#5794f2", "data": "30°C"}
+            ],
+            "y_axis": {"range": "20 to 45°C"},
+            "thresholds": [{"value": 40, "color": "#f2495c", "label": "Max"}]
+          }
+        },
+        {
+          "position": "span 3",
+          "type": "time_series",
+          "title": "Battery Current",
+          "visual": {
+            "series": [
+              {"name": "Current", "color": "#b877d9", "data": "variable, currently -45A (discharging)"}
+            ],
+            "y_axis": {"range": "-100 to +100 A", "label": "Current (A)"},
+            "zero_line": "emphasized"
+          }
+        }
+      ]
+    },
+    "row_5": {
+      "title": "SOC History & Events",
+      "panels": [
+        {
+          "position": "span 4",
+          "type": "time_series",
+          "title": "SOC History - 24 Hours",
+          "visual": {
+            "series": [
+              {"name": "SOC", "color": "#5794f2", "fill": "gradient below", "data": "starts ~40% at midnight, rises during day to 100% by 10am, drops to 72% now"}
+            ],
+            "y_axis": {"range": "0 to 100%"},
+            "annotations": [
+              {"time": "09:30", "label": "100% reached"},
+              {"time": "14:00", "label": "Heavy load: 5.8kW"}
+            ]
+          }
+        },
+        {
+          "position": "span 2",
+          "type": "logs",
+          "title": "House Events",
+          "visual": {
+            "entries": [
+              {"time": "14:23", "level": "warn", "message": "Cell 13 delta warning"},
+              {"time": "14:00", "level": "info", "message": "Heavy load: 5.8kW"},
+              {"time": "10:15", "level": "info", "message": "Export to cluster: 2kW"},
+              {"time": "09:30", "level": "info", "message": "100% SOC reached"},
+              {"time": "06:12", "level": "info", "message": "Sunrise, charging started"}
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "technical_details": {
+    "resolution": "1920x1080",
+    "aspect_ratio": "16:9",
+    "render_style": "photorealistic Grafana screenshot",
+    "lighting": "flat LCD, no reflections",
+    "context": "Grafana 10.x dark theme, production dashboard",
+    "accuracy": "exact Grafana UI elements"
+  },
+  "negative_prompts": [
+    "curved monitor", "control room", "reflections", "cinematic", "neon glow", "monitor bezel", "room background"
+  ]
+}

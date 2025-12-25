@@ -3,92 +3,297 @@
   "title": "Grafana Fault Analysis Dashboard",
   "style": {
     "theme": "grafana_dark",
-    "color_palette": ["#111217", "#181b1f", "#22252a", "#ff5286", "#73bf69", "#5794f2", "#fade2a", "#b877d9"],
-    "aesthetic": "real Grafana dashboard screenshot, actual software interface, production monitoring tool",
-    "mood": "professional, utilitarian, data-focused, realistic software"
+    "color_palette": ["#111217", "#181b1f", "#22252a", "#f2495c", "#ff5286", "#73bf69", "#5794f2", "#fade2a", "#b877d9"],
+    "aesthetic": "production Grafana dashboard, incident analysis interface, post-mortem debugging tool, real software",
+    "mood": "urgent but professional, forensic analysis, data-focused investigation"
   },
   "layout": {
     "type": "grafana_grid",
-    "structure": "top time selector + 2x3 panel grid",
-    "panel_borders": "thin dark gray lines"
+    "rows": 4,
+    "columns": 6,
+    "panel_spacing": "8px"
   },
   "content": {
     "grafana_chrome": {
       "top_bar": {
-        "left": "Grafana logo, breadcrumb: Dashboards > Microgrid > Fault Analysis",
-        "right": "time picker showing 'Last 30 seconds', refresh icon, share icon"
+        "background": "#111217",
+        "left": {
+          "elements": ["Grafana logo", "breadcrumb: 'Dashboards / Microgrid / Fault Analysis'"]
+        },
+        "center": {
+          "elements": ["'Fault Analysis - F006 DC Undervoltage - House 3'"],
+          "style": "white text with red accent"
+        },
+        "right": {
+          "elements": [
+            "time range: 'Last 30 seconds' (custom range)",
+            "refresh: 'Off'",
+            "share icon",
+            "three-dot menu"
+          ]
+        }
       },
-      "left_sidebar": "collapsed, showing icons for Search, Dashboards, Alerting, etc."
-    },
-    "dashboard_title": {
-      "text": "Fault Analysis - F006 DC Undervoltage",
-      "style": "white text, small star icon for favorite"
-    },
-    "panels": [
-      {
-        "position": "top-left, wide",
-        "type": "time_series",
-        "title": "DC Bus Voltage",
-        "visual": "Grafana time series panel with red line dropping from 51V to 44V, annotation marker at fault point, legend at bottom",
-        "y_axis": "Voltage (V)",
-        "colors": "#ff5286 for line",
-        "features": "threshold line at 45V shown as dashed red"
-      },
-      {
-        "position": "top-right",
-        "type": "stat",
-        "title": "Fault Code",
-        "visual": "large F006 text in red, subtitle 'DC UNDERVOLTAGE'",
-        "style": "Grafana stat panel with colored background"
-      },
-      {
-        "position": "middle-left",
-        "type": "time_series",
-        "title": "Discharge Current",
-        "visual": "orange line showing current, dropping to 0 at fault",
-        "colors": "#fade2a"
-      },
-      {
-        "position": "middle-center",
-        "type": "gauge",
-        "title": "SOC at Fault",
-        "visual": "Grafana gauge showing 12%, red zone",
-        "thresholds": "green >50, yellow 20-50, red <20"
-      },
-      {
-        "position": "middle-right",
-        "type": "table",
-        "title": "Similar Past Faults",
-        "visual": "Grafana table panel with columns: Time, House, Code, Cell",
-        "rows": "3-4 rows of fault history"
-      },
-      {
-        "position": "bottom-left",
-        "type": "bar_gauge",
-        "title": "Cell Voltages at Fault",
-        "visual": "16 horizontal bars, Grafana bar gauge style, Cell 14 in red (2.85V)",
-        "colors": "gradient green to red based on voltage"
-      },
-      {
-        "position": "bottom-right",
-        "type": "text",
-        "title": "AI Analysis",
-        "visual": "Grafana text panel with markdown, monospace text showing root cause analysis",
-        "content": "bullet points with findings"
+      "left_sidebar": {
+        "state": "collapsed",
+        "icons": ["Search", "Home", "Dashboards", "Explore", "Alerting (with red notification dot)"]
       }
-    ],
-    "annotations": {
-      "visual": "vertical red dashed line on time series panels marking fault moment",
-      "label": "F006 Triggered"
+    },
+    "alert_banner": {
+      "position": "top, full width, below chrome",
+      "visual": {
+        "background": "#f2495c with 20% opacity",
+        "border_left": "4px solid #f2495c",
+        "icon": "alert triangle",
+        "text": "ALERT: F006 DC Bus Undervoltage triggered at 10:23:47 UTC - House 3, Cluster A",
+        "actions": ["View Alert Rule", "Silence", "Dismiss"]
+      },
+      "style": "Grafana alert annotation banner"
+    },
+    "row_1": {
+      "title": "Fault Summary",
+      "collapsed": false,
+      "panels": [
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Fault Code",
+          "visual": {
+            "value": "F006",
+            "color": "#f2495c",
+            "background": "solid red",
+            "text_size": "large"
+          },
+          "style": "colored background stat panel"
+        },
+        {
+          "position": "span 2",
+          "type": "stat",
+          "title": "Fault Type",
+          "visual": {
+            "value": "DC BUS UNDERVOLTAGE",
+            "subtitle": "Low Voltage Protection Triggered",
+            "color": "#f2495c"
+          }
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Location",
+          "visual": {
+            "value": "House 3",
+            "subtitle": "Cluster A",
+            "color": "#5794f2"
+          }
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Timestamp",
+          "visual": {
+            "value": "10:23:47",
+            "subtitle": "2024-01-15 UTC",
+            "color": "#fade2a"
+          }
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Duration",
+          "visual": {
+            "value": "Active",
+            "subtitle": "12m 34s ago",
+            "color": "#f2495c"
+          }
+        }
+      ]
+    },
+    "row_2": {
+      "title": "Fault Timeline - ±10 Seconds",
+      "panels": [
+        {
+          "position": "span 6 (full width)",
+          "type": "time_series",
+          "title": "DC Bus Voltage",
+          "visual": {
+            "description": "Primary fault metric showing voltage drop",
+            "series": [
+              {
+                "name": "DC Bus Voltage",
+                "color": "#f2495c",
+                "data": "line starting at 51.2V (stable for first 5 seconds), then sharp drop beginning at -3s, reaching 44.8V at fault marker (0s), continuing down to 42V at +5s, then flatline",
+                "line_width": 2,
+                "fill": "gradient below, 10% opacity red"
+              }
+            ],
+            "y_axis": {
+              "label": "Voltage (V)",
+              "min": 40,
+              "max": 54,
+              "decimals": 1
+            },
+            "x_axis": {
+              "label": "Time relative to fault",
+              "range": "-10s to +10s",
+              "format": "relative seconds"
+            },
+            "thresholds": [
+              {"value": 45, "color": "#f2495c", "label": "LVP Threshold", "style": "dashed horizontal line"},
+              {"value": 52, "color": "#73bf69", "label": "Normal", "style": "dashed horizontal line"}
+            ],
+            "annotations": [
+              {
+                "time": 0,
+                "style": "vertical dashed red line, full height",
+                "label": "FAULT: F006 Triggered",
+                "marker": "diamond at intersection with data line"
+              }
+            ],
+            "legend": {
+              "position": "bottom",
+              "show": true,
+              "values": ["last", "min"]
+            }
+          },
+          "style": "Grafana time series with annotation marker, threshold lines visible"
+        }
+      ]
+    },
+    "row_3": {
+      "title": "Supporting Metrics at Fault",
+      "panels": [
+        {
+          "position": "span 2",
+          "type": "time_series",
+          "title": "Discharge Current",
+          "visual": {
+            "series": [
+              {
+                "name": "Current",
+                "color": "#fade2a",
+                "data": "steady at 95A, slight increase to 98A before fault, then sharp drop to 0A at fault marker"
+              }
+            ],
+            "y_axis": {"range": "0 to 120A"},
+            "annotation": "same fault marker at t=0"
+          }
+        },
+        {
+          "position": "span 2",
+          "type": "time_series",
+          "title": "Inverter Frequency",
+          "visual": {
+            "series": [
+              {
+                "name": "Frequency",
+                "color": "#5794f2",
+                "data": "starts at 49.95Hz, slight drop as voltage drops, sharp drop to 48.5Hz at fault, then flatline at 0 (inverter stopped)"
+              }
+            ],
+            "y_axis": {"range": "48 to 51 Hz"},
+            "annotation": "fault marker"
+          }
+        },
+        {
+          "position": "span 2",
+          "type": "gauge",
+          "title": "SOC at Fault Moment",
+          "visual": {
+            "value": 12,
+            "unit": "%",
+            "min": 0,
+            "max": 100,
+            "thresholds": [
+              {"value": 0, "color": "#f2495c"},
+              {"value": 20, "color": "#ff9830"},
+              {"value": 50, "color": "#fade2a"},
+              {"value": 70, "color": "#73bf69"}
+            ],
+            "style": "gauge needle in deep red zone"
+          }
+        }
+      ]
+    },
+    "row_4": {
+      "title": "Cell Analysis & History",
+      "panels": [
+        {
+          "position": "span 2",
+          "type": "bar_gauge",
+          "title": "Cell Voltages at Fault",
+          "visual": {
+            "orientation": "horizontal",
+            "display_mode": "gradient",
+            "bars": [
+              {"label": "C1", "value": 3.12},
+              {"label": "C2", "value": 3.15},
+              {"label": "C3", "value": 3.10},
+              {"label": "C4", "value": 3.14},
+              {"label": "C5", "value": 3.11},
+              {"label": "C6", "value": 3.13},
+              {"label": "C7", "value": 3.18, "note": "max"},
+              {"label": "C8", "value": 3.09},
+              {"label": "C9", "value": 3.12},
+              {"label": "C10", "value": 3.10},
+              {"label": "C11", "value": 3.08},
+              {"label": "C12", "value": 3.11},
+              {"label": "C13", "value": 2.92},
+              {"label": "C14", "value": 2.85, "highlight": "red, lowest cell"},
+              {"label": "C15", "value": 3.05},
+              {"label": "C16", "value": 3.07}
+            ],
+            "thresholds": [
+              {"value": 2.8, "color": "#f2495c"},
+              {"value": 3.0, "color": "#fade2a"},
+              {"value": 3.1, "color": "#73bf69"}
+            ],
+            "highlight": "Cell 14 clearly visible as red/lowest bar"
+          },
+          "style": "Grafana bar gauge with gradient colors"
+        },
+        {
+          "position": "span 2",
+          "type": "table",
+          "title": "Similar Past Faults",
+          "visual": {
+            "columns": [
+              {"name": "Date", "width": "100px"},
+              {"name": "House", "width": "60px"},
+              {"name": "Code", "width": "60px"},
+              {"name": "Root Cause", "width": "auto"}
+            ],
+            "rows": [
+              {"date": "2024-01-03", "house": "H3", "code": "F006", "cause": "Cell 14 LVP", "row_color": "slight red tint"},
+              {"date": "2023-12-15", "house": "H3", "code": "F011", "cause": "Cell 14 undervolt"},
+              {"date": "2023-11-28", "house": "H9", "code": "F006", "cause": "High load + low SOC"},
+              {"date": "2023-11-12", "house": "H3", "code": "F006", "cause": "Cell imbalance"}
+            ],
+            "style": "alternating row colors, sortable headers"
+          },
+          "style": "Grafana table panel"
+        },
+        {
+          "position": "span 2",
+          "type": "text",
+          "title": "AI Root Cause Analysis",
+          "visual": {
+            "mode": "markdown",
+            "content": "**ROOT CAUSE:**\nBattery reached LVP threshold due to high discharge rate (95A) combined with critically low SOC (12%).\n\n**EVIDENCE:**\n- DC bus dropped 51.2V → 44.8V in 8s\n- Cell 14 reached 2.85V first (weakest)\n- Discharge was 95A (near BMS limit)\n- Neighbors supplied 2.5kW, insufficient\n\n**PATTERN:**\nCell 14 triggered in 3 of last 4 H3 faults.\n\n**ACTION:**\n1. Check Cell 14 capacity\n2. Verify active balancer\n3. Consider cell replacement",
+            "font": "monospace",
+            "background": "#181b1f"
+          },
+          "style": "Grafana text panel with markdown, dark code-block style"
+        }
+      ]
     }
   },
   "technical_details": {
     "resolution": "1920x1080",
     "aspect_ratio": "16:9",
-    "render_style": "realistic software screenshot, actual Grafana interface, not stylized",
-    "lighting": "flat screen lighting, no reflections, no monitor frame",
-    "context": "direct screenshot of Grafana running in browser, dark theme",
-    "accuracy": "use exact Grafana UI elements, panel headers, time picker style"
+    "render_style": "photorealistic software screenshot, actual Grafana 10.x interface",
+    "lighting": "flat LCD rendering, no reflections",
+    "context": "Grafana in browser, dark theme, incident investigation session",
+    "accuracy": "exact Grafana panel headers, time picker, annotation markers, threshold lines",
+    "browser_chrome": "minimal, Grafana interface only"
   },
   "negative_prompts": [
     "curved monitor",

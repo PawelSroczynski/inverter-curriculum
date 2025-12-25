@@ -1,0 +1,227 @@
+{
+  "image_type": "software_screenshot",
+  "title": "Home Assistant Fault Alert View",
+  "style": {
+    "theme": "home_assistant_dark",
+    "color_palette": ["#111111", "#1c1c1c", "#303030", "#f44336", "#ff5722", "#4caf50", "#2196f3", "#ff9800", "#ffffff"],
+    "aesthetic": "production Home Assistant dashboard, alert/notification view, persistent notification, Mushroom cards",
+    "mood": "urgent but clear, alert state, homeowner-accessible fault info"
+  },
+  "layout": {
+    "type": "lovelace_panel",
+    "structure": "sidebar + alert-focused content"
+  },
+  "content": {
+    "ha_chrome": {
+      "sidebar": {
+        "menu_items": [
+          {"icon": "mdi:view-dashboard", "label": "Overview"},
+          {"icon": "mdi:home-group", "label": "Microgrid"},
+          {"icon": "mdi:alert-circle", "label": "Alerts", "active": true, "badge": "1", "badge_color": "red"}
+        ]
+      },
+      "top_bar": {
+        "left": {"title": "System Alerts"},
+        "right": {"notification_bell": "with red badge showing 1"}
+      }
+    },
+    "dashboard_content": {
+      "sections": [
+        {
+          "title": null,
+          "cards": [
+            {
+              "type": "custom:mushroom-title-card",
+              "visual": {
+                "title": "Active Alerts",
+                "subtitle": "1 fault requires attention"
+              }
+            },
+            {
+              "type": "alert-card",
+              "visual": {
+                "severity": "error",
+                "title": "F006 - DC Bus Undervoltage",
+                "description": "House 3, Cluster A",
+                "icon": "mdi:alert-octagon",
+                "icon_color": "red",
+                "background": "#f44336 with 15% opacity",
+                "border_left": "4px solid #f44336",
+                "timestamp": "10:23:47 UTC",
+                "actions": ["View Details", "Acknowledge", "Dismiss"],
+                "style": "HA persistent notification style, prominent red styling"
+              }
+            }
+          ]
+        },
+        {
+          "title": "Fault Details",
+          "cards": [
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:identifier",
+                    "icon_color": "red",
+                    "primary": "F006",
+                    "secondary": "Fault Code"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:home",
+                    "icon_color": "blue",
+                    "primary": "House 3",
+                    "secondary": "Cluster A"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:clock-outline",
+                    "icon_color": "orange",
+                    "primary": "12m ago",
+                    "secondary": "10:23:47"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:alert-circle",
+                    "icon_color": "red",
+                    "primary": "Active",
+                    "secondary": "Status"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "System State at Fault",
+          "cards": [
+            {
+              "type": "entities",
+              "visual": {
+                "entities": [
+                  {"icon": "mdi:flash", "name": "DC Bus Voltage", "state": "44.8V", "state_color": "red"},
+                  {"icon": "mdi:current-dc", "name": "Discharge Current", "state": "95A", "state_color": "orange"},
+                  {"icon": "mdi:battery-10", "name": "State of Charge", "state": "12%", "state_color": "red"},
+                  {"icon": "mdi:thermometer", "name": "Temperature", "state": "32°C", "state_color": "green"},
+                  {"icon": "mdi:sine-wave", "name": "Frequency", "state": "48.5 Hz", "state_color": "orange"}
+                ],
+                "style": "HA entities card with colored states for abnormal values"
+              }
+            }
+          ]
+        },
+        {
+          "title": "Cell Status",
+          "cards": [
+            {
+              "type": "custom:bar-card",
+              "visual": {
+                "title": "Cell Voltages at Fault",
+                "entities": [
+                  {"name": "C1-C12", "value": "3.0-3.1V", "color": "yellow"},
+                  {"name": "C13", "value": "2.92V", "color": "orange"},
+                  {"name": "C14", "value": "2.85V", "color": "red", "highlight": true},
+                  {"name": "C15-C16", "value": "3.05V", "color": "yellow"}
+                ],
+                "note": "Cell 14 triggered Low Voltage Protection"
+              }
+            }
+          ]
+        },
+        {
+          "title": "Recommended Actions",
+          "cards": [
+            {
+              "type": "markdown",
+              "visual": {
+                "content": "### What happened:\nBattery reached Low Voltage Protection due to high discharge (95A) with low SOC (12%).\n\n### Recommended actions:\n1. ✅ System has automatically disconnected to protect battery\n2. ⚠️ Check Cell 14 - it triggered first (weakest cell)\n3. ⚠️ Verify active balancer is functioning\n4. 📋 Consider scheduling maintenance\n\n### Pattern detected:\nCell 14 has triggered LVP in 3 of last 4 faults on House 3.",
+                "style": "HA markdown card with formatted text"
+              }
+            }
+          ]
+        },
+        {
+          "title": "Neighbors During Fault",
+          "cards": [
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:home-export-outline",
+                    "icon_color": "green",
+                    "primary": "House 1",
+                    "secondary": "Supplied +1.2kW"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:home-export-outline",
+                    "icon_color": "green",
+                    "primary": "House 2",
+                    "secondary": "Supplied +0.8kW"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:home-export-outline",
+                    "icon_color": "green",
+                    "primary": "House 4",
+                    "secondary": "Supplied +0.5kW"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "custom:mushroom-chips-card",
+              "visual": {
+                "chips": [
+                  {"label": "Neighbors supplied 2.5kW total", "icon": "mdi:information"},
+                  {"label": "Insufficient to prevent LVP", "icon": "mdi:alert", "color": "orange"}
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "title": "Fault History",
+          "cards": [
+            {
+              "type": "logbook",
+              "visual": {
+                "entries": [
+                  {"time": "Today 10:23", "icon": "mdi:alert-octagon", "message": "F006 - DC Undervoltage - H3", "color": "red"},
+                  {"time": "Jan 3", "icon": "mdi:alert-octagon", "message": "F006 - Cell 14 LVP - H3", "color": "red"},
+                  {"time": "Dec 15", "icon": "mdi:alert", "message": "F011 - Cell undervolt - H3", "color": "orange"},
+                  {"time": "Nov 28", "icon": "mdi:alert-octagon", "message": "F006 - High load + low SOC - H9", "color": "red"}
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "technical_details": {
+    "resolution": "1920x1080",
+    "aspect_ratio": "16:9",
+    "render_style": "photorealistic Home Assistant screenshot",
+    "lighting": "flat screen, no reflections",
+    "context": "Home Assistant Lovelace with Mushroom cards, alert/notification focus",
+    "accuracy": "exact HA styling, persistent notification appearance, proper alert colors"
+  },
+  "negative_prompts": [
+    "curved monitor", "control room", "reflections", "cinematic", "neon glow", "SCADA", "Grafana", "monitor bezel", "room background"
+  ]
+}

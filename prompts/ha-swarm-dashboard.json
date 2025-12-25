@@ -3,102 +3,261 @@
   "title": "Home Assistant Swarm Overview Dashboard",
   "style": {
     "theme": "home_assistant_dark",
-    "color_palette": ["#111111", "#1c1c1c", "#303030", "#03a9f4", "#4caf50", "#ff9800", "#f44336", "#ffffff"],
-    "aesthetic": "real Home Assistant dashboard, Lovelace UI, card-based layout, Material Design",
-    "mood": "clean, user-friendly, smart home interface, realistic software"
+    "color_palette": ["#111111", "#1c1c1c", "#303030", "#03a9f4", "#4caf50", "#ff9800", "#f44336", "#9c27b0", "#ffffff"],
+    "aesthetic": "production Home Assistant dashboard, Lovelace UI, card-based layout, Material Design, Mushroom cards",
+    "mood": "clean, user-friendly, modern smart home interface, residential energy management"
   },
   "layout": {
     "type": "lovelace_masonry",
-    "structure": "sidebar left + card grid right",
-    "card_style": "rounded corners, subtle shadows"
+    "columns": "auto (responsive)",
+    "card_spacing": "8px",
+    "max_width": "1200px centered"
   },
   "content": {
     "ha_chrome": {
       "sidebar": {
-        "visual": "Home Assistant sidebar with icons",
-        "items": ["Overview", "Energy", "Map", "Logbook", "History", "Microgrid"],
-        "active": "Microgrid highlighted",
-        "bottom": "Settings, Notifications icons"
+        "width": "256px",
+        "background": "#1c1c1c",
+        "header": {
+          "logo": "Home Assistant logo",
+          "title": "ENKLAVA"
+        },
+        "menu_items": [
+          {"icon": "mdi:view-dashboard", "label": "Overview", "active": false},
+          {"icon": "mdi:lightning-bolt", "label": "Energy", "active": false},
+          {"icon": "mdi:home-group", "label": "Microgrid", "active": true, "highlight": "blue left border"},
+          {"icon": "mdi:map", "label": "Map", "active": false},
+          {"icon": "mdi:history", "label": "Logbook", "active": false},
+          {"icon": "mdi:chart-box", "label": "History", "active": false}
+        ],
+        "bottom": {
+          "items": ["mdi:cog Settings", "mdi:account User"],
+          "style": "icons with labels"
+        }
       },
       "top_bar": {
-        "left": "hamburger menu, 'Microgrid Overview' title",
-        "right": "search icon, user avatar"
+        "background": "#1c1c1c",
+        "left": {"icon": "hamburger menu", "title": "Microgrid Overview"},
+        "right": {
+          "items": ["mdi:magnify search", "mdi:dots-vertical overflow menu"],
+          "style": "icon buttons"
+        }
       }
     },
-    "cards": [
-      {
-        "type": "custom:power-flow-card",
-        "position": "top-left, large",
-        "title": "Power Flow",
-        "visual": "Home Assistant power flow card showing Solar -> House -> Battery -> Grid",
-        "values": {
-          "solar": "52 kW",
-          "house": "38 kW",
-          "battery": "+5 kW charging",
-          "grid": "0 kW"
+    "dashboard_content": {
+      "sections": [
+        {
+          "title": null,
+          "cards": [
+            {
+              "type": "custom:power-flow-card-plus",
+              "position": "prominent, top",
+              "size": "large",
+              "visual": {
+                "description": "Home Assistant power flow card showing energy flow between solar, battery, house, and grid",
+                "layout": "circular/radial with house in center",
+                "entities": {
+                  "solar": {
+                    "icon": "mdi:solar-power",
+                    "value": "52.3 kW",
+                    "color": "#ffeb3b",
+                    "position": "top"
+                  },
+                  "battery": {
+                    "icon": "mdi:battery-70",
+                    "value": "78%",
+                    "secondary": "+5 kW charging",
+                    "color": "#4caf50",
+                    "position": "left"
+                  },
+                  "home": {
+                    "icon": "mdi:home",
+                    "value": "49.1 kW",
+                    "color": "#03a9f4",
+                    "position": "center"
+                  },
+                  "grid": {
+                    "icon": "mdi:transmission-tower-off",
+                    "value": "0 kW",
+                    "label": "Off-Grid",
+                    "color": "#9e9e9e",
+                    "position": "right"
+                  }
+                },
+                "flow_lines": {
+                  "solar_to_home": {"active": true, "animated": true, "color": "#ffeb3b"},
+                  "solar_to_battery": {"active": true, "animated": true, "color": "#4caf50"},
+                  "battery_to_home": {"active": false},
+                  "grid_to_home": {"active": false}
+                },
+                "style": "animated dots flowing along paths, circular layout"
+              }
+            }
+          ]
         },
-        "style": "animated dots showing power direction, circular icons"
-      },
-      {
-        "type": "entities",
-        "position": "top-right",
-        "title": "System Status",
-        "entities": [
-          {"name": "Grid Status", "state": "Off-Grid", "icon": "mdi:transmission-tower-off"},
-          {"name": "Total SOC", "state": "78%", "icon": "mdi:battery-70"},
-          {"name": "Active Faults", "state": "0", "icon": "mdi:alert-circle-outline"}
-        ],
-        "style": "HA entities card with icons and states"
-      },
-      {
-        "type": "custom:mushroom-chips-card",
-        "position": "below power flow",
-        "chips": [
-          {"label": "Cluster A: 78%", "color": "green"},
-          {"label": "Cluster B: 95%", "color": "green"},
-          {"label": "Cluster C: 65%", "color": "orange"}
-        ],
-        "style": "Mushroom chips in a row"
-      },
-      {
-        "type": "grid",
-        "position": "middle",
-        "title": "Houses",
-        "visual": "3x4 grid of mini house cards",
-        "cards": [
-          {"house": "H1", "soc": "82%", "power": "+1.2kW", "color": "green"},
-          {"house": "H2", "soc": "75%", "power": "-2.8kW", "color": "orange"},
-          {"house": "H3", "soc": "88%", "power": "+0.5kW", "color": "green"}
-        ],
-        "style": "Mushroom template cards, compact, colored based on state"
-      },
-      {
-        "type": "custom:mini-graph-card",
-        "position": "bottom-left",
-        "title": "Power History - 24h",
-        "visual": "area chart with solar (green) and consumption (orange)",
-        "style": "mini-graph-card with gradient fill"
-      },
-      {
-        "type": "logbook",
-        "position": "bottom-right",
-        "title": "Recent Events",
-        "entries": [
-          "14:23 - Gateway B opened",
-          "13:45 - House 5 reached 100%",
-          "12:12 - Cell delta warning H9"
-        ],
-        "style": "HA logbook card with timestamps"
-      }
-    ]
+        {
+          "title": "System Status",
+          "cards": [
+            {
+              "type": "custom:mushroom-chips-card",
+              "visual": {
+                "chips": [
+                  {"icon": "mdi:check-circle", "label": "Online", "color": "green"},
+                  {"icon": "mdi:sync", "label": "Synced", "color": "green"},
+                  {"icon": "mdi:alert-circle-outline", "label": "0 Faults", "color": "green"}
+                ],
+                "style": "horizontal row of chip badges"
+              }
+            },
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "custom:mushroom-entity-card",
+                  "visual": {
+                    "icon": "mdi:solar-power",
+                    "icon_color": "amber",
+                    "primary": "Solar Now",
+                    "secondary": "52.3 kW"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-entity-card",
+                  "visual": {
+                    "icon": "mdi:home-lightning-bolt",
+                    "icon_color": "blue",
+                    "primary": "Total Load",
+                    "secondary": "49.1 kW"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-entity-card",
+                  "visual": {
+                    "icon": "mdi:battery-charging-70",
+                    "icon_color": "green",
+                    "primary": "Avg SOC",
+                    "secondary": "78%"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Clusters",
+          "cards": [
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:home-group",
+                    "icon_color": "green",
+                    "primary": "Cluster A",
+                    "secondary": "78% SOC | 12.3 kW load",
+                    "badge_icon": "mdi:check",
+                    "badge_color": "green",
+                    "tap_action": "navigate to cluster detail"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:home-group",
+                    "icon_color": "green",
+                    "primary": "Cluster B",
+                    "secondary": "95% SOC | 8.1 kW load",
+                    "badge_icon": "mdi:check",
+                    "badge_color": "green"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:home-group",
+                    "icon_color": "orange",
+                    "primary": "Cluster C",
+                    "secondary": "65% SOC | 15.7 kW load",
+                    "badge_icon": "mdi:alert",
+                    "badge_color": "orange"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Houses",
+          "cards": [
+            {
+              "type": "grid",
+              "columns": 4,
+              "cards": [
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:home", "icon_color": "green", "primary": "H1", "secondary": "82% | +1.2kW"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:home", "icon_color": "orange", "primary": "H2", "secondary": "75% | -2.8kW"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:home", "icon_color": "green", "primary": "H3", "secondary": "88% | +0.5kW"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:home", "icon_color": "green", "primary": "H4", "secondary": "71% | +0.3kW"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:home", "icon_color": "green", "primary": "H5", "secondary": "95% | +1.8kW"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:home", "icon_color": "green", "primary": "H6", "secondary": "92% | +0.9kW"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:home", "icon_color": "green", "primary": "H7", "secondary": "98% | +2.1kW"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:home", "icon_color": "green", "primary": "H8", "secondary": "91% | +1.4kW"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:home", "icon_color": "orange", "primary": "H9", "secondary": "65% | -1.2kW"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:home", "icon_color": "orange", "primary": "H10", "secondary": "58% | -0.8kW"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:home", "icon_color": "green", "primary": "H11", "secondary": "72% | +0.6kW"}},
+                {"type": "custom:mushroom-entity-card", "visual": {"icon": "mdi:home", "icon_color": "orange", "primary": "H12", "secondary": "61% | -0.5kW"}}
+              ],
+              "style": "compact grid, each card ~150px wide"
+            }
+          ]
+        },
+        {
+          "title": "Power History",
+          "cards": [
+            {
+              "type": "custom:mini-graph-card",
+              "visual": {
+                "entities": [
+                  {"name": "Solar", "color": "#ffeb3b"},
+                  {"name": "Consumption", "color": "#ff9800"}
+                ],
+                "hours_to_show": 24,
+                "points_per_hour": 4,
+                "line_width": 2,
+                "fill": true,
+                "style": "area chart with gradient fill, legend at top"
+              }
+            }
+          ]
+        },
+        {
+          "title": "Recent Events",
+          "cards": [
+            {
+              "type": "logbook",
+              "visual": {
+                "entries": [
+                  {"time": "14:23", "icon": "mdi:information", "message": "Gateway B opened - freq mismatch", "color": "orange"},
+                  {"time": "13:45", "icon": "mdi:check", "message": "House 5 reached 100% SOC", "color": "green"},
+                  {"time": "12:12", "icon": "mdi:alert", "message": "House 9 cell delta > 30mV", "color": "orange"},
+                  {"time": "11:30", "icon": "mdi:white-balance-sunny", "message": "Peak solar: 58kW achieved", "color": "blue"}
+                ],
+                "style": "HA logbook card with icons and timestamps"
+              }
+            }
+          ]
+        }
+      ]
+    }
   },
   "technical_details": {
     "resolution": "1920x1080",
     "aspect_ratio": "16:9",
-    "render_style": "realistic software screenshot, actual Home Assistant interface",
-    "lighting": "flat screen, no reflections",
-    "context": "Home Assistant running in browser, dark theme, Lovelace dashboard",
-    "accuracy": "exact HA card styling, sidebar icons, Material Design elements"
+    "render_style": "photorealistic software screenshot, actual Home Assistant interface",
+    "lighting": "flat screen rendering, no reflections, matte display",
+    "context": "Home Assistant running in browser, dark theme (default HA dark), Mushroom cards installed",
+    "accuracy": "exact HA card styling, proper MDI icons, Mushroom card appearance, correct sidebar layout",
+    "browser_chrome": "minimal - just HA interface"
   },
   "negative_prompts": [
     "curved monitor",
@@ -108,6 +267,8 @@
     "neon glow",
     "SCADA",
     "industrial",
-    "monitor frame"
+    "monitor bezel",
+    "room background",
+    "Grafana"
   ]
 }

@@ -1,84 +1,175 @@
 {
   "image_type": "software_screenshot",
-  "title": "Grafana Energy Sankey Dashboard",
+  "title": "Grafana Energy Flow Sankey Dashboard",
   "style": {
     "theme": "grafana_dark",
-    "color_palette": ["#111217", "#181b1f", "#22252a", "#73bf69", "#5794f2", "#fade2a", "#ff9830", "#f2495c"],
-    "aesthetic": "real Grafana dashboard screenshot, Sankey diagram plugin, production monitoring",
-    "mood": "professional, data visualization, realistic software"
+    "color_palette": ["#111217", "#181b1f", "#22252a", "#fade2a", "#73bf69", "#5794f2", "#ff9830", "#f2495c", "#b877d9"],
+    "aesthetic": "production Grafana dashboard, Sankey diagram visualization, energy analytics, data flow visualization",
+    "mood": "analytical, data-rich, energy management focus"
   },
   "layout": {
     "type": "grafana_grid",
-    "structure": "large sankey center + stat panels around"
+    "rows": 3,
+    "columns": 6
   },
   "content": {
     "grafana_chrome": {
       "top_bar": {
-        "left": "Grafana logo, breadcrumb: Dashboards > Microgrid > Energy Flow",
-        "right": "time picker showing 'Today', refresh dropdown"
+        "left": ["Grafana logo", "breadcrumb: 'Dashboards / Microgrid / Energy Flow'"],
+        "center": ["'Energy Distribution - Today'"],
+        "right": ["time range: 'Today'", "refresh: '1m'", "share"]
       },
-      "left_sidebar": "collapsed with icons"
+      "left_sidebar": {"state": "collapsed"}
     },
-    "dashboard_title": {
-      "text": "Energy Flow - Today",
-      "variables": "dropdown showing 'All Clusters'"
+    "variable_row": {
+      "variables": [
+        {"name": "period", "value": "Today", "options": ["Today", "Yesterday", "This Week", "This Month"]},
+        {"name": "cluster", "value": "All", "options": ["All", "Cluster A", "Cluster B", "Cluster C"]}
+      ]
     },
-    "panels": [
-      {
-        "position": "center, large",
-        "type": "sankey",
-        "title": "Power Distribution",
-        "visual": "Grafana Sankey panel plugin, horizontal flow left to right",
-        "nodes_left": ["Solar 52kW", "Battery Discharge 8kW"],
-        "nodes_middle": ["MPPT", "Inverters", "AC Bus"],
-        "nodes_right": ["Household 38kW", "EV Charging 14kW", "Battery Charge 5kW", "Losses 3kW"],
-        "colors": "green for solar, blue for battery, orange for consumption, red for losses",
-        "style": "actual Grafana sankey-panel look"
-      },
-      {
-        "position": "top-right",
-        "type": "stat",
-        "title": "Solar Today",
-        "visual": "312 kWh in green, sparkline below",
-        "style": "Grafana stat panel"
-      },
-      {
-        "position": "right-middle",
-        "type": "stat",
-        "title": "Consumption",
-        "visual": "287 kWh in orange"
-      },
-      {
-        "position": "bottom-right",
-        "type": "stat",
-        "title": "System Efficiency",
-        "visual": "91.2% in blue"
-      },
-      {
-        "position": "bottom-left",
-        "type": "pie_chart",
-        "title": "Consumption Breakdown",
-        "visual": "Grafana pie chart: Appliances, HVAC, Lighting, Other",
-        "style": "donut style with legend"
-      }
-    ]
+    "row_1": {
+      "title": "Energy Summary",
+      "panels": [
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Solar Generated",
+          "visual": {"value": "312 kWh", "color": "#fade2a", "sparkline": "area chart rising then falling", "trend": "+12%"}
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Consumed",
+          "visual": {"value": "287 kWh", "color": "#ff9830", "sparkline": true, "trend": "-3%"}
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Battery Cycles",
+          "visual": {"value": "0.8", "subtitle": "equiv. full cycles", "color": "#5794f2"}
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Efficiency",
+          "visual": {"value": "91.2%", "color": "#73bf69"}
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Grid Import",
+          "visual": {"value": "0 kWh", "subtitle": "100% self-sufficient", "color": "#73bf69"}
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Losses",
+          "visual": {"value": "25 kWh", "subtitle": "8.0%", "color": "#f2495c"}
+        }
+      ]
+    },
+    "row_2": {
+      "title": "Energy Distribution",
+      "panels": [
+        {
+          "position": "span 6 (full width)",
+          "type": "sankey",
+          "title": "Power Flow Sankey",
+          "plugin": "netsage-sankey-panel or similar",
+          "visual": {
+            "description": "Large Sankey diagram showing energy flow from sources to consumption",
+            "direction": "left to right",
+            "nodes": {
+              "left_column": [
+                {"name": "Solar", "value": "312 kWh", "color": "#fade2a"},
+                {"name": "Battery Discharge", "value": "48 kWh", "color": "#5794f2"}
+              ],
+              "middle_column": [
+                {"name": "MPPT Conversion", "value": "303 kWh", "color": "#73bf69", "note": "97% eff"},
+                {"name": "Inverters", "value": "335 kWh", "color": "#73bf69", "note": "94% eff"}
+              ],
+              "right_column": [
+                {"name": "Household Loads", "value": "198 kWh", "color": "#ff9830"},
+                {"name": "HVAC", "value": "52 kWh", "color": "#ff9830"},
+                {"name": "EV Charging", "value": "37 kWh", "color": "#b877d9"},
+                {"name": "Battery Charging", "value": "45 kWh", "color": "#5794f2"},
+                {"name": "Losses", "value": "25 kWh", "color": "#f2495c"}
+              ]
+            },
+            "flows": [
+              {"from": "Solar", "to": "MPPT Conversion", "value": 312, "color": "#fade2a"},
+              {"from": "MPPT Conversion", "to": "Inverters", "value": 303, "color": "#73bf69"},
+              {"from": "Battery Discharge", "to": "Inverters", "value": 48, "color": "#5794f2"},
+              {"from": "Inverters", "to": "Household Loads", "value": 198, "color": "#ff9830"},
+              {"from": "Inverters", "to": "HVAC", "value": 52, "color": "#ff9830"},
+              {"from": "Inverters", "to": "EV Charging", "value": 37, "color": "#b877d9"},
+              {"from": "Inverters", "to": "Battery Charging", "value": 45, "color": "#5794f2"},
+              {"from": "Inverters", "to": "Losses", "value": 25, "color": "#f2495c"}
+            ],
+            "style": "flowing bands with width proportional to energy, color gradients, labels on nodes"
+          },
+          "style": "Grafana Sankey panel, actual plugin appearance"
+        }
+      ]
+    },
+    "row_3": {
+      "title": "Breakdown by Cluster",
+      "panels": [
+        {
+          "position": "span 2",
+          "type": "pie_chart",
+          "title": "Solar by Cluster",
+          "visual": {
+            "type": "donut",
+            "segments": [
+              {"label": "Cluster A", "value": 108, "color": "#5794f2"},
+              {"label": "Cluster B", "value": 118, "color": "#73bf69"},
+              {"label": "Cluster C", "value": 86, "color": "#fade2a"}
+            ],
+            "center_text": "312 kWh",
+            "legend": "right"
+          }
+        },
+        {
+          "position": "span 2",
+          "type": "pie_chart",
+          "title": "Consumption by Cluster",
+          "visual": {
+            "type": "donut",
+            "segments": [
+              {"label": "Cluster A", "value": 89, "color": "#5794f2"},
+              {"label": "Cluster B", "value": 92, "color": "#73bf69"},
+              {"label": "Cluster C", "value": 106, "color": "#fade2a"}
+            ],
+            "center_text": "287 kWh"
+          }
+        },
+        {
+          "position": "span 2",
+          "type": "table",
+          "title": "Cluster Balance",
+          "visual": {
+            "columns": ["Cluster", "Solar", "Load", "Net", "Flow"],
+            "rows": [
+              {"cluster": "A", "solar": "108 kWh", "load": "89 kWh", "net": "+19 kWh", "flow": "→ to C"},
+              {"cluster": "B", "solar": "118 kWh", "load": "92 kWh", "net": "+26 kWh", "flow": "→ to C"},
+              {"cluster": "C", "solar": "86 kWh", "load": "106 kWh", "net": "-20 kWh", "flow": "← from A,B"}
+            ],
+            "style": "color-coded net column (green positive, red negative)"
+          }
+        }
+      ]
+    }
   },
   "technical_details": {
     "resolution": "1920x1080",
     "aspect_ratio": "16:9",
-    "render_style": "realistic software screenshot, actual Grafana interface",
-    "lighting": "flat screen, no reflections",
-    "context": "direct screenshot of Grafana with sankey-panel plugin",
-    "accuracy": "use exact Grafana UI, panel styling, color schemes"
+    "render_style": "photorealistic Grafana screenshot with Sankey plugin",
+    "lighting": "flat LCD, no reflections",
+    "context": "Grafana 10.x with netsage-sankey-panel or similar plugin",
+    "accuracy": "exact Grafana UI, proper Sankey visualization style"
   },
   "negative_prompts": [
-    "curved monitor",
-    "control room",
-    "reflections",
-    "cinematic",
-    "neon glow",
-    "stylized",
-    "monitor frame",
-    "3D effects"
+    "curved monitor", "control room", "reflections", "cinematic", "neon glow", "stylized", "monitor bezel", "room background"
   ]
 }

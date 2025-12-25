@@ -1,0 +1,223 @@
+{
+  "image_type": "software_screenshot",
+  "title": "Grafana Cluster Detail Dashboard",
+  "style": {
+    "theme": "grafana_dark",
+    "color_palette": ["#111217", "#181b1f", "#22252a", "#73bf69", "#5794f2", "#fade2a", "#ff9830", "#b877d9"],
+    "aesthetic": "production Grafana dashboard, cluster-level monitoring, power distribution analysis",
+    "mood": "operational, detailed, focused monitoring"
+  },
+  "layout": {
+    "type": "grafana_grid",
+    "rows": 4,
+    "columns": 6
+  },
+  "content": {
+    "grafana_chrome": {
+      "top_bar": {
+        "left": ["Grafana logo", "breadcrumb: 'Dashboards / Microgrid / Cluster Detail'"],
+        "center": ["'Cluster A - Detailed View'"],
+        "right": ["time range: 'Last 1 hour'", "refresh: '10s'", "share", "star"]
+      },
+      "left_sidebar": {"state": "collapsed"}
+    },
+    "variable_row": {
+      "variables": [
+        {"name": "cluster", "value": "Cluster A", "options": ["Cluster A", "Cluster B", "Cluster C"]},
+        {"name": "metric_type", "value": "Power", "options": ["Power", "Voltage", "Current", "Temperature"]}
+      ]
+    },
+    "row_1": {
+      "title": "Cluster Status",
+      "panels": [
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Status",
+          "visual": {
+            "value": "ONLINE",
+            "color": "#73bf69",
+            "background": "gradient green"
+          }
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Gateway",
+          "visual": {
+            "value": "CONNECTED",
+            "subtitle": "to Swarm Bus",
+            "color": "#73bf69"
+          }
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Total SOC",
+          "visual": {
+            "value": "71%",
+            "sparkline": "small area chart showing trend",
+            "color": "#73bf69"
+          }
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Frequency",
+          "visual": {
+            "value": "49.92 Hz",
+            "color": "#5794f2"
+          }
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Net Power",
+          "visual": {
+            "value": "+0.8 kW",
+            "subtitle": "to swarm",
+            "color": "#73bf69"
+          }
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Houses",
+          "visual": {
+            "value": "4/4",
+            "subtitle": "online",
+            "color": "#5794f2"
+          }
+        }
+      ]
+    },
+    "row_2": {
+      "title": "House Comparison",
+      "panels": [
+        {
+          "position": "span 3",
+          "type": "bar_chart",
+          "title": "Power by House",
+          "visual": {
+            "type": "vertical grouped bar chart",
+            "categories": ["H1", "H2", "H3", "H4"],
+            "series": [
+              {"name": "Solar", "color": "#fade2a", "values": [2.5, 1.8, 3.2, 2.1]},
+              {"name": "Load", "color": "#ff9830", "values": [1.3, 4.6, 1.1, 1.8]},
+              {"name": "Net", "color": "#5794f2", "values": [1.2, -2.8, 2.1, 0.3]}
+            ],
+            "legend": "bottom"
+          },
+          "style": "Grafana bar chart visualization"
+        },
+        {
+          "position": "span 3",
+          "type": "table",
+          "title": "House Details",
+          "visual": {
+            "columns": ["House", "SOC", "Power", "Frequency", "Cell Δ", "Status"],
+            "rows": [
+              {"house": "H1", "soc": "82%", "power": "+1.2 kW", "freq": "49.95 Hz", "delta": "25mV", "status": "●", "status_color": "#73bf69"},
+              {"house": "H2", "soc": "45%", "power": "-2.8 kW", "freq": "49.82 Hz", "delta": "42mV", "status": "●", "status_color": "#fade2a"},
+              {"house": "H3", "soc": "91%", "power": "+2.1 kW", "freq": "49.98 Hz", "delta": "18mV", "status": "●", "status_color": "#73bf69"},
+              {"house": "H4", "soc": "67%", "power": "+0.3 kW", "freq": "49.94 Hz", "delta": "31mV", "status": "●", "status_color": "#73bf69"}
+            ],
+            "features": ["sortable columns", "color-coded status dots", "row hover highlight"]
+          },
+          "style": "Grafana table with cell coloring"
+        }
+      ]
+    },
+    "row_3": {
+      "title": "Power Flow",
+      "panels": [
+        {
+          "position": "span 4",
+          "type": "time_series",
+          "title": "House Power - Last Hour",
+          "visual": {
+            "series": [
+              {"name": "H1", "color": "#5794f2", "data": "fluctuating around +1kW"},
+              {"name": "H2", "color": "#ff9830", "data": "negative, around -2 to -3kW, spike down"},
+              {"name": "H3", "color": "#73bf69", "data": "steady positive +2kW"},
+              {"name": "H4", "color": "#b877d9", "data": "low positive, near 0"}
+            ],
+            "y_axis": {"label": "Power (kW)", "range": "-6 to +6"},
+            "zero_line": "emphasized gray line at y=0",
+            "legend": {"position": "right", "values": ["last", "avg"]}
+          }
+        },
+        {
+          "position": "span 2",
+          "type": "pie_chart",
+          "title": "Load Distribution",
+          "visual": {
+            "type": "donut",
+            "segments": [
+              {"label": "H1", "value": 1.3, "color": "#5794f2"},
+              {"label": "H2", "value": 4.6, "color": "#ff9830"},
+              {"label": "H3", "value": 1.1, "color": "#73bf69"},
+              {"label": "H4", "value": 1.8, "color": "#b877d9"}
+            ],
+            "center_text": "8.8 kW total",
+            "legend": "right side"
+          },
+          "style": "Grafana pie chart with legend"
+        }
+      ]
+    },
+    "row_4": {
+      "title": "Gateway & Events",
+      "panels": [
+        {
+          "position": "span 2",
+          "type": "stat",
+          "title": "Gateway Contactor",
+          "visual": {
+            "value": "CLOSED",
+            "color": "#73bf69",
+            "icon": "none but implied by color"
+          }
+        },
+        {
+          "position": "span 2",
+          "type": "time_series",
+          "title": "Frequency Delta (Cluster - Swarm)",
+          "visual": {
+            "series": [{"name": "Δf", "color": "#5794f2", "data": "hovering around -0.03 Hz"}],
+            "y_axis": {"range": "-0.5 to +0.5 Hz"},
+            "thresholds": [
+              {"value": -0.5, "color": "#f2495c"},
+              {"value": 0.5, "color": "#f2495c"}
+            ]
+          }
+        },
+        {
+          "position": "span 2",
+          "type": "logs",
+          "title": "Cluster Events",
+          "visual": {
+            "entries": [
+              {"time": "14:23:45", "level": "info", "message": "H2 load increased to 4.6kW"},
+              {"time": "14:20:12", "level": "info", "message": "Gateway synced with swarm"},
+              {"time": "13:45:00", "level": "info", "message": "H3 reached 100% SOC"},
+              {"time": "13:30:22", "level": "warn", "message": "H2 cell delta 42mV"}
+            ],
+            "style": "Grafana logs panel with level colors"
+          }
+        }
+      ]
+    }
+  },
+  "technical_details": {
+    "resolution": "1920x1080",
+    "aspect_ratio": "16:9",
+    "render_style": "photorealistic Grafana screenshot",
+    "lighting": "flat LCD, no reflections",
+    "context": "Grafana 10.x dark theme",
+    "accuracy": "exact Grafana panels, proper styling"
+  },
+  "negative_prompts": [
+    "curved monitor", "control room", "reflections", "cinematic", "neon glow", "monitor bezel", "room background"
+  ]
+}

@@ -3,132 +3,220 @@
   "title": "Home Assistant Cluster Detail View",
   "style": {
     "theme": "home_assistant_dark",
-    "color_palette": ["#111111", "#1c1c1c", "#303030", "#03a9f4", "#4caf50", "#ff9800", "#f44336", "#ffffff"],
-    "aesthetic": "real Home Assistant dashboard, Lovelace UI, cluster monitoring",
-    "mood": "clean, organized, user-friendly, realistic software"
+    "color_palette": ["#111111", "#1c1c1c", "#303030", "#03a9f4", "#4caf50", "#ff9800", "#f44336", "#9c27b0", "#ffffff"],
+    "aesthetic": "production Home Assistant dashboard, Lovelace cluster view, Mushroom cards, entity management",
+    "mood": "focused, organized, cluster-level monitoring, residential"
   },
   "layout": {
-    "type": "lovelace_sections",
-    "structure": "sidebar + vertical sections for cluster"
+    "type": "lovelace_panel",
+    "structure": "sidebar + main content area"
   },
   "content": {
     "ha_chrome": {
       "sidebar": {
-        "items": ["Overview", "Energy", "Cluster A", "Cluster B", "Cluster C"],
-        "active": "Cluster A highlighted"
+        "width": "256px",
+        "menu_items": [
+          {"icon": "mdi:view-dashboard", "label": "Overview"},
+          {"icon": "mdi:home-group", "label": "Microgrid"},
+          {"icon": "mdi:alpha-a-circle", "label": "Cluster A", "active": true, "indent": true},
+          {"icon": "mdi:alpha-b-circle", "label": "Cluster B", "indent": true},
+          {"icon": "mdi:alpha-c-circle", "label": "Cluster C", "indent": true}
+        ]
       },
       "top_bar": {
-        "left": "'Cluster A - 4 Houses' title",
-        "right": "edit dashboard icon"
+        "left": {"title": "Cluster A"},
+        "right": {"edit_button": "pencil icon"}
       }
     },
-    "sections": [
-      {
-        "title": "Cluster Status",
-        "cards": [
-          {
-            "type": "custom:mushroom-template-card",
-            "visual": "large card with cluster icon",
-            "primary": "Cluster A",
-            "secondary": "Gateway: Connected | 49.92 Hz",
-            "icon": "mdi:home-group",
-            "badge": "green checkmark"
-          },
-          {
-            "type": "gauge",
-            "title": "Total SOC",
-            "visual": "HA gauge card showing 71%",
-            "segments": "green/yellow/red"
-          },
-          {
-            "type": "entity",
-            "title": "Net Power",
-            "visual": "+0.8 kW to swarm",
-            "icon": "mdi:arrow-up"
-          }
-        ]
-      },
-      {
-        "title": "Houses",
-        "layout": "horizontal-stack of 4 cards",
-        "cards": [
-          {
-            "type": "custom:mushroom-entity-card",
-            "entity": "House 1",
-            "primary": "H1",
-            "secondary": "82% | +1.2kW",
-            "icon": "mdi:home",
-            "icon_color": "green",
-            "visual": "compact mushroom card"
-          },
-          {
-            "type": "custom:mushroom-entity-card",
-            "entity": "House 2",
-            "primary": "H2",
-            "secondary": "45% | -2.8kW",
-            "icon": "mdi:home",
-            "icon_color": "orange"
-          },
-          {
-            "type": "custom:mushroom-entity-card",
-            "entity": "House 3",
-            "primary": "H3",
-            "secondary": "91% | +2.1kW",
-            "icon": "mdi:home",
-            "icon_color": "green"
-          },
-          {
-            "type": "custom:mushroom-entity-card",
-            "entity": "House 4",
-            "primary": "H4",
-            "secondary": "67% | +0.3kW",
-            "icon": "mdi:home",
-            "icon_color": "green"
-          }
-        ]
-      },
-      {
-        "title": "Power Distribution",
-        "cards": [
-          {
-            "type": "custom:sankey-chart-card",
-            "visual": "simple HA sankey showing power flow between houses",
-            "style": "Home Assistant sankey card plugin"
-          }
-        ]
-      },
-      {
-        "title": "Gateway",
-        "cards": [
-          {
-            "type": "entities",
-            "entities": [
-              {"name": "Contactor", "state": "Closed", "icon": "mdi:electric-switch-closed"},
-              {"name": "Cluster Frequency", "state": "49.92 Hz"},
-              {"name": "Swarm Frequency", "state": "49.95 Hz"},
-              {"name": "Delta", "state": "0.03 Hz"}
-            ]
-          }
-        ]
-      }
-    ]
+    "dashboard_content": {
+      "sections": [
+        {
+          "title": null,
+          "cards": [
+            {
+              "type": "custom:mushroom-title-card",
+              "visual": {
+                "title": "Cluster A",
+                "subtitle": "4 Houses | Gateway Connected | 49.92 Hz"
+              }
+            },
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:check-network",
+                    "icon_color": "green",
+                    "primary": "Status",
+                    "secondary": "Online"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:battery-70",
+                    "icon_color": "green",
+                    "primary": "Total SOC",
+                    "secondary": "71%"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:transmission-tower",
+                    "icon_color": "blue",
+                    "primary": "Net Power",
+                    "secondary": "+0.8 kW to swarm"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:sine-wave",
+                    "icon_color": "blue",
+                    "primary": "Frequency",
+                    "secondary": "49.92 Hz"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Houses",
+          "cards": [
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "custom:mushroom-template-card",
+                  "size": "large",
+                  "visual": {
+                    "layout": "vertical",
+                    "icon": "mdi:home",
+                    "icon_color": "green",
+                    "primary": "House 1",
+                    "secondary": "82% SOC",
+                    "tertiary": "+1.2 kW → bus",
+                    "badge_icon": "mdi:arrow-up",
+                    "badge_color": "green",
+                    "tap_action": "navigate to house detail"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "size": "large",
+                  "visual": {
+                    "layout": "vertical",
+                    "icon": "mdi:home",
+                    "icon_color": "orange",
+                    "primary": "House 2",
+                    "secondary": "45% SOC",
+                    "tertiary": "-2.8 kW ← bus",
+                    "badge_icon": "mdi:arrow-down",
+                    "badge_color": "orange"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "size": "large",
+                  "visual": {
+                    "layout": "vertical",
+                    "icon": "mdi:home",
+                    "icon_color": "green",
+                    "primary": "House 3",
+                    "secondary": "91% SOC",
+                    "tertiary": "+2.1 kW → bus",
+                    "badge_icon": "mdi:arrow-up",
+                    "badge_color": "green"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "size": "large",
+                  "visual": {
+                    "layout": "vertical",
+                    "icon": "mdi:home",
+                    "icon_color": "green",
+                    "primary": "House 4",
+                    "secondary": "67% SOC",
+                    "tertiary": "+0.3 kW → bus",
+                    "badge_icon": "mdi:arrow-up",
+                    "badge_color": "green"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Power Flow",
+          "cards": [
+            {
+              "type": "custom:power-flow-card",
+              "visual": {
+                "description": "Cluster-level power flow showing 4 houses connected to cluster bus",
+                "layout": "houses on left, bus in center, gateway on right",
+                "houses": [
+                  {"name": "H1", "power": 1.2, "direction": "out"},
+                  {"name": "H2", "power": -2.8, "direction": "in"},
+                  {"name": "H3", "power": 2.1, "direction": "out"},
+                  {"name": "H4", "power": 0.3, "direction": "out"}
+                ],
+                "bus": {"label": "Cluster Bus", "frequency": "49.92 Hz"},
+                "gateway": {"label": "To Swarm", "power": "+0.8 kW", "status": "Connected"}
+              }
+            }
+          ]
+        },
+        {
+          "title": "Gateway",
+          "cards": [
+            {
+              "type": "entities",
+              "visual": {
+                "entities": [
+                  {"icon": "mdi:electric-switch-closed", "name": "Contactor", "state": "Closed", "state_color": "green"},
+                  {"icon": "mdi:sine-wave", "name": "Cluster Frequency", "state": "49.92 Hz"},
+                  {"icon": "mdi:sine-wave", "name": "Swarm Frequency", "state": "49.95 Hz"},
+                  {"icon": "mdi:delta", "name": "Frequency Delta", "state": "0.03 Hz", "state_color": "green"},
+                  {"icon": "mdi:sync", "name": "Sync Quality", "state": "99.4%"}
+                ],
+                "style": "HA entities card with state colors"
+              }
+            }
+          ]
+        },
+        {
+          "title": "Events",
+          "cards": [
+            {
+              "type": "logbook",
+              "entities": ["cluster_a"],
+              "visual": {
+                "entries": [
+                  {"time": "14:23", "message": "H2 requested power - EV charging"},
+                  {"time": "14:20", "message": "Gateway synced with swarm"},
+                  {"time": "13:45", "message": "H3 reached 100% SOC"},
+                  {"time": "12:30", "message": "H1 started exporting to bus"}
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
   },
   "technical_details": {
     "resolution": "1920x1080",
     "aspect_ratio": "16:9",
-    "render_style": "realistic software screenshot, actual Home Assistant interface",
+    "render_style": "photorealistic Home Assistant screenshot",
     "lighting": "flat screen, no reflections",
-    "context": "Home Assistant Lovelace dashboard, Mushroom cards, dark theme",
-    "accuracy": "exact HA card styling, Mushroom card appearance, proper icons"
+    "context": "Home Assistant Lovelace, Mushroom cards, dark theme",
+    "accuracy": "exact HA card styling, proper MDI icons, Mushroom template cards"
   },
   "negative_prompts": [
-    "curved monitor",
-    "control room",
-    "reflections",
-    "cinematic",
-    "neon glow",
-    "SCADA",
-    "industrial",
-    "monitor frame"
+    "curved monitor", "control room", "reflections", "cinematic", "neon glow", "SCADA", "industrial", "monitor bezel", "room background"
   ]
 }

@@ -3,139 +3,215 @@
   "title": "Home Assistant House Detail View",
   "style": {
     "theme": "home_assistant_dark",
-    "color_palette": ["#111111", "#1c1c1c", "#303030", "#03a9f4", "#4caf50", "#ff9800", "#f44336", "#ffffff"],
-    "aesthetic": "real Home Assistant dashboard, single house monitoring, BMS data",
-    "mood": "clean, detailed, user-friendly, realistic software"
+    "color_palette": ["#111111", "#1c1c1c", "#303030", "#03a9f4", "#4caf50", "#ff9800", "#f44336", "#9c27b0", "#ffffff"],
+    "aesthetic": "production Home Assistant dashboard, single house deep dive, BMS monitoring, Mushroom cards",
+    "mood": "detailed, technical but accessible, homeowner-friendly"
   },
   "layout": {
     "type": "lovelace_panel",
-    "structure": "sidebar + detailed house view"
+    "structure": "sidebar + scrollable content"
   },
   "content": {
     "ha_chrome": {
       "sidebar": {
-        "items": ["Overview", "House 1", "House 2", "House 3", "..."],
-        "active": "House 7 highlighted"
-      },
-      "top_bar": "'House 7 - Cluster B' title"
-    },
-    "sections": [
-      {
-        "title": "System Overview",
-        "layout": "horizontal-stack",
-        "cards": [
-          {
-            "type": "custom:mushroom-template-card",
-            "visual": "large SOC display",
-            "primary": "72%",
-            "secondary": "10.8 kWh remaining",
-            "icon": "mdi:battery-70",
-            "icon_color": "green"
-          },
-          {
-            "type": "gauge",
-            "title": "Power",
-            "visual": "gauge showing -3.2kW (discharging)",
-            "min": "-6kW",
-            "max": "+6kW",
-            "style": "HA gauge with needle"
-          },
-          {
-            "type": "entity",
-            "title": "Frequency",
-            "visual": "49.95 Hz",
-            "icon": "mdi:sine-wave"
-          }
+        "menu_items": [
+          {"icon": "mdi:home-group", "label": "Microgrid"},
+          {"icon": "mdi:home", "label": "House 1", "indent": true},
+          {"icon": "mdi:home", "label": "House 7", "active": true, "indent": true},
+          {"icon": "mdi:home", "label": "House 12", "indent": true}
         ]
       },
-      {
-        "title": "Energy Flow",
-        "cards": [
-          {
-            "type": "custom:power-flow-card",
-            "visual": "HA power flow showing Solar(2.8kW) -> Battery(72%) -> Inverter -> Load(3.2kW)",
-            "style": "power-flow-card with animated dots"
-          }
-        ]
-      },
-      {
-        "title": "Battery Cells",
-        "cards": [
-          {
-            "type": "custom:bar-card",
-            "title": "Cell Voltages",
-            "visual": "16 horizontal bars, Home Assistant bar-card style",
-            "values": "3.24V, 3.25V, 3.24V... showing slight variations",
-            "colors": "all green except one yellow (Cell 13: 3.21V)",
-            "style": "HA bar-card with value labels"
-          },
-          {
-            "type": "entities",
-            "title": "Cell Stats",
-            "entities": [
-              {"name": "Min Cell", "state": "3.21V (C13)"},
-              {"name": "Max Cell", "state": "3.26V (C6)"},
-              {"name": "Delta", "state": "50mV"},
-              {"name": "Avg Temp", "state": "28°C"}
-            ]
-          }
-        ]
-      },
-      {
-        "title": "Today's Stats",
-        "layout": "horizontal-stack",
-        "cards": [
-          {
-            "type": "statistic",
-            "title": "Solar",
-            "visual": "18.3 kWh with sun icon"
-          },
-          {
-            "type": "statistic",
-            "title": "Consumed",
-            "visual": "14.7 kWh"
-          },
-          {
-            "type": "statistic",
-            "title": "Exported",
-            "visual": "3.1 kWh"
-          },
-          {
-            "type": "statistic",
-            "title": "Imported",
-            "visual": "0.2 kWh"
-          }
-        ]
-      },
-      {
-        "title": "History",
-        "cards": [
-          {
-            "type": "custom:mini-graph-card",
-            "title": "SOC - 24h",
-            "visual": "line chart showing SOC over day, dip at night, rise during day",
-            "style": "mini-graph-card with color gradient"
-          }
-        ]
+      "top_bar": {
+        "left": {"title": "House 7 - Cluster B"},
+        "right": {"edit_button": true}
       }
-    ]
+    },
+    "dashboard_content": {
+      "sections": [
+        {
+          "title": null,
+          "cards": [
+            {
+              "type": "custom:mushroom-title-card",
+              "visual": {"title": "House 7", "subtitle": "Cluster B | Online | 49.95 Hz"}
+            },
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "gauge",
+                  "visual": {
+                    "entity": "SOC",
+                    "value": 72,
+                    "min": 0,
+                    "max": 100,
+                    "severity": {"green": 50, "yellow": 20, "red": 0},
+                    "needle": true,
+                    "style": "HA gauge card, large circular"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "layout": "vertical",
+                    "icon": "mdi:battery-70",
+                    "icon_color": "green",
+                    "primary": "10.8 kWh",
+                    "secondary": "of 15 kWh remaining"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "layout": "vertical",
+                    "icon": "mdi:lightning-bolt",
+                    "icon_color": "orange",
+                    "primary": "-3.2 kW",
+                    "secondary": "Discharging"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Energy Flow",
+          "cards": [
+            {
+              "type": "custom:power-flow-card-plus",
+              "visual": {
+                "description": "House-level power flow diagram",
+                "entities": {
+                  "solar": {"icon": "mdi:solar-panel", "value": "2.8 kW", "color": "yellow"},
+                  "battery": {"icon": "mdi:battery-70", "value": "72%", "secondary": "-3.2 kW", "color": "orange"},
+                  "inverter": {"icon": "mdi:current-ac", "value": "230V", "secondary": "49.95 Hz"},
+                  "home": {"icon": "mdi:home", "value": "3.2 kW", "color": "blue"},
+                  "grid": {"icon": "mdi:transmission-tower", "value": "To bus: +0.5 kW", "color": "green"}
+                },
+                "flow_paths": "animated dots showing power from solar to battery and load"
+              }
+            }
+          ]
+        },
+        {
+          "title": "Battery Cells",
+          "cards": [
+            {
+              "type": "custom:bar-card",
+              "visual": {
+                "title": "Cell Voltages (16S LiFePO4)",
+                "direction": "horizontal",
+                "entities": [
+                  {"name": "C1", "value": 3.24, "color": "green"},
+                  {"name": "C2", "value": 3.25, "color": "green"},
+                  {"name": "C3", "value": 3.24, "color": "green"},
+                  {"name": "C4", "value": 3.26, "color": "green"},
+                  {"name": "C5", "value": 3.25, "color": "green"},
+                  {"name": "C6", "value": 3.23, "color": "green"},
+                  {"name": "C7", "value": 3.25, "color": "green"},
+                  {"name": "C8", "value": 3.24, "color": "green"},
+                  {"name": "C9", "value": 3.25, "color": "green"},
+                  {"name": "C10", "value": 3.26, "color": "green"},
+                  {"name": "C11", "value": 3.24, "color": "green"},
+                  {"name": "C12", "value": 3.25, "color": "green"},
+                  {"name": "C13", "value": 3.21, "color": "yellow", "note": "lowest"},
+                  {"name": "C14", "value": 3.25, "color": "green"},
+                  {"name": "C15", "value": 3.24, "color": "green"},
+                  {"name": "C16", "value": 3.25, "color": "green"}
+                ],
+                "min": 2.8,
+                "max": 3.6,
+                "severity": [{"from": 2.8, "to": 3.0, "color": "red"}, {"from": 3.0, "to": 3.15, "color": "yellow"}, {"from": 3.15, "to": 3.6, "color": "green"}],
+                "style": "HA bar-card with colored bars based on voltage"
+              }
+            },
+            {
+              "type": "entities",
+              "visual": {
+                "title": "Cell Statistics",
+                "entities": [
+                  {"name": "Min Cell", "state": "3.21V (C13)", "icon": "mdi:arrow-down"},
+                  {"name": "Max Cell", "state": "3.26V (C4, C10)", "icon": "mdi:arrow-up"},
+                  {"name": "Delta", "state": "50mV", "icon": "mdi:delta"},
+                  {"name": "Warning Threshold", "state": "100mV", "icon": "mdi:alert-outline"},
+                  {"name": "Balancer", "state": "Active on C13", "icon": "mdi:scale-balance", "state_color": "blue"}
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "title": "Today's Energy",
+          "cards": [
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {"icon": "mdi:white-balance-sunny", "icon_color": "amber", "primary": "18.3 kWh", "secondary": "Solar"}
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {"icon": "mdi:flash", "icon_color": "orange", "primary": "14.7 kWh", "secondary": "Consumed"}
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {"icon": "mdi:arrow-up-bold", "icon_color": "green", "primary": "3.1 kWh", "secondary": "Exported"}
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {"icon": "mdi:arrow-down-bold", "icon_color": "blue", "primary": "0.2 kWh", "secondary": "Imported"}
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "SOC History - 24h",
+          "cards": [
+            {
+              "type": "custom:mini-graph-card",
+              "visual": {
+                "entities": [{"name": "SOC", "color": "#4caf50"}],
+                "hours_to_show": 24,
+                "line_width": 2,
+                "fill": true,
+                "show": {"labels": true, "points": false, "legend": false},
+                "data_description": "SOC starts ~40% at midnight, rises to 100% by 10am, now at 72%",
+                "style": "area chart with gradient, shows charge/discharge cycles"
+              }
+            }
+          ]
+        },
+        {
+          "title": "Events Today",
+          "cards": [
+            {
+              "type": "logbook",
+              "visual": {
+                "entries": [
+                  {"time": "14:23", "icon": "mdi:alert", "message": "Cell 13 delta warning", "color": "orange"},
+                  {"time": "14:00", "icon": "mdi:flash", "message": "Heavy load: 5.8kW"},
+                  {"time": "10:15", "icon": "mdi:arrow-up", "message": "Export to cluster: 2kW", "color": "green"},
+                  {"time": "09:30", "icon": "mdi:battery", "message": "100% SOC reached", "color": "green"},
+                  {"time": "06:12", "icon": "mdi:weather-sunny", "message": "Sunrise, charging started"}
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
   },
   "technical_details": {
     "resolution": "1920x1080",
     "aspect_ratio": "16:9",
-    "render_style": "realistic software screenshot, actual Home Assistant interface",
+    "render_style": "photorealistic Home Assistant screenshot",
     "lighting": "flat screen, no reflections",
-    "context": "Home Assistant Lovelace, Mushroom + custom cards, dark theme",
-    "accuracy": "exact HA card styling, proper MDI icons, real card layouts"
+    "context": "Home Assistant Lovelace with Mushroom, bar-card, mini-graph-card, power-flow-card-plus",
+    "accuracy": "exact HA styling, proper HACS card appearances"
   },
   "negative_prompts": [
-    "curved monitor",
-    "control room",
-    "reflections",
-    "cinematic",
-    "neon glow",
-    "SCADA",
-    "industrial",
-    "monitor frame"
+    "curved monitor", "control room", "reflections", "cinematic", "neon glow", "SCADA", "industrial", "monitor bezel", "room background"
   ]
 }

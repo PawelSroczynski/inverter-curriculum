@@ -1,0 +1,209 @@
+{
+  "image_type": "software_screenshot",
+  "title": "Home Assistant Power Sharing View",
+  "style": {
+    "theme": "home_assistant_dark",
+    "color_palette": ["#111111", "#1c1c1c", "#303030", "#4caf50", "#2196f3", "#ff9800", "#f44336", "#9c27b0", "#ffffff"],
+    "aesthetic": "production Home Assistant dashboard, power sharing visualization, droop control status, Mushroom cards",
+    "mood": "educational yet operational, real-time sharing status, homeowner-friendly explanation"
+  },
+  "layout": {
+    "type": "lovelace_panel",
+    "structure": "sidebar + power sharing content"
+  },
+  "content": {
+    "ha_chrome": {
+      "sidebar": {
+        "menu_items": [
+          {"icon": "mdi:home-group", "label": "Microgrid"},
+          {"icon": "mdi:share-variant", "label": "Power Sharing", "active": true}
+        ]
+      },
+      "top_bar": {
+        "left": {"title": "Power Sharing - Live"},
+        "right": {"live_indicator": "green dot"}
+      }
+    },
+    "dashboard_content": {
+      "sections": [
+        {
+          "title": null,
+          "cards": [
+            {
+              "type": "custom:mushroom-title-card",
+              "visual": {
+                "title": "Automatic Power Sharing",
+                "subtitle": "Droop control active - physics does the balancing"
+              }
+            },
+            {
+              "type": "custom:mushroom-chips-card",
+              "visual": {
+                "chips": [
+                  {"icon": "mdi:autorenew", "label": "Mode: Auto", "color": "green"},
+                  {"icon": "mdi:sine-wave", "label": "Bus: 49.85 Hz", "color": "blue"},
+                  {"icon": "mdi:swap-horizontal", "label": "3.0 kW shared", "color": "green"}
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "title": "Current Scenario: EV Charging at House 2",
+          "cards": [
+            {
+              "type": "markdown",
+              "visual": {
+                "content": "**House 2** just connected an EV charger (7kW). The system is automatically sharing power from neighbors to handle the load spike.",
+                "style": "info box style"
+              }
+            }
+          ]
+        },
+        {
+          "title": "House Status",
+          "cards": [
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:home-export-outline",
+                    "icon_color": "green",
+                    "primary": "House 1",
+                    "secondary": "49.88 Hz | +3.5kW",
+                    "tertiary": "Sending 1.5kW →",
+                    "badge_icon": "mdi:arrow-right",
+                    "badge_color": "green"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:home-import-outline",
+                    "icon_color": "red",
+                    "primary": "House 2",
+                    "secondary": "49.75 Hz | 6kW MAX",
+                    "tertiary": "← Receiving 3kW",
+                    "badge_icon": "mdi:arrow-left",
+                    "badge_color": "red"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:home-export-outline",
+                    "icon_color": "green",
+                    "primary": "House 3",
+                    "secondary": "49.92 Hz | +2kW",
+                    "tertiary": "Sending 1kW →",
+                    "badge_icon": "mdi:arrow-right",
+                    "badge_color": "green"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:home-export-outline",
+                    "icon_color": "green",
+                    "primary": "House 4",
+                    "secondary": "49.90 Hz | +2.5kW",
+                    "tertiary": "Sending 0.5kW →",
+                    "badge_icon": "mdi:arrow-right",
+                    "badge_color": "green"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Sharing Summary",
+          "cards": [
+            {
+              "type": "entities",
+              "visual": {
+                "entities": [
+                  {"icon": "mdi:home-import-outline", "name": "H2 Total Load", "state": "9 kW", "state_color": "orange"},
+                  {"icon": "mdi:battery-charging", "name": "H2 Local Output", "state": "6 kW (MAX)", "state_color": "orange"},
+                  {"icon": "mdi:share-variant", "name": "From Neighbors", "state": "3 kW", "state_color": "green"},
+                  {"icon": "mdi:check-circle", "name": "Result", "state": "Load satisfied", "state_color": "green"}
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "title": "How It Works",
+          "cards": [
+            {
+              "type": "markdown",
+              "visual": {
+                "content": "### Droop Control - Physics-Based Sharing\n\nEvery inverter follows the same rule:\n- **Lower frequency** = more loaded = receives power\n- **Higher frequency** = less loaded = sends power\n\n**No communication needed!** The frequency difference automatically drives power flow.\n\n| House | Frequency | Action |\n|-------|-----------|--------|\n| H1 | 49.88 Hz | Helping |\n| H2 | 49.75 Hz | Receiving |\n| H3 | 49.92 Hz | Helping |\n| H4 | 49.90 Hz | Helping |\n\n*System settled in ~100ms*",
+                "style": "HA markdown with table"
+              }
+            }
+          ]
+        },
+        {
+          "title": "Other Scenarios That Trigger Sharing",
+          "cards": [
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:battery-low",
+                    "icon_color": "orange",
+                    "primary": "Low Battery",
+                    "secondary": "BMS limits → neighbors supply"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:flash-off",
+                    "icon_color": "red",
+                    "primary": "Inverter Fault",
+                    "secondary": "House runs from bus"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:engine",
+                    "icon_color": "orange",
+                    "primary": "Motor Startup",
+                    "secondary": "9kW surge shared"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-template-card",
+                  "visual": {
+                    "icon": "mdi:weather-cloudy",
+                    "icon_color": "blue",
+                    "primary": "Uneven Solar",
+                    "secondary": "Sunny feeds shaded"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "technical_details": {
+    "resolution": "1920x1080",
+    "aspect_ratio": "16:9",
+    "render_style": "photorealistic Home Assistant screenshot",
+    "lighting": "flat screen, no reflections",
+    "context": "Home Assistant Lovelace with Mushroom cards, educational + operational",
+    "accuracy": "exact HA styling, markdown tables, proper card formatting"
+  },
+  "negative_prompts": [
+    "curved monitor", "control room", "bicycle chain", "reflections", "cinematic", "neon glow", "droop curve graph", "monitor bezel", "room background"
+  ]
+}

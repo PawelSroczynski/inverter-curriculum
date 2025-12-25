@@ -1,81 +1,223 @@
 {
   "image_type": "software_screenshot",
-  "title": "Grafana Cell Voltage Heatmap",
+  "title": "Grafana Cell Voltage Heatmap Dashboard",
   "style": {
     "theme": "grafana_dark",
-    "color_palette": ["#111217", "#181b1f", "#22252a", "#73bf69", "#fade2a", "#f2495c", "#5794f2"],
-    "aesthetic": "real Grafana dashboard screenshot, heatmap visualization, BMS monitoring",
-    "mood": "professional, cell-level analysis, realistic software"
+    "color_palette": ["#111217", "#181b1f", "#22252a", "#73bf69", "#fade2a", "#ff9830", "#f2495c", "#5794f2"],
+    "aesthetic": "production Grafana dashboard, battery management system monitoring, cell-level heatmap visualization",
+    "mood": "detailed, diagnostic, preventive maintenance focus"
   },
   "layout": {
     "type": "grafana_grid",
-    "structure": "large heatmap + detail panels"
+    "rows": 4,
+    "columns": 6
   },
   "content": {
     "grafana_chrome": {
       "top_bar": {
-        "left": "Grafana logo, breadcrumb: Dashboards > Microgrid > Cell Voltages",
-        "right": "time picker 'Last 1 hour', variable dropdown 'House: All'"
+        "left": ["Grafana logo", "breadcrumb: 'Dashboards / Microgrid / Cell Voltages'"],
+        "center": ["'Battery Cell Monitoring - All Houses'"],
+        "right": ["time range: 'Last 1 hour'", "refresh: '10s'"]
       },
-      "left_sidebar": "collapsed"
+      "left_sidebar": {"state": "collapsed"}
     },
-    "dashboard_title": {
-      "text": "Battery Cell Voltages - All Houses"
-    },
-    "panels": [
-      {
-        "position": "top, full width",
-        "type": "heatmap",
-        "title": "Cell Voltage Heatmap (12 Houses x 16 Cells)",
-        "visual": "Grafana heatmap panel, Y-axis: H1-H12, X-axis: Cell 1-16",
-        "colors": "green (3.2-3.3V), yellow (edges), red (<3.0V or >3.5V)",
-        "style": "actual Grafana heatmap with color scale legend on right",
-        "highlight": "one cell showing red (H3-C14)"
-      },
-      {
-        "position": "bottom-left",
-        "type": "bar_gauge",
-        "title": "House 3 - Cell Voltages",
-        "visual": "16 horizontal bars, Grafana bar gauge style",
-        "highlight": "Cell 14 at 2.85V in red, others green around 3.2V"
-      },
-      {
-        "position": "bottom-center",
-        "type": "stat",
-        "title": "Max Delta",
-        "visual": "large text showing '350mV' in yellow",
-        "subtitle": "H3: Cell 7 vs Cell 14"
-      },
-      {
-        "position": "bottom-right",
-        "type": "time_series",
-        "title": "Cell 14 History (House 3)",
-        "visual": "line chart showing voltage decline over days",
-        "annotation": "markers for past LVP events"
-      }
-    ],
     "alert_banner": {
-      "position": "below title",
-      "visual": "Grafana alert banner: orange background, 'ALERTING: H3-Cell14 below 2.9V'",
-      "style": "actual Grafana alerting UI"
+      "visible": true,
+      "style": "Grafana alert bar",
+      "visual": {
+        "background": "#ff9830 with 20% opacity",
+        "border_left": "4px solid #ff9830",
+        "text": "WARNING: House 3 Cell 14 voltage below 2.9V threshold",
+        "count": "1 alert firing"
+      }
+    },
+    "variable_row": {
+      "variables": [
+        {"name": "house_filter", "value": "All", "options": ["All", "House 1", "House 2", "...", "House 12"]},
+        {"name": "voltage_range", "value": "Auto", "options": ["Auto", "2.5-3.6V", "3.0-3.4V"]}
+      ]
+    },
+    "row_1": {
+      "title": "System Overview",
+      "panels": [
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Total Cells",
+          "visual": {"value": "192", "subtitle": "12 houses × 16 cells", "color": "#5794f2"}
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Healthy",
+          "visual": {"value": "189", "color": "#73bf69"}
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Warning",
+          "visual": {"value": "2", "color": "#fade2a"}
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Critical",
+          "visual": {"value": "1", "color": "#f2495c"}
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Max Delta",
+          "visual": {"value": "350 mV", "subtitle": "H3: C7-C14", "color": "#ff9830"}
+        },
+        {
+          "position": "span 1",
+          "type": "stat",
+          "title": "Avg Voltage",
+          "visual": {"value": "3.24 V", "color": "#73bf69"}
+        }
+      ]
+    },
+    "row_2": {
+      "title": "Cell Voltage Heatmap",
+      "panels": [
+        {
+          "position": "span 6 (full width)",
+          "type": "heatmap",
+          "title": "All Cells - Voltage Heatmap (12 Houses × 16 Cells)",
+          "visual": {
+            "description": "Grafana heatmap panel showing 12×16 grid of cell voltages",
+            "y_axis": {
+              "labels": ["H1", "H2", "H3", "H4", "H5", "H6", "H7", "H8", "H9", "H10", "H11", "H12"],
+              "title": "House"
+            },
+            "x_axis": {
+              "labels": ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10", "C11", "C12", "C13", "C14", "C15", "C16"],
+              "title": "Cell"
+            },
+            "color_scale": {
+              "type": "gradient",
+              "stops": [
+                {"value": 2.5, "color": "#f2495c", "label": "Critical Low"},
+                {"value": 2.9, "color": "#ff9830", "label": "Warning Low"},
+                {"value": 3.1, "color": "#fade2a", "label": "Low Normal"},
+                {"value": 3.2, "color": "#73bf69", "label": "Normal"},
+                {"value": 3.3, "color": "#73bf69", "label": "Normal"},
+                {"value": 3.4, "color": "#fade2a", "label": "High Normal"},
+                {"value": 3.5, "color": "#f2495c", "label": "Critical High"}
+              ],
+              "legend": "right side, vertical color bar"
+            },
+            "data_highlights": [
+              {"position": "H3, C14", "value": 2.85, "color": "bright red cell", "tooltip": "2.85V - CRITICAL"},
+              {"position": "H3, C13", "value": 2.92, "color": "orange cell"},
+              {"position": "H9, C8", "value": 2.95, "color": "orange cell"},
+              {"position": "most other cells", "value": "3.20-3.30", "color": "green"}
+            ],
+            "cell_size": "rectangular cells with value visible on hover",
+            "grid_lines": "subtle dark lines between cells"
+          },
+          "style": "Grafana heatmap panel with color legend"
+        }
+      ]
+    },
+    "row_3": {
+      "title": "Problem Cells Detail",
+      "panels": [
+        {
+          "position": "span 3",
+          "type": "bar_gauge",
+          "title": "House 3 - Cell Voltages",
+          "visual": {
+            "orientation": "horizontal",
+            "bars": [
+              {"label": "C1", "value": 3.12}, {"label": "C2", "value": 3.15},
+              {"label": "C3", "value": 3.10}, {"label": "C4", "value": 3.14},
+              {"label": "C5", "value": 3.11}, {"label": "C6", "value": 3.13},
+              {"label": "C7", "value": 3.18, "note": "max"},
+              {"label": "C8", "value": 3.09}, {"label": "C9", "value": 3.12},
+              {"label": "C10", "value": 3.10}, {"label": "C11", "value": 3.08},
+              {"label": "C12", "value": 3.11},
+              {"label": "C13", "value": 2.92, "color": "#ff9830"},
+              {"label": "C14", "value": 2.85, "color": "#f2495c", "highlight": true},
+              {"label": "C15", "value": 3.05}, {"label": "C16", "value": 3.07}
+            ],
+            "thresholds": [{"value": 2.8, "color": "#f2495c"}, {"value": 3.0, "color": "#fade2a"}, {"value": 3.1, "color": "#73bf69"}]
+          }
+        },
+        {
+          "position": "span 3",
+          "type": "time_series",
+          "title": "Cell 14 (House 3) - 7 Day Trend",
+          "visual": {
+            "series": [
+              {"name": "Cell 14 Voltage", "color": "#f2495c", "data": "gradual decline from 3.15V one week ago to 2.85V now, with daily charge/discharge cycles visible"}
+            ],
+            "y_axis": {"range": "2.7 to 3.5 V"},
+            "thresholds": [{"value": 2.9, "color": "#ff9830", "label": "Warning"}, {"value": 2.8, "color": "#f2495c", "label": "Critical"}],
+            "annotations": [
+              {"date": "3 days ago", "label": "Dropped below 3.0V"},
+              {"date": "today", "label": "Dropped below 2.9V - Alert triggered"}
+            ]
+          }
+        }
+      ]
+    },
+    "row_4": {
+      "title": "Balancer Status & History",
+      "panels": [
+        {
+          "position": "span 2",
+          "type": "table",
+          "title": "Active Balancing",
+          "visual": {
+            "columns": ["House", "Cell", "Current", "Duration"],
+            "rows": [
+              {"house": "H3", "cell": "C14", "current": "1.2A (charging)", "duration": "2h 15m"},
+              {"house": "H9", "cell": "C8", "current": "0.8A (charging)", "duration": "45m"},
+              {"house": "H3", "cell": "C7", "current": "0.5A (discharging)", "duration": "1h 30m"}
+            ]
+          }
+        },
+        {
+          "position": "span 2",
+          "type": "time_series",
+          "title": "Max Cell Delta by House",
+          "visual": {
+            "series": [
+              {"name": "H3", "color": "#f2495c", "data": "rising from 200mV to 350mV"},
+              {"name": "H9", "color": "#ff9830", "data": "around 100mV, slight increase"},
+              {"name": "Others", "color": "#73bf69", "data": "stable below 50mV"}
+            ],
+            "y_axis": {"range": "0 to 500 mV"},
+            "thresholds": [{"value": 100, "color": "#fade2a"}, {"value": 200, "color": "#f2495c"}]
+          }
+        },
+        {
+          "position": "span 2",
+          "type": "logs",
+          "title": "Cell Events",
+          "visual": {
+            "entries": [
+              {"time": "14:23", "level": "alert", "message": "H3-C14 dropped below 2.9V"},
+              {"time": "12:00", "level": "warn", "message": "H3 delta exceeded 300mV"},
+              {"time": "09:15", "level": "info", "message": "Balancer activated on H3-C14"},
+              {"time": "yesterday", "level": "warn", "message": "H9-C8 imbalance detected"}
+            ]
+          }
+        }
+      ]
     }
   },
   "technical_details": {
     "resolution": "1920x1080",
     "aspect_ratio": "16:9",
-    "render_style": "realistic software screenshot, actual Grafana interface",
-    "lighting": "flat screen, no reflections",
-    "context": "direct Grafana screenshot with heatmap panel",
-    "accuracy": "exact Grafana heatmap colors, panel borders, axis styling"
+    "render_style": "photorealistic Grafana screenshot with heatmap",
+    "lighting": "flat LCD, no reflections",
+    "context": "Grafana 10.x with heatmap panel, BMS monitoring",
+    "accuracy": "exact Grafana heatmap appearance, color legend, panel styling"
   },
   "negative_prompts": [
-    "curved monitor",
-    "control room",
-    "reflections",
-    "cinematic",
-    "neon glow",
-    "3D cells",
-    "monitor frame",
-    "stylized"
+    "curved monitor", "control room", "reflections", "cinematic", "neon glow", "3D cells", "monitor bezel", "stylized", "room background"
   ]
 }
