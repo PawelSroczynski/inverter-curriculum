@@ -1,0 +1,132 @@
+{
+  "image_type": "technical_dashboard",
+  "title": "Droop Control Power Sharing Dashboard",
+  "style": {
+    "theme": "dark_physics",
+    "color_palette": ["#0a0a0f", "#1a1a2e", "#16213e", "#00d9ff", "#00ff88", "#e94560", "#ffaa00", "#ff6b35"],
+    "aesthetic": "control room dashboard, physics visualization, bicycle chain power transfer concept, SCADA interface, curved ultrawide monitor, industrial control room, cinematic",
+    "mood": "dynamic, explanatory, technical dashboard with intuitive metaphor, epic futuristic control center"
+  },
+  "layout": {
+    "type": "before_after_split",
+    "structure": "top scenario + middle physics diagram + bottom result"
+  },
+  "content": {
+    "header": {
+      "text": "AUTOMATIC POWER SHARING — DROOP CONTROL",
+      "subtext": "How frequency difference drives power flow without communication",
+      "tagline": "Physics does the balancing — no central controller"
+    },
+    "scenario_section": {
+      "title": "SCENARIO: House 2 plugs in EV charger (7kW)",
+      "visual": "4 houses in a row connected by AC bus",
+      "before_state": {
+        "label": "BEFORE — All balanced",
+        "houses": [
+          {"name": "H1", "load": "2kW", "freq": "50.0 Hz", "color": "#00ff88"},
+          {"name": "H2", "load": "2kW", "freq": "50.0 Hz", "color": "#00ff88"},
+          {"name": "H3", "load": "1kW", "freq": "50.0 Hz", "color": "#00ff88"},
+          {"name": "H4", "load": "2kW", "freq": "50.0 Hz", "color": "#00ff88"}
+        ],
+        "bus": "50.0 Hz — No power flowing between houses"
+      },
+      "after_state": {
+        "label": "AFTER — EV connected to H2",
+        "houses": [
+          {"name": "H1", "load": "2kW", "output": "3.5kW", "freq": "49.88 Hz", "color": "#00ff88", "arrow": "1.5kW →"},
+          {"name": "H2", "load": "9kW", "output": "6kW MAX", "freq": "49.75 Hz", "color": "#e94560", "arrow": "← needs 3kW"},
+          {"name": "H3", "load": "1kW", "output": "2kW", "freq": "49.92 Hz", "color": "#00ff88", "arrow": "1kW →"},
+          {"name": "H4", "load": "2kW", "output": "2.5kW", "freq": "49.90 Hz", "color": "#00ff88", "arrow": "0.5kW →"}
+        ],
+        "bus": "49.85 Hz — Power flowing TO House 2"
+      }
+    },
+    "physics_diagram": {
+      "title": "THE PHYSICS — Frequency = Load Indicator",
+      "visual": "large central diagram showing frequency vs power relationship",
+      "elements": [
+        {
+          "type": "graph",
+          "x_axis": "Power Output (kW)",
+          "y_axis": "Frequency (Hz)",
+          "description": "Downward sloping line from 50.0Hz at 0kW to 48.5Hz at 6kW",
+          "formula": "f = 50.0 - (0.25 × P)",
+          "label": "DROOP CURVE — same for all inverters"
+        },
+        {
+          "type": "annotation",
+          "points": [
+            {"label": "Light load", "position": "top left of line", "freq": "50.0 Hz", "power": "0 kW"},
+            {"label": "Medium load", "position": "middle of line", "freq": "49.5 Hz", "power": "2 kW"},
+            {"label": "Heavy load", "position": "bottom right of line", "freq": "49.0 Hz", "power": "4 kW"},
+            {"label": "MAX load", "position": "end of line", "freq": "48.5 Hz", "power": "6 kW"}
+          ]
+        },
+        {
+          "type": "rule_box",
+          "visual": "highlighted box",
+          "content": "LOWER frequency = MORE loaded = RECEIVES power\nHIGHER frequency = LESS loaded = SENDS power"
+        }
+      ]
+    },
+    "flow_visualization": {
+      "title": "POWER FLOWS LIKE A BICYCLE CHAIN",
+      "visual": "artistic representation of power as bicycle chain connecting houses",
+      "description": "AC bus shown as a glowing bicycle chain loop connecting all houses. Houses with surplus pedal faster (higher frequency), houses with load feel resistance (lower frequency). Chain tension transfers energy automatically.",
+      "chain_elements": [
+        {"house": "H1", "visual": "cyclist pedaling steadily", "rpm": "49.88", "effort": "medium", "chain_tension": "pulling toward H2"},
+        {"house": "H2", "visual": "cyclist climbing steep hill (EV load)", "rpm": "49.75", "effort": "maximum", "chain_tension": "receiving from others"},
+        {"house": "H3", "visual": "cyclist on flat road", "rpm": "49.92", "effort": "light", "chain_tension": "pulling toward H2"},
+        {"house": "H4", "visual": "cyclist coasting slightly", "rpm": "49.90", "effort": "light", "chain_tension": "pulling toward H2"}
+      ],
+      "annotations": [
+        {"from": "H1 (49.88 Hz)", "to": "H2 (49.75 Hz)", "flow": "1.5 kW", "visual": "chain links moving right"},
+        {"from": "H3 (49.92 Hz)", "to": "H2 (49.75 Hz)", "flow": "1.0 kW", "visual": "chain links moving left"},
+        {"from": "H4 (49.90 Hz)", "to": "H2 (49.75 Hz)", "flow": "0.5 kW", "visual": "chain links moving left"}
+      ],
+      "metaphor": "Pedaling faster = higher frequency = you're helping others. Climbing a hill = lower frequency = others help you through the chain."
+    },
+    "result_panel": {
+      "title": "RESULT — Automatic load sharing",
+      "visual": "summary box with checkmarks",
+      "outcomes": [
+        {"icon": "check", "text": "H2 gets 9kW total (6kW local + 3kW from neighbors)"},
+        {"icon": "check", "text": "No inverter overloaded"},
+        {"icon": "check", "text": "No communication needed"},
+        {"icon": "check", "text": "System settles in ~100ms"},
+        {"icon": "check", "text": "Works even if one inverter fails"}
+      ]
+    },
+    "key_insight": {
+      "position": "bottom banner",
+      "visual": "highlighted box with icon",
+      "text": "Every inverter follows the SAME droop curve. The math guarantees equal sharing.",
+      "formula": "If all k = 0.25 Hz/kW, load splits equally regardless of where it connects"
+    },
+    "use_cases": {
+      "position": "bottom row",
+      "title": "OTHER SCENARIOS THAT TRIGGER SHARING",
+      "cases": [
+        {"icon": "battery_low", "label": "Low Battery", "desc": "BMS limits output → neighbors supply"},
+        {"icon": "inverter_fault", "label": "Inverter Fault", "desc": "House runs from bus only"},
+        {"icon": "motor_start", "label": "Motor Startup", "desc": "9kW surge shared by cluster"},
+        {"icon": "cloud", "label": "Uneven Solar", "desc": "Sunny house feeds shaded house"}
+      ]
+    }
+  },
+  "technical_details": {
+    "resolution": "4K landscape",
+    "aspect_ratio": "16:9",
+    "render_style": "curved ultrawide monitor display, dashboard with bicycle chain visualization, photorealistic control room",
+    "lighting": "screen glow in dark room, glowing chain links, subtle reflections on glass, ambient blue and green light",
+    "context": "viewed on large curved monitor in industrial control room, cinematic, bicycle chain metaphor for power physics"
+  },
+  "negative_prompts": [
+    "cartoon characters",
+    "childish",
+    "cluttered",
+    "blurry text",
+    "confusing arrows",
+    "too many colors"
+  ]
+}

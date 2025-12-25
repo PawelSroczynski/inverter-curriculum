@@ -1,0 +1,145 @@
+{
+  "image_type": "data_visualization",
+  "title": "Microgrid Energy Flow Sankey Diagram",
+  "style": {
+    "theme": "dark_energy",
+    "color_palette": ["#0a0a0f", "#1a1a2e", "#ff6b35", "#f7c531", "#00d9ff", "#00ff88", "#e94560", "#9d4edd"],
+    "aesthetic": "sankey diagram, energy flow visualization, power distribution infographic, curved ultrawide monitor, industrial control room, cinematic",
+    "mood": "dynamic, flowing, data-rich, professional energy analytics, epic futuristic control center"
+  },
+  "layout": {
+    "type": "sankey_horizontal",
+    "flow_direction": "left to right",
+    "sections": "sources → storage → conversion → distribution → consumption"
+  },
+  "content": {
+    "header": {
+      "text": "ENKLAVA SWARM — ENERGY FLOW",
+      "subtext": "Real-time power distribution across 12 houses",
+      "timestamp": "Today 14:25 UTC | Solar peak period"
+    },
+    "sankey_diagram": {
+      "description": "Large sankey diagram showing energy flowing from left (sources) to right (loads). Thick colored bands show power magnitude. Bands split and merge as energy moves through system.",
+      "sources_left": [
+        {
+          "name": "SOLAR",
+          "value": "52 kW",
+          "color": "#f7c531",
+          "visual": "thick yellow band, sun icon",
+          "breakdown": ["Cluster A: 18kW", "Cluster B: 20kW", "Cluster C: 14kW"]
+        },
+        {
+          "name": "BATTERY DISCHARGE",
+          "value": "8 kW",
+          "color": "#00d9ff",
+          "visual": "medium cyan band, battery icon",
+          "note": "Houses with low solar"
+        }
+      ],
+      "middle_processing": [
+        {
+          "name": "MPPT CONVERSION",
+          "efficiency": "97%",
+          "visual": "bands narrow slightly showing 3% loss",
+          "loss": "1.8 kW heat"
+        },
+        {
+          "name": "INVERTERS",
+          "efficiency": "94%",
+          "visual": "DC bands merge into AC bands",
+          "loss": "3.5 kW heat"
+        }
+      ],
+      "distribution_center": {
+        "name": "AC BUS NETWORK",
+        "visual": "bands flow through central node representing interconnected buses",
+        "flows": [
+          {"path": "Cluster A → Cluster C", "amount": "2.1 kW", "color": "#00ff88"},
+          {"path": "Cluster B → Cluster A", "amount": "0.8 kW", "color": "#00ff88"},
+          {"path": "Internal sharing", "amount": "4.2 kW", "color": "#9d4edd"}
+        ]
+      },
+      "consumption_right": [
+        {
+          "name": "HOUSEHOLD LOADS",
+          "value": "38 kW",
+          "color": "#e94560",
+          "visual": "thick red band splitting into 12 smaller streams",
+          "breakdown": ["Appliances: 22kW", "HVAC: 8kW", "Lighting: 3kW", "Other: 5kW"]
+        },
+        {
+          "name": "EV CHARGING",
+          "value": "14 kW",
+          "color": "#ff6b35",
+          "visual": "orange band, car icon",
+          "note": "2 vehicles charging"
+        },
+        {
+          "name": "BATTERY CHARGING",
+          "value": "5 kW",
+          "color": "#00d9ff",
+          "visual": "cyan band flowing back to storage",
+          "note": "Surplus to batteries"
+        }
+      ]
+    },
+    "balance_indicator": {
+      "position": "bottom center",
+      "visual": "horizontal bar centered at zero",
+      "value": "+3 kW SURPLUS",
+      "meaning": "System generating more than consuming",
+      "color": "#00ff88"
+    },
+    "cluster_breakdown": {
+      "position": "bottom row",
+      "clusters": [
+        {
+          "name": "CLUSTER A",
+          "solar": "18 kW",
+          "load": "15 kW",
+          "net": "+3 kW",
+          "visual": "mini sankey"
+        },
+        {
+          "name": "CLUSTER B",
+          "solar": "20 kW",
+          "load": "22 kW",
+          "net": "-2 kW",
+          "visual": "mini sankey"
+        },
+        {
+          "name": "CLUSTER C",
+          "solar": "14 kW",
+          "load": "15 kW",
+          "net": "-1 kW",
+          "visual": "mini sankey"
+        }
+      ]
+    },
+    "efficiency_summary": {
+      "position": "top right corner",
+      "metrics": [
+        {"label": "System Efficiency", "value": "91.2%"},
+        {"label": "Solar Utilization", "value": "98%"},
+        {"label": "Grid Import", "value": "0 kW"},
+        {"label": "Losses", "value": "5.3 kW"}
+      ]
+    }
+  },
+  "technical_details": {
+    "resolution": "4K landscape",
+    "aspect_ratio": "16:9",
+    "render_style": "polished data visualization on curved ultrawide monitor, glowing flow lines, photorealistic control room",
+    "lighting": "screen glow in dark room, subtle reflections on glass, luminous flowing bands, ambient colored light",
+    "context": "viewed on large curved monitor in industrial control room, cinematic",
+    "animation_hint": "bands appear to flow from left to right"
+  },
+  "negative_prompts": [
+    "cartoon",
+    "hand-drawn",
+    "static arrows",
+    "pie charts",
+    "cluttered",
+    "blurry"
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "image_type": "technical_dashboard",
+  "title": "Gateway Synchronization Monitor",
+  "style": {
+    "theme": "dark_sync",
+    "color_palette": ["#0a0a0f", "#1a1a2e", "#16213e", "#00d9ff", "#00ff88", "#e94560", "#ffaa00", "#9d4edd"],
+    "aesthetic": "oscilloscope display, frequency synchronization interface, power grid sync monitor, curved ultrawide monitor, industrial control room, cinematic",
+    "mood": "precise, technical, real-time waveform analysis, epic futuristic control center"
+  },
+  "layout": {
+    "type": "sync_monitor",
+    "structure": "3 gateway columns with waveforms and sync indicators"
+  },
+  "content": {
+    "header": {
+      "text": "GATEWAY SYNCHRONIZATION — LIVE",
+      "subtext": "Frequency matching between clusters and swarm bus",
+      "swarm_reference": "SWARM BUS: 50.00 Hz — REFERENCE"
+    },
+    "swarm_bus_display": {
+      "position": "top horizontal bar",
+      "visual": "glowing cyan horizontal line spanning full width",
+      "label": "SWARM BUS — 1000m BACKBONE",
+      "frequency": "50.00 Hz",
+      "voltage": "230.0 V",
+      "color": "#00d9ff"
+    },
+    "gateway_columns": [
+      {
+        "name": "GATEWAY A",
+        "position": "left column",
+        "waveform_display": {
+          "visual": "oscilloscope showing two overlaid sine waves — cyan (swarm) and green (cluster)",
+          "swarm_wave": {"freq": "50.00 Hz", "color": "#00d9ff", "label": "SWARM"},
+          "cluster_wave": {"freq": "49.97 Hz", "color": "#00ff88", "label": "CLUSTER A"},
+          "phase_offset": "12°",
+          "visual_note": "waves nearly aligned, slight drift visible"
+        },
+        "sync_gauge": {
+          "type": "circular gauge",
+          "value": "99.4%",
+          "label": "SYNC QUALITY",
+          "color": "#00ff88"
+        },
+        "frequency_delta": {
+          "visual": "horizontal bar centered at zero",
+          "value": "-0.03 Hz",
+          "threshold": "±0.5 Hz",
+          "status": "WITHIN SYNC RANGE",
+          "color": "#00ff88"
+        },
+        "contactor": {
+          "state": "CLOSED",
+          "visual": "contactor symbol with green glow",
+          "current_flow": "1.2 kW → SWARM"
+        },
+        "cluster_info": {
+          "houses": 4,
+          "total_load": "12.3 kW",
+          "soc": "78%"
+        }
+      },
+      {
+        "name": "GATEWAY B",
+        "position": "center column",
+        "waveform_display": {
+          "visual": "oscilloscope showing two overlaid sine waves perfectly aligned",
+          "swarm_wave": {"freq": "50.00 Hz", "color": "#00d9ff", "label": "SWARM"},
+          "cluster_wave": {"freq": "50.01 Hz", "color": "#00ff88", "label": "CLUSTER B"},
+          "phase_offset": "2°",
+          "visual_note": "waves perfectly overlapped"
+        },
+        "sync_gauge": {
+          "type": "circular gauge",
+          "value": "99.9%",
+          "label": "SYNC QUALITY",
+          "color": "#00ff88"
+        },
+        "frequency_delta": {
+          "visual": "horizontal bar centered at zero",
+          "value": "+0.01 Hz",
+          "threshold": "±0.5 Hz",
+          "status": "PERFECT SYNC",
+          "color": "#00ff88"
+        },
+        "contactor": {
+          "state": "CLOSED",
+          "visual": "contactor symbol with bright green glow",
+          "current_flow": "2.8 kW → SWARM"
+        },
+        "cluster_info": {
+          "houses": 4,
+          "total_load": "8.1 kW",
+          "soc": "95%"
+        }
+      },
+      {
+        "name": "GATEWAY C",
+        "position": "right column",
+        "waveform_display": {
+          "visual": "oscilloscope showing two sine waves with visible offset",
+          "swarm_wave": {"freq": "50.00 Hz", "color": "#00d9ff", "label": "SWARM"},
+          "cluster_wave": {"freq": "49.62 Hz", "color": "#ffaa00", "label": "CLUSTER C"},
+          "phase_offset": "85°",
+          "visual_note": "waves drifting apart, phase walking"
+        },
+        "sync_gauge": {
+          "type": "circular gauge",
+          "value": "76.2%",
+          "label": "SYNC QUALITY",
+          "color": "#ffaa00"
+        },
+        "frequency_delta": {
+          "visual": "horizontal bar centered at zero, indicator at edge",
+          "value": "-0.38 Hz",
+          "threshold": "±0.5 Hz",
+          "status": "APPROACHING THRESHOLD",
+          "color": "#ffaa00"
+        },
+        "contactor": {
+          "state": "OPEN",
+          "visual": "contactor symbol with gap, orange warning glow",
+          "reason": "WAITING FOR SYNC"
+        },
+        "cluster_info": {
+          "houses": 4,
+          "total_load": "15.7 kW",
+          "soc": "65%",
+          "note": "Heavy load pulling frequency down"
+        }
+      }
+    ],
+    "sync_timeline": {
+      "position": "bottom section",
+      "title": "SYNC EVENTS — LAST 10 MINUTES",
+      "visual": "horizontal timeline with event markers",
+      "events": [
+        {"time": "-8:00", "gateway": "C", "event": "Opened — freq delta exceeded", "color": "#e94560"},
+        {"time": "-5:30", "gateway": "C", "event": "Cluster load reduced", "color": "#ffaa00"},
+        {"time": "-3:00", "gateway": "C", "event": "Frequency recovering", "color": "#ffaa00"},
+        {"time": "-0:45", "gateway": "A", "event": "Minor phase adjustment", "color": "#00ff88"},
+        {"time": "NOW", "gateway": "C", "event": "Sync at 76% — waiting", "color": "#ffaa00"}
+      ]
+    },
+    "decision_logic": {
+      "position": "bottom right panel",
+      "title": "SYNC RULES",
+      "rules": [
+        {"condition": "|Δf| < 0.1 Hz", "action": "CLOSE immediately", "color": "#00ff88"},
+        {"condition": "|Δf| < 0.5 Hz", "action": "CLOSE when phase aligns", "color": "#00ff88"},
+        {"condition": "|Δf| > 0.5 Hz", "action": "WAIT — do not close", "color": "#ffaa00"},
+        {"condition": "f < 47.5 Hz", "action": "EMERGENCY CLOSE", "color": "#e94560"}
+      ]
+    }
+  },
+  "technical_details": {
+    "resolution": "4K landscape",
+    "aspect_ratio": "16:9",
+    "render_style": "oscilloscope aesthetic on curved ultrawide monitor, precise waveform display, photorealistic control room",
+    "lighting": "screen glow in dark room, phosphor-green waveforms, subtle reflections on glass, ambient blue and green light",
+    "context": "viewed on large curved monitor in industrial power grid synchronization control room, cinematic"
+  },
+  "negative_prompts": [
+    "cartoon",
+    "blurry waveforms",
+    "low resolution",
+    "sketchy lines",
+    "cluttered"
+  ]
+}

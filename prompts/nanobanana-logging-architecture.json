@@ -4,8 +4,8 @@
   "style": {
     "theme": "blueprint_technical",
     "color_palette": ["#0d1b2a", "#1b263b", "#415a77", "#778da9", "#e0e1dd", "#00d9ff", "#00ff88", "#e94560"],
-    "aesthetic": "system architecture diagram, network topology, infrastructure blueprint",
-    "mood": "professional, technical documentation, enterprise architecture"
+    "aesthetic": "system architecture diagram, network topology, infrastructure blueprint, curved ultrawide monitor, industrial control room, cinematic",
+    "mood": "professional, technical documentation, enterprise architecture, epic futuristic control center"
   },
   "layout": {
     "type": "hierarchical_layers",
@@ -126,10 +126,12 @@
     }
   },
   "technical_details": {
-    "resolution": "4K",
+    "resolution": "4K landscape",
     "aspect_ratio": "16:9",
-    "render_style": "clean technical diagram, infographic quality, presentation-ready",
+    "render_style": "clean technical diagram on curved ultrawide monitor, infographic quality, photorealistic control room",
+    "lighting": "screen glow in dark room, subtle reflections on glass, ambient blue and green light",
     "background": "dark gradient, subtle grid pattern",
+    "context": "viewed on large curved monitor in industrial control room, cinematic",
     "text": "crisp, readable, monospace for technical labels"
   },
   "negative_prompts": [

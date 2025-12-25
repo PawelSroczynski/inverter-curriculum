@@ -4,8 +4,8 @@
   "style": {
     "theme": "dark_alert",
     "color_palette": ["#0a0a0f", "#1a0a0a", "#2d1f1f", "#e94560", "#ff6b6b", "#00d9ff", "#00ff88", "#ffd93d"],
-    "aesthetic": "incident response dashboard, root cause analysis tool, debugging interface",
-    "mood": "urgent but controlled, diagnostic, forensic analysis"
+    "aesthetic": "incident response dashboard, root cause analysis tool, debugging interface, curved ultrawide monitor, industrial control room, cinematic",
+    "mood": "urgent but controlled, diagnostic, forensic analysis, epic futuristic control center"
   },
   "layout": {
     "type": "incident_analysis",
@@ -142,9 +142,9 @@
   "technical_details": {
     "resolution": "4K landscape",
     "aspect_ratio": "16:9",
-    "render_style": "photorealistic control room monitor, incident management interface",
-    "lighting": "red alert ambient glow mixed with blue screen light",
-    "context": "operations center during active incident"
+    "render_style": "photorealistic curved ultrawide monitor, incident management interface, control room",
+    "lighting": "red alert ambient glow mixed with blue screen light, subtle reflections on glass, dramatic",
+    "context": "viewed on large curved monitor in industrial operations center during active incident, cinematic"
   },
   "negative_prompts": [
     "cartoon",

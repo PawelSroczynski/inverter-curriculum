@@ -4,8 +4,8 @@
   "style": {
     "theme": "dark_tech",
     "color_palette": ["#0a0a0f", "#1a1a2e", "#16213e", "#0f3460", "#e94560", "#00d9ff", "#00ff88", "#ffaa00"],
-    "aesthetic": "industrial control room, SCADA interface, professional energy monitoring",
-    "mood": "high-tech, clean, functional, futuristic power grid control"
+    "aesthetic": "industrial control room, SCADA interface, professional energy monitoring, curved ultrawide monitor, cinematic",
+    "mood": "high-tech, clean, functional, futuristic power grid control, epic futuristic control center"
   },
   "layout": {
     "type": "grid_dashboard",

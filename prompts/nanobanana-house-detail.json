@@ -4,8 +4,8 @@
   "style": {
     "theme": "dark_tech",
     "color_palette": ["#0a0a0f", "#1a1a2e", "#16213e", "#0f3460", "#e94560", "#00d9ff", "#00ff88", "#ffaa00"],
-    "aesthetic": "industrial monitoring, SCADA single-asset view, battery management system interface",
-    "mood": "focused, technical, diagnostic"
+    "aesthetic": "industrial monitoring, SCADA single-asset view, battery management system interface, curved ultrawide monitor, industrial control room, cinematic",
+    "mood": "focused, technical, diagnostic, epic futuristic control center"
   },
   "layout": {
     "type": "single_asset_detail",
@@ -95,7 +95,9 @@
   "technical_details": {
     "resolution": "4K landscape",
     "aspect_ratio": "16:9",
-    "render_style": "photorealistic monitor display, control room aesthetic",
-    "lighting": "screen glow, dark environment"
-  }
+    "render_style": "photorealistic curved ultrawide monitor display, control room aesthetic",
+    "lighting": "screen glow in dark room, subtle reflections on glass, ambient blue and green light",
+    "context": "viewed on large curved monitor in industrial control room, cinematic"
+  },
+  "negative_prompts": ["cartoon", "sketch", "blurry text", "cluttered", "hand-drawn", "low resolution"]
 }

@@ -1,0 +1,110 @@
+{
+  "image_type": "technical_dashboard",
+  "title": "Cluster Detail View",
+  "style": {
+    "theme": "dark_tech",
+    "color_palette": ["#0a0a0f", "#1a1a2e", "#16213e", "#0f3460", "#e94560", "#00d9ff", "#00ff88", "#ffaa00"],
+    "aesthetic": "industrial control room, SCADA cluster monitoring, power distribution interface, curved ultrawide monitor, cinematic",
+    "mood": "focused, operational, real-time monitoring, epic futuristic control center"
+  },
+  "layout": {
+    "type": "cluster_focus",
+    "structure": "4 house cards in row + shared bus visualization below"
+  },
+  "content": {
+    "header": {
+      "text": "CLUSTER A — DETAILED VIEW",
+      "status": "ONLINE | GATEWAY: CONNECTED TO SWARM",
+      "breadcrumb": "Swarm > Cluster A"
+    },
+    "house_cards": {
+      "layout": "4 cards in horizontal row, equal size",
+      "cards": [
+        {
+          "name": "HOUSE 1",
+          "visual": "card with small house icon",
+          "soc_gauge": "82%",
+          "power": "+1.2 kW to bus",
+          "frequency": "49.95 Hz",
+          "status_led": "green",
+          "cell_mini": "16 tiny squares, all green"
+        },
+        {
+          "name": "HOUSE 2",
+          "visual": "card with small house icon",
+          "soc_gauge": "45%",
+          "power": "-2.8 kW from bus",
+          "frequency": "49.82 Hz",
+          "status_led": "yellow",
+          "cell_mini": "16 tiny squares, one orange"
+        },
+        {
+          "name": "HOUSE 3",
+          "visual": "card with small house icon",
+          "soc_gauge": "91%",
+          "power": "+2.1 kW to bus",
+          "frequency": "49.98 Hz",
+          "status_led": "green",
+          "cell_mini": "16 tiny squares, all green"
+        },
+        {
+          "name": "HOUSE 4",
+          "visual": "card with small house icon",
+          "soc_gauge": "67%",
+          "power": "+0.3 kW to bus",
+          "frequency": "49.94 Hz",
+          "status_led": "green",
+          "cell_mini": "16 tiny squares, all green"
+        }
+      ]
+    },
+    "bus_visualization": {
+      "title": "CLUSTER A INTERNAL BUS — 80m",
+      "visual": "horizontal glowing line connecting all 4 houses, with power flow arrows showing direction",
+      "power_flows": [
+        {"from": "H1", "direction": "right", "amount": "1.2 kW", "color": "#00ff88"},
+        {"from": "H3", "direction": "left", "amount": "2.1 kW", "color": "#00ff88"},
+        {"from": "H4", "direction": "left", "amount": "0.3 kW", "color": "#00ff88"},
+        {"to": "H2", "direction": "into", "amount": "2.8 kW", "color": "#ffaa00"}
+      ],
+      "bus_frequency": "49.92 Hz",
+      "bus_voltage": "230.1 V"
+    },
+    "gateway_panel": {
+      "position": "right side",
+      "title": "GATEWAY A",
+      "visual": "box with contactor symbol",
+      "contactor_state": "CLOSED",
+      "cluster_freq": "49.92 Hz",
+      "swarm_freq": "49.95 Hz",
+      "delta": "0.03 Hz",
+      "status": "SYNCED — POWER FLOWING TO SWARM"
+    },
+    "cluster_totals": {
+      "position": "bottom bar",
+      "metrics": [
+        {"label": "Total SOC", "value": "71%", "visual": "progress bar"},
+        {"label": "Net Power", "value": "+0.8 kW", "visual": "to swarm arrow"},
+        {"label": "Solar Now", "value": "8.2 kW"},
+        {"label": "Load Now", "value": "7.4 kW"},
+        {"label": "Storage", "value": "60 kWh total"}
+      ]
+    },
+    "events": {
+      "title": "CLUSTER EVENTS",
+      "items": [
+        {"time": "14:23", "event": "H2 requested power — load spike"},
+        {"time": "14:20", "event": "Gateway synced with swarm"},
+        {"time": "13:45", "event": "H3 reached 100% SOC"}
+      ]
+    }
+  },
+  "technical_details": {
+    "resolution": "4K landscape",
+    "aspect_ratio": "16:9",
+    "render_style": "photorealistic control room monitor display, curved ultrawide monitor",
+    "lighting": "screen glow in dark room, subtle reflections on glass, ambient blue and green light",
+    "context": "viewed on large curved monitor in industrial control room, cinematic"
+  },
+  "negative_prompts": ["cartoon", "sketch", "blurry text", "cluttered", "hand-drawn", "low resolution"]
+}
