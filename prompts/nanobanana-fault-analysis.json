@@ -142,9 +142,9 @@
   "technical_details": {
     "resolution": "4K landscape",
     "aspect_ratio": "16:9",
-    "render_style": "photorealistic curved ultrawide monitor, incident management interface, control room",
-    "lighting": "red alert ambient glow mixed with blue screen light, subtle reflections on glass, dramatic",
-    "context": "viewed on large curved monitor in industrial operations center during active incident, cinematic"
+    "render_style": "photorealistic curved ultrawide monitor, SCADA interface, control room, incident alert mode",
+    "lighting": "red alert ambient glow mixed with cyan screen light, subtle reflections on glass, dramatic, urgent",
+    "context": "viewed on large curved monitor in ENKLAVA industrial operations center during active incident, cinematic"
   },
   "negative_prompts": [
     "cartoon",

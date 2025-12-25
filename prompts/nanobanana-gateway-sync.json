@@ -156,9 +156,9 @@
   "technical_details": {
     "resolution": "4K landscape",
     "aspect_ratio": "16:9",
-    "render_style": "oscilloscope aesthetic on curved ultrawide monitor, precise waveform display, photorealistic control room",
-    "lighting": "screen glow in dark room, phosphor-green waveforms, subtle reflections on glass, ambient blue and green light",
-    "context": "viewed on large curved monitor in industrial power grid synchronization control room, cinematic"
+    "render_style": "photorealistic curved ultrawide monitor, SCADA interface, control room, oscilloscope waveforms",
+    "lighting": "cyan and green screen glow mixed with dark ambient, phosphor-green waveforms, subtle reflections on glass, dramatic",
+    "context": "viewed on large curved monitor in ENKLAVA industrial operations center, cinematic"
   },
   "negative_prompts": [
     "cartoon",

@@ -129,9 +129,9 @@
   "technical_details": {
     "resolution": "4K landscape",
     "aspect_ratio": "16:9",
-    "render_style": "polished data visualization on curved ultrawide monitor, glowing flow lines, photorealistic control room",
-    "lighting": "screen glow in dark room, subtle reflections on glass, luminous flowing bands, ambient colored light",
-    "context": "viewed on large curved monitor in industrial control room, cinematic",
+    "render_style": "photorealistic curved ultrawide monitor, SCADA interface, control room, glowing sankey bands",
+    "lighting": "cyan and green screen glow mixed with dark ambient, subtle reflections on glass, luminous flowing bands, dramatic",
+    "context": "viewed on large curved monitor in ENKLAVA industrial operations center, cinematic",
     "animation_hint": "bands appear to flow from left to right"
   },
   "negative_prompts": [
