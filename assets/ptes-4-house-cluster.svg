@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="Arial, sans-serif">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#1a1a2e"/>
+
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" fill="#ffffff" font-size="22" font-weight="bold">PTES System for 4 Strawbale Houses</text>
+  <text x="400" y="58" text-anchor="middle" fill="#888" font-size="14">Łódź, Poland • 100% Solar Heating</text>
+
+  <!-- Sun -->
+  <circle cx="400" cy="95" r="25" fill="#ffd93d"/>
+  <g stroke="#ffd93d" stroke-width="3">
+    <line x1="400" y1="60" x2="400" y2="50"/>
+    <line x1="430" y1="70" x2="440" y2="60"/>
+    <line x1="370" y1="70" x2="360" y2="60"/>
+    <line x1="435" y1="95" x2="445" y2="95"/>
+    <line x1="365" y1="95" x2="355" y2="95"/>
+  </g>
+
+  <!-- Solar Collectors -->
+  <rect x="200" y="130" width="400" height="50" rx="5" fill="#2d4a7c" stroke="#4a90d9" stroke-width="2"/>
+  <g fill="#4a90d9">
+    <rect x="210" y="140" width="55" height="30" rx="2"/>
+    <rect x="270" y="140" width="55" height="30" rx="2"/>
+    <rect x="330" y="140" width="55" height="30" rx="2"/>
+    <rect x="390" y="140" width="55" height="30" rx="2"/>
+    <rect x="450" y="140" width="55" height="30" rx="2"/>
+    <rect x="510" y="140" width="55" height="30" rx="2"/>
+  </g>
+  <text x="400" y="200" text-anchor="middle" fill="#4a90d9" font-size="13" font-weight="bold">☀️ SOLAR COLLECTORS: 100-120 m²</text>
+
+  <!-- Pipe from collectors to storage -->
+  <line x1="400" y1="180" x2="400" y2="230" stroke="#e94560" stroke-width="4"/>
+  <polygon points="400,240 393,225 407,225" fill="#e94560"/>
+
+  <!-- Pit Storage -->
+  <path d="M180,250 L620,250 L550,400 L250,400 Z" fill="#16213e" stroke="#0f3460" stroke-width="3"/>
+  <!-- Water inside -->
+  <path d="M190,260 L610,260 L545,390 L255,390 Z" fill="url(#waterGradient)"/>
+
+  <!-- Water gradient -->
+  <defs>
+    <linearGradient id="waterGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#e94560;stop-opacity:0.8"/>
+      <stop offset="50%" style="stop-color:#4a90d9;stop-opacity:0.7"/>
+      <stop offset="100%" style="stop-color:#1a1a2e;stop-opacity:0.9"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Storage labels -->
+  <text x="400" y="290" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">80-90°C (summer)</text>
+  <text x="400" y="330" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">550 m³ WATER</text>
+  <text x="400" y="370" text-anchor="middle" fill="#aaa" font-size="14">55-70°C (winter)</text>
+
+  <!-- Storage dimensions -->
+  <text x="130" y="320" text-anchor="middle" fill="#888" font-size="11" transform="rotate(-70,130,320)">depth: 4m</text>
+  <text x="400" y="245" text-anchor="middle" fill="#888" font-size="11">15m × 18m (top)</text>
+  <text x="400" y="415" text-anchor="middle" fill="#888" font-size="11">10m × 13m (bottom)</text>
+
+  <!-- Pipe from storage to houses -->
+  <line x1="400" y1="400" x2="400" y2="440" stroke="#4a90d9" stroke-width="4"/>
+
+  <!-- Distribution manifold -->
+  <rect x="150" y="440" width="500" height="15" rx="7" fill="#0f3460" stroke="#4a90d9" stroke-width="2"/>
+
+  <!-- Pipes to houses -->
+  <line x1="220" y1="455" x2="220" y2="490" stroke="#4a90d9" stroke-width="3"/>
+  <line x1="340" y1="455" x2="340" y2="490" stroke="#4a90d9" stroke-width="3"/>
+  <line x1="460" y1="455" x2="460" y2="490" stroke="#4a90d9" stroke-width="3"/>
+  <line x1="580" y1="455" x2="580" y2="490" stroke="#4a90d9" stroke-width="3"/>
+
+  <!-- Houses -->
+  <g id="house1">
+    <rect x="180" y="490" width="80" height="50" fill="#2d4a7c" stroke="#4a90d9" stroke-width="2"/>
+    <polygon points="220,460 170,490 270,490" fill="#1a472a" stroke="#2d5a3d" stroke-width="2"/>
+    <rect x="205" y="510" width="30" height="30" fill="#ffd93d" opacity="0.5"/>
+    <text x="220" y="555" text-anchor="middle" fill="#fff" font-size="11">🏠 150m²</text>
+  </g>
+
+  <g id="house2">
+    <rect x="300" y="490" width="80" height="50" fill="#2d4a7c" stroke="#4a90d9" stroke-width="2"/>
+    <polygon points="340,460 290,490 390,490" fill="#1a472a" stroke="#2d5a3d" stroke-width="2"/>
+    <rect x="325" y="510" width="30" height="30" fill="#ffd93d" opacity="0.5"/>
+    <text x="340" y="555" text-anchor="middle" fill="#fff" font-size="11">🏠 150m²</text>
+  </g>
+
+  <g id="house3">
+    <rect x="420" y="490" width="80" height="50" fill="#2d4a7c" stroke="#4a90d9" stroke-width="2"/>
+    <polygon points="460,460 410,490 510,490" fill="#1a472a" stroke="#2d5a3d" stroke-width="2"/>
+    <rect x="445" y="510" width="30" height="30" fill="#ffd93d" opacity="0.5"/>
+    <text x="460" y="555" text-anchor="middle" fill="#fff" font-size="11">🏠 150m²</text>
+  </g>
+
+  <g id="house4">
+    <rect x="540" y="490" width="80" height="50" fill="#2d4a7c" stroke="#4a90d9" stroke-width="2"/>
+    <polygon points="580,460 530,490 630,490" fill="#1a472a" stroke="#2d5a3d" stroke-width="2"/>
+    <rect x="565" y="510" width="30" height="30" fill="#ffd93d" opacity="0.5"/>
+    <text x="580" y="555" text-anchor="middle" fill="#fff" font-size="11">🏠 150m²</text>
+  </g>
+
+  <!-- Strawbale label -->
+  <text x="400" y="580" text-anchor="middle" fill="#888" font-size="12">Strawbale construction • Floor heating 35-45°C • Direct water circulation</text>
+
+  <!-- Stats box -->
+  <rect x="20" y="250" width="130" height="150" rx="5" fill="#16213e" stroke="#0f3460" stroke-width="2"/>
+  <text x="85" y="275" text-anchor="middle" fill="#4a90d9" font-size="12" font-weight="bold">KEY SPECS</text>
+  <text x="30" y="300" fill="#fff" font-size="11">Storage: 550 m³</text>
+  <text x="30" y="320" fill="#fff" font-size="11">Collectors: 120 m²</text>
+  <text x="30" y="340" fill="#fff" font-size="11">Demand: 20 MWh/y</text>
+  <text x="30" y="360" fill="#fff" font-size="11">Solar: 95%+</text>
+  <text x="30" y="385" fill="#2ecc71" font-size="11" font-weight="bold">No heat pump!</text>
+
+  <!-- Cost box -->
+  <rect x="650" y="250" width="130" height="150" rx="5" fill="#16213e" stroke="#0f3460" stroke-width="2"/>
+  <text x="715" y="275" text-anchor="middle" fill="#4a90d9" font-size="12" font-weight="bold">EST. COST</text>
+  <text x="660" y="300" fill="#fff" font-size="11">Pit: €40k</text>
+  <text x="660" y="320" fill="#fff" font-size="11">Collectors: €30k</text>
+  <text x="660" y="340" fill="#fff" font-size="11">Piping: €15k</text>
+  <text x="660" y="360" fill="#fff" font-size="11">Controls: €8k</text>
+  <line x1="660" y1="370" x2="770" y2="370" stroke="#888" stroke-width="1"/>
+  <text x="660" y="390" fill="#2ecc71" font-size="12" font-weight="bold">~€25k/house</text>
+</svg>
