@@ -1,0 +1,335 @@
+{
+  "prompt_version": "2.0",
+  "prompt_type": "technical_cross_section",
+  "image_style": "ultra-realistic architectural rendering",
+  "aspect_ratio": "16:9 horizontal",
+  "rendering_quality": "photorealistic with technical accuracy",
+
+  "title": "Chinese Solar Greenhouse over PTES - Detailed Technical Cross Section v2",
+  "subtitle": "Enklava Project | Łódź, Poland | 100% Solar Heating for 4 Houses",
+
+  "scene_description": "Ultra-detailed technical cross-section of a Chinese passive solar greenhouse built directly above an underground Pit Thermal Energy Storage (PTES) tank. View is from the EAST looking WEST, showing the full north-south span. The section reveals all construction layers with photorealistic materials and accurate proportions. Background shows Polish winter landscape with snow.",
+
+  "overall_dimensions": {
+    "greenhouse_footprint": "14m (east-west) × 8.5m (north-south)",
+    "pit_depth": "3.0m below grade",
+    "total_height": "5.5m from pit bottom to greenhouse peak",
+    "north_wall_thickness": "600mm insulated strawbale",
+    "viewing_angle": "true horizontal cross-section, no perspective distortion"
+  },
+
+  "construction_layers_from_bottom_to_top": [
+    {
+      "layer": 1,
+      "name": "SUBGRADE",
+      "depth": "below 3.0m",
+      "materials": [
+        "Compacted clay subsoil - brown/tan color",
+        "200mm gravel drainage layer at very bottom",
+        "Geotextile fabric separating gravel from clay"
+      ],
+      "visual_cues": "Visible soil stratification, small stones in gravel layer"
+    },
+    {
+      "layer": 2,
+      "name": "PIT FLOOR - EPDM SEALED",
+      "depth": "-3.0m",
+      "materials": [
+        "150mm reinforced concrete slab",
+        "1.5mm BLACK EPDM membrane on top of concrete - HIGHLY VISIBLE thick black line",
+        "Protective geotextile above EPDM"
+      ],
+      "visual_cues": "EMPHASIZE: Thick black EPDM line clearly visible at bottom of water",
+      "label": "EPDM LINER 1.5mm - waterproof membrane"
+    },
+    {
+      "layer": 3,
+      "name": "PIT WALLS - EPDM SEALED",
+      "slope": "3:1 (18°) from vertical",
+      "materials": [
+        "Compacted earth walls",
+        "50mm XPS insulation board - light blue color",
+        "1.5mm BLACK EPDM membrane - THICK VISIBLE BLACK LINE running up both walls",
+        "Protective geotextile"
+      ],
+      "visual_cues": "EMPHASIZE: Black EPDM clearly traces the entire pit perimeter - bottom, walls, AND ceiling",
+      "label": "XPS 50mm + EPDM liner continuous seal"
+    },
+    {
+      "layer": 4,
+      "name": "WATER STORAGE VOLUME",
+      "depth_range": "-3.0m to -0.3m (2.7m water depth)",
+      "volume": "~300 m³",
+      "thermal_stratification": {
+        "top_zone": "80-90°C (summer charging) / 60-70°C (winter) - RED/ORANGE gradient",
+        "middle_zone": "70-80°C - ORANGE gradient",
+        "bottom_zone": "50-60°C - YELLOW/LIGHT ORANGE gradient"
+      },
+      "visual_representation": "Smooth gradient from deep red at top to yellow at bottom, subtle heat shimmer effect",
+      "diffuser_pipes": {
+        "top_diffuser": "DN50 perforated PE pipe at -0.5m, RED color",
+        "bottom_diffuser": "DN50 perforated PE pipe at -2.8m, BLUE color"
+      },
+      "label": "THERMAL WATER STORAGE 300m³ | 80-90°C summer → 60-70°C winter"
+    },
+    {
+      "layer": 5,
+      "name": "EPDM CEILING / VAPOR BARRIER - CRITICAL ELEMENT",
+      "depth": "-0.3m (300mm below grade)",
+      "materials": [
+        "1.5mm BLACK EPDM membrane - MUST BE HIGHLY VISIBLE AS THICK BLACK LINE",
+        "Membrane spans wall-to-wall, sealing water below from wood above",
+        "Membrane welded to wall EPDM for complete seal"
+      ],
+      "visual_cues": "CRITICAL: Draw as THICK BLACK LINE (5-8px) clearly separating blue water below from brown timber above. This is the most important detail to show clearly.",
+      "label": "EPDM VAPOR SEAL - protects timber from humidity"
+    },
+    {
+      "layer": 6,
+      "name": "AIR GAP - CRITICAL VISIBILITY",
+      "depth": "-0.3m to -0.1m (200mm gap)",
+      "description": "Ventilated air space between EPDM ceiling and timber floor joists",
+      "visual_representation": "EMPTY SPACE with visible air flow arrows, light gray/white background to contrast with black EPDM below and brown timber above",
+      "ventilation": "Cross-ventilation slots at north and south walls",
+      "visual_cues": "EMPHASIZE: Show as distinct empty gap with small arrows indicating air circulation. Must be clearly visible between black EPDM line and timber.",
+      "label": "VENTILATED AIR GAP 200mm - moisture escape"
+    },
+    {
+      "layer": 7,
+      "name": "TIMBER FLOOR STRUCTURE",
+      "depth": "-0.1m to +0.15m",
+      "materials": [
+        "GL28h Glulam beams 200×600mm spanning north-south wall-to-wall (NO POSTS IN WATER)",
+        "Beams spaced 800mm on center",
+        "Black Locust (Robinia) floor joists 50×200mm",
+        "22mm OSB subfloor",
+        "Vapor barrier",
+        "50mm rigid insulation"
+      ],
+      "structural_note": "Beams bear on concrete ring beam at pit perimeter - NO SUPPORTS IN WATER",
+      "visual_cues": "Show warm honey-colored glulam with visible grain, beam ends resting on concrete ledge at walls",
+      "label": "GLULAM BEAMS GL28h 200×600mm | span 8.5m wall-to-wall"
+    },
+    {
+      "layer": 8,
+      "name": "GREENHOUSE FLOOR",
+      "depth": "+0.15m to +0.25m",
+      "materials": [
+        "100mm concrete slab with embedded PEX heating loops",
+        "PEX pipes shown as RED SERPENTINE PATTERN in concrete",
+        "Growing medium: 300mm raised beds with soil"
+      ],
+      "visual_cues": "Show PEX loops as red serpentine lines in concrete section, raised wooden bed frames with dark soil",
+      "label": "HEATED CONCRETE SLAB + PEX 35-45°C | raised growing beds"
+    },
+    {
+      "layer": 9,
+      "name": "NORTH WALL - INSULATED WITH WALL HEATING",
+      "height": "3.5m from floor to roof connection",
+      "construction": {
+        "exterior": "Lime render 25mm",
+        "structure": "EcoCocon strawbale panels 400mm (U=0.11 W/m²K)",
+        "interior_insulation": "Additional 50mm wood fiber board",
+        "interior_finish": "Clay plaster 25mm with EMBEDDED WALL HEATING",
+        "wall_heating": "ORANGE PEX PIPES in serpentine pattern, 150mm spacing, clearly visible"
+      },
+      "wall_mounted_collectors": {
+        "type": "Flat plate solar collectors - MOUNTED ON INTERIOR FACE",
+        "area": "20 m²",
+        "mounting": "Vertical on interior south-facing surface of north wall",
+        "angle": "90° (vertical)",
+        "visual": "DARK BLUE/BLACK collector panels with copper pipes, clearly visible on interior wall face"
+      },
+      "visual_cues": "CRITICAL: Show both (1) orange serpentine PEX pipes in wall plaster AND (2) dark solar collector panels mounted on interior face of north wall. These are TWO SEPARATE SYSTEMS.",
+      "labels": [
+        "WALL HEATING: PEX 35-40°C serpentine pattern",
+        "WALL COLLECTORS: 20m² interior-mounted"
+      ]
+    },
+    {
+      "layer": 10,
+      "name": "SOUTH WALL - POLYCARBONATE GLAZING",
+      "height": "0.5m stem wall + 3.0m glazing",
+      "construction": {
+        "stem_wall": "300mm insulated concrete to 0.5m height",
+        "glazing_outer": "16mm triple-wall polycarbonate - transparent with slight blue tint",
+        "thermal_blanket": "ROLLED THERMAL BLANKET stored in housing at top - CLEARLY VISIBLE ROLL",
+        "glazing_inner": "10mm twin-wall polycarbonate - transparent",
+        "blanket_deployment": "Shows blanket in rolled-up position with visible fabric roll at top"
+      },
+      "visual_cues": "EMPHASIZE: Show the thermal blanket as a visible ROLLED CYLINDER at the top, between the two polycarbonate layers. Draw deployment tracks/guides on sides.",
+      "label": "DUAL POLYCARBONATE + THERMAL BLANKET between layers (R-8 at night)"
+    },
+    {
+      "layer": 11,
+      "name": "SOUTH GLAZING CURVE - PARABOLIC",
+      "geometry": "Parabolic curve from 0.5m stem wall to 4.5m peak",
+      "angle_at_base": "60° from horizontal",
+      "angle_at_peak": "15° from horizontal",
+      "materials": "Same dual polycarbonate as south wall",
+      "support_structure": "Curved glulam ribs 100×200mm at 1.2m spacing",
+      "visual_cues": "Smooth parabolic curve, sunlight rays shown entering and reflecting down to growing beds",
+      "label": "PARABOLIC GLAZING - optimized for winter sun angle 15-25°"
+    },
+    {
+      "layer": 12,
+      "name": "ROOF PULPIT / NORTH CLERESTORY",
+      "position": "Above north wall",
+      "geometry": "Small raised roof section 1.5m wide × 1.0m high",
+      "purpose": "Summer ventilation and additional daylight",
+      "materials": [
+        "Operable louvers for ventilation",
+        "Polycarbonate skylight panels"
+      ],
+      "visual_cues": "Small raised roof section at north end, vents shown partially open",
+      "label": "VENTILATION PULPIT - summer heat exhaust"
+    }
+  ],
+
+  "ground_level_elements": {
+    "solar_collector_field": {
+      "position": "South of greenhouse, ground-mounted",
+      "area": "50 m²",
+      "type": "Flat plate collectors at 45° tilt",
+      "visual": "Row of dark blue collector panels facing south",
+      "piping": "Insulated red pipes running underground to pit"
+    },
+    "district_heating_connection": {
+      "position": "North side of pit",
+      "pipes": "Pre-insulated DN50 pipes to 4 houses",
+      "visual": "Insulated pipes emerging from pit, branching to houses in background"
+    }
+  },
+
+  "background_elements": {
+    "houses": {
+      "quantity": 4,
+      "type": "Enklava Prefab Houses - EcoCocon strawbale construction",
+      "size": "150 m² each",
+      "energy_demand": "20 kWh/m²/year (3,000 kWh/house/year)",
+      "visual": "Four identical houses visible in background, connected by district heating pipes",
+      "labels_on_houses": "ENKLAVA PREFAB | 150m² | 20 kWh/m²/yr"
+    },
+    "landscape": "Polish winter landscape, light snow cover, bare deciduous trees",
+    "sky": "Winter sun low on southern horizon (15-25° altitude)"
+  },
+
+  "labeling_requirements": {
+    "style": "Technical drawing callouts with leader lines",
+    "font": "Sans-serif, high contrast (white text on dark background or black text on light)",
+    "size": "LARGE AND READABLE - minimum 14pt equivalent",
+    "critical_labels": [
+      "EPDM VAPOR SEAL - clearly pointing to black ceiling line",
+      "AIR GAP 200mm - pointing to empty space above EPDM",
+      "WALL COLLECTORS 20m² - pointing to interior-mounted panels",
+      "WALL HEATING PEX - pointing to orange serpentine pipes",
+      "THERMAL BLANKET - pointing to rolled fabric between polycarbonate",
+      "GLULAM BEAMS - pointing to timber spanning wall-to-wall",
+      "THERMAL STRATIFICATION - pointing to temperature gradient in water"
+    ],
+    "include_dimensions": true,
+    "include_temperatures": true
+  },
+
+  "color_palette": {
+    "water_hot": "#E63946 (red) to #F4A261 (orange) gradient",
+    "water_warm": "#F4A261 (orange) to #E9C46A (yellow) gradient",
+    "EPDM_membrane": "#1a1a1a (near black) - THICK LINES",
+    "timber": "#DEB887 (warm honey brown)",
+    "insulation_XPS": "#87CEEB (light blue)",
+    "strawbale": "#F5DEB3 (wheat color)",
+    "polycarbonate": "#E8F4F8 (very light blue, semi-transparent)",
+    "soil": "#4A3728 (dark brown)",
+    "plants": "#228B22 (forest green)",
+    "solar_collectors": "#1E3A5F (dark blue)",
+    "PEX_heating": "#FF6B35 (bright orange)",
+    "PEX_hot": "#E63946 (red)",
+    "PEX_cold": "#4A90D9 (blue)",
+    "concrete": "#808080 (gray)",
+    "air_gap": "#F5F5F5 (off-white/light gray)"
+  },
+
+  "critical_visual_emphasis": [
+    {
+      "element": "EPDM CEILING LINE",
+      "importance": "HIGHEST",
+      "instruction": "Draw as THICK BLACK LINE (5-8px) at -0.3m depth, clearly separating water below from air gap above. This line must be unmistakably visible."
+    },
+    {
+      "element": "AIR GAP",
+      "importance": "HIGH",
+      "instruction": "Show as EMPTY SPACE 200mm high between black EPDM line and timber joists. Use light background color to emphasize emptiness. Add small air circulation arrows."
+    },
+    {
+      "element": "WALL SOLAR COLLECTORS",
+      "importance": "HIGH",
+      "instruction": "Show dark blue/black flat plate collectors MOUNTED ON INTERIOR FACE of north wall. They face south INTO the greenhouse. Include copper pipe connections."
+    },
+    {
+      "element": "WALL HEATING PIPES",
+      "importance": "HIGH",
+      "instruction": "Show ORANGE PEX PIPES in serpentine pattern embedded in the clay plaster layer of north wall interior. These are SEPARATE from the solar collectors."
+    },
+    {
+      "element": "THERMAL BLANKET ROLL",
+      "importance": "MEDIUM-HIGH",
+      "instruction": "Show rolled-up insulating blanket as a VISIBLE CYLINDER at the top of the glazing, positioned BETWEEN the two polycarbonate layers. Include deployment tracks."
+    },
+    {
+      "element": "GLULAM BEAM SPANS",
+      "importance": "MEDIUM",
+      "instruction": "Show beams spanning the FULL WIDTH from north to south wall, resting on concrete ring beam. NO POSTS IN THE WATER."
+    }
+  ],
+
+  "legend_box": {
+    "position": "Lower right corner",
+    "title": "SYSTEM SPECIFICATIONS",
+    "content": [
+      "Storage: 300 m³ water PTES",
+      "Collectors: 70 m² total (50m² ground + 20m² wall)",
+      "Greenhouse: 119 m² (14m × 8.5m)",
+      "Houses: 4 × Enklava Prefab (150m² each)",
+      "Heating demand: 24,000 kWh/year total",
+      "Solar fraction: 100%",
+      "Construction: Timber + EPDM sealed (no steel in water)",
+      "Wall heating: 35-40°C low temperature"
+    ]
+  },
+
+  "info_box": {
+    "position": "Lower left corner",
+    "title": "KEY INNOVATIONS",
+    "content": [
+      "✓ Greenhouse heated FREE by PTES below",
+      "✓ EPDM ceiling seals vapor from timber",
+      "✓ Air gap allows moisture escape",
+      "✓ Wall collectors + ground collectors = 70m²",
+      "✓ Wall heating for comfortable radiant warmth",
+      "✓ No heat pump needed - direct solar to water",
+      "✓ Year-round vegetable production"
+    ]
+  },
+
+  "technical_notes": [
+    "Glulam beams GL28h rated for 8.5m span with 5kN/m² load",
+    "EPDM lifetime 50+ years, UV stabilized",
+    "Black Locust naturally water-resistant (Class 1-2 durability)",
+    "Polycarbonate R-value: 1.8 (16mm triple) + blanket = R-8 at night",
+    "Thermal stratification maintained by careful diffuser placement"
+  ],
+
+  "generation_instructions": {
+    "style": "Photorealistic architectural section rendering",
+    "lighting": "Winter daylight from south, warm glow from water storage",
+    "detail_level": "Maximum - show all construction layers clearly",
+    "label_clarity": "All labels LARGE, READABLE, high contrast",
+    "emphasis": "Make EPDM ceiling, air gap, wall collectors, and wall heating pipes the most visible elements after the main structure",
+    "avoid": [
+      "Do not show posts or supports inside the water volume",
+      "Do not merge wall heating and wall collectors into one element",
+      "Do not skip the air gap between EPDM and timber",
+      "Do not make EPDM lines too thin - they must be visible"
+    ]
+  }
+}

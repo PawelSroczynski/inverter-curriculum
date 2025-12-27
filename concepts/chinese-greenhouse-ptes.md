@@ -636,7 +636,36 @@ House share:           €28,000-32,000/house
 
 ---
 
-*Document version: 1.0*
-*Created: December 2024*
+## Image Generation Prompt v2
+
+The refined v2 prompt for ultra-realistic cross-section rendering is located at:
+`/prompts/chinese-greenhouse-ptes-section-v2.json`
+
+### Key Improvements in v2
+
+Based on review of initial generated image (rated 8.5/10), these elements were emphasized:
+
+1. **EPDM Ceiling Line** - Now specified as THICK BLACK LINE (5-8px) at -0.3m depth
+2. **Air Gap Visibility** - 200mm gap shown with light background and air circulation arrows
+3. **Wall Solar Collectors** - Clearly specified as mounted on INTERIOR face of north wall
+4. **Wall Heating Pipes** - Orange PEX serpentine pattern in clay plaster, SEPARATE from collectors
+5. **Thermal Blanket Roll** - Visible cylinder BETWEEN two polycarbonate layers at top
+6. **Label Readability** - Minimum 14pt, high contrast, critical elements explicitly labeled
+
+### Critical Visual Emphasis Order
+
+| Priority | Element | Instruction |
+|----------|---------|-------------|
+| HIGHEST | EPDM ceiling line | Thick black line separating water from air gap |
+| HIGH | Air gap 200mm | Empty space with air flow arrows |
+| HIGH | Wall collectors | Dark panels on interior wall face |
+| HIGH | Wall heating PEX | Orange serpentine pipes in wall plaster |
+| MEDIUM-HIGH | Thermal blanket | Rolled fabric between polycarbonate layers |
+| MEDIUM | Glulam spans | Beams wall-to-wall, NO posts in water |
+
+---
+
+*Document version: 2.0*
+*Updated: December 2024*
 *Project: Enklava - Łódź, Poland*
 *License: CC BY-SA 4.0*
