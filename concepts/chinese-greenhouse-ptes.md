@@ -2,7 +2,7 @@
 
 ## Complete Concept for 4-House Strawbale Cluster | Łódź, Poland
 
-![Chinese Greenhouse + PTES System](../assets/chinese-greenhouse-ptes.png)
+![Chinese Greenhouse + PTES System](https://enklava.co/files/B21qF9pjB14yy4HXbaFgLw/photo_2025-12-27_21-05-01.jpg)
 
 ---
 
