@@ -1,5 +1,5 @@
 {
-  "prompt_version": "3.0",
+  "prompt_version": "3.1",
   "prompt_type": "technical_cross_section",
   "image_style": "ultra-realistic architectural rendering",
   "aspect_ratio": "16:9 horizontal",
@@ -57,8 +57,8 @@
       ],
       "tank_specifications": {
         "manufacturer": "Gozmak (Poland)",
-        "unit_volume": "10 m³ each",
-        "unit_dimensions": "3.0m × 2.4m × 1.74m (L×W×H)",
+        "unit_volume": "custom height modules",
+        "unit_dimensions": "3.0m × 2.4m × 3.0m (L×W×H) - FULL 3m HEIGHT",
         "wall_thickness": "100mm throughout",
         "material": "B25 reinforced concrete",
         "waterproofing": "Double sealed, factory pressure-tested"
@@ -133,7 +133,18 @@
         "PEX pipes shown as RED SERPENTINE PATTERN in concrete",
         "Growing medium: 300mm raised beds with soil"
       ],
-      "visual_cues": "Show PEX loops as red serpentine lines in concrete section, raised wooden bed frames with dark soil",
+      "people_inside_greenhouse": {
+        "description": "Show 2-3 PEOPLE WORKING inside the greenhouse in natural gardening situations",
+        "activities": [
+          "One person tending to tomato plants, reaching up to check fruits",
+          "One person kneeling at raised bed, planting or harvesting leafy greens",
+          "Optional: One person with wheelbarrow or watering can"
+        ],
+        "clothing": "Light indoor clothing (t-shirts, light sweaters) - it's warm inside (25-30°C)",
+        "scale": "People provide scale reference - average adult height ~1.7m",
+        "positioning": "Naturally distributed among the raised beds, engaged in real gardening tasks"
+      },
+      "visual_cues": "Show PEX loops as red serpentine lines in concrete section, raised wooden bed frames with dark soil. INCLUDE WORKING PEOPLE tending plants - this brings the scene to life and shows the greenhouse in active use.",
       "label": "HEATED CONCRETE SLAB + PEX 35-45°C | raised growing beds"
     },
     {
@@ -166,13 +177,12 @@
       "height": "0.5m stem wall + 3.0m glazing",
       "construction": {
         "stem_wall": "300mm insulated concrete to 0.5m height",
-        "glazing_outer": "16mm triple-wall polycarbonate - transparent with slight blue tint",
-        "thermal_blanket": "ROLLED THERMAL BLANKET stored in housing at top - CLEARLY VISIBLE ROLL",
-        "glazing_inner": "10mm twin-wall polycarbonate - transparent",
-        "blanket_deployment": "Shows blanket in rolled-up position with visible fabric roll at top"
+        "thermal_blanket": "ROLLED THERMAL BLANKET on OUTER side - stored in housing at top - CLEARLY VISIBLE ROLL",
+        "glazing": "16mm triple-wall polycarbonate - transparent with slight blue tint (single layer, no inner panel)",
+        "blanket_deployment": "Thermal blanket rolls down on EXTERIOR face of polycarbonate at night"
       },
-      "visual_cues": "EMPHASIZE: Show the thermal blanket as a visible ROLLED CYLINDER at the top, between the two polycarbonate layers. Draw deployment tracks/guides on sides.",
-      "label": "DUAL POLYCARBONATE + THERMAL BLANKET between layers (R-8 at night)"
+      "visual_cues": "EMPHASIZE: Show the thermal blanket as a visible ROLLED CYLINDER at the top, on the OUTSIDE of the polycarbonate glazing. Draw deployment tracks/guides on exterior sides. Blanket protects from outside.",
+      "label": "TRIPLE-WALL POLYCARBONATE + EXTERIOR THERMAL BLANKET (R-8 at night)"
     },
     {
       "layer": 11,
@@ -180,9 +190,9 @@
       "geometry": "Parabolic curve from 0.5m stem wall to 4.5m peak",
       "angle_at_base": "60° from horizontal",
       "angle_at_peak": "15° from horizontal",
-      "materials": "Same dual polycarbonate as south wall",
+      "materials": "16mm triple-wall polycarbonate with EXTERIOR thermal blanket",
       "support_structure": "Curved glulam ribs 100×200mm at 1.2m spacing",
-      "visual_cues": "Smooth parabolic curve, sunlight rays shown entering and reflecting down to growing beds",
+      "visual_cues": "Smooth parabolic curve, sunlight rays shown entering and reflecting down to growing beds. Thermal blanket roll visible at peak on OUTSIDE.",
       "label": "PARABOLIC GLAZING - optimized for winter sun angle 15-25°"
     },
     {
@@ -224,6 +234,17 @@
       "visual": "Four identical houses visible in background, connected by district heating pipes",
       "labels_on_houses": "ENKLAVA PREFAB | 150m² | 20 kWh/m²/yr"
     },
+    "people_near_houses": {
+      "description": "Show 2-3 PEOPLE outside near the houses in natural winter activities",
+      "activities": [
+        "One person walking between houses, carrying firewood or groceries",
+        "One person clearing snow from pathway with shovel",
+        "Optional: Children playing in snow or person with dog"
+      ],
+      "clothing": "Warm winter clothing - coats, hats, boots, gloves (it's cold outside, -5 to -15°C)",
+      "positioning": "Naturally placed near house entrances, on pathways, or in yard areas",
+      "contrast": "Shows CONTRAST between cold winter outside and warm greenhouse inside"
+    },
     "landscape": "Polish winter landscape, light snow cover, bare deciduous trees",
     "sky": "Winter sun low on southern horizon (15-25° altitude)"
   },
@@ -239,7 +260,7 @@
       "AIR GAP 200mm - pointing to empty space above EPDM",
       "WALL COLLECTORS 20m² - pointing to interior-mounted panels",
       "WALL HEATING PEX - pointing to orange serpentine pipes",
-      "THERMAL BLANKET - pointing to rolled fabric between polycarbonate",
+      "THERMAL BLANKET - pointing to rolled fabric on EXTERIOR of polycarbonate",
       "GLULAM BEAMS - pointing to timber spanning wall-to-wall",
       "THERMAL STRATIFICATION - pointing to temperature gradient in water"
     ],
@@ -295,7 +316,17 @@
     {
       "element": "THERMAL BLANKET ROLL",
       "importance": "MEDIUM-HIGH",
-      "instruction": "Show rolled-up insulating blanket as a VISIBLE CYLINDER at the top of the glazing, positioned BETWEEN the two polycarbonate layers. Include deployment tracks."
+      "instruction": "Show rolled-up insulating blanket as a VISIBLE CYLINDER at the top of the glazing, positioned on the OUTER/EXTERIOR side of the polycarbonate. Include deployment tracks on outside."
+    },
+    {
+      "element": "PEOPLE IN GREENHOUSE",
+      "importance": "MEDIUM",
+      "instruction": "Show 2-3 people INSIDE the greenhouse working with plants - tending tomatoes, harvesting greens, natural gardening activities. Light clothing (warm inside). Provides human scale."
+    },
+    {
+      "element": "PEOPLE NEAR HOUSES",
+      "importance": "MEDIUM",
+      "instruction": "Show 2-3 people OUTSIDE near houses in winter activities - carrying firewood, shoveling snow, walking. Warm winter clothing. Creates contrast with warm greenhouse."
     },
     {
       "element": "GLULAM BEAM SPANS",
@@ -336,13 +367,14 @@
   },
 
   "technical_notes": [
-    "Prefab tanks: Gozmak 10m³ (3.0m × 2.4m × 1.74m), B25 concrete, 100mm walls",
+    "Prefab tanks: Gozmak custom (3.0m × 2.4m × 3.0m HEIGHT), B25 concrete, 100mm walls",
     "Tank waterproofing: Double sealed, factory pressure-tested 100% leak-tight",
     "XPS insulation: 100mm on exterior of concrete walls (R-value ~2.5 m²K/W)",
     "Glulam beams GL28h rated for 8.5m span with 5kN/m² load",
     "EPDM lifetime 50+ years, UV stabilized - on TOP surface only",
     "Black Locust naturally water-resistant (Class 1-2 durability)",
-    "Polycarbonate R-value: 1.8 (16mm triple) + blanket = R-8 at night"
+    "Polycarbonate R-value: 1.8 (16mm triple) + EXTERIOR blanket = R-8 at night",
+    "Thermal blanket deploys on OUTSIDE of glazing for night insulation"
   ],
 
   "generation_instructions": {
@@ -351,13 +383,16 @@
     "detail_level": "Maximum - show all construction layers clearly",
     "label_clarity": "All labels LARGE, READABLE, high contrast",
     "emphasis": "Make VERTICAL concrete tank walls, XPS insulation, and EPDM top seal the most visible elements in the underground portion",
+    "human_element": "IMPORTANT: Include people both INSIDE greenhouse (gardening in light clothes) and OUTSIDE near houses (winter clothes). This adds life and shows the contrast between warm interior and cold exterior.",
     "avoid": [
       "Do NOT show sloped pit walls - walls must be VERTICAL (90°)",
       "Do NOT show EPDM liner on vertical walls - only on top/ceiling",
       "Do NOT show posts or supports inside the water/tank volume",
       "Do NOT merge wall heating and wall collectors into one element",
       "Do NOT skip the air gap between EPDM and timber",
-      "Do NOT make the concrete walls look like earth/soil - they are GRAY CONCRETE"
+      "Do NOT make the concrete walls look like earth/soil - they are GRAY CONCRETE",
+      "Do NOT put thermal blanket BETWEEN polycarbonate layers - it goes on the OUTSIDE",
+      "Do NOT forget to include people in the scene"
     ]
   }
 }
