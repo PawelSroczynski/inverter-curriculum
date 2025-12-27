@@ -1,0 +1,168 @@
+{
+  "prompt_version": "4.0",
+  "title": "Chinese Solar Greenhouse over PTES - Technical Cross Section",
+  "subtitle": "Enklava Project | Łódź, Poland | 100% Solar Heating",
+
+  "image_specification": {
+    "style": "Photorealistic architectural cross-section rendering",
+    "aspect_ratio": "16:9 horizontal",
+    "view_direction": "Looking from EAST toward WEST",
+    "perspective": "Slight 3D angle (2-5°) - NOT flat orthographic",
+    "lighting": "Winter daylight from south, warm glow from heated water below"
+  },
+
+  "main_structure": {
+    "description": "Chinese passive solar greenhouse built directly above underground thermal water storage",
+    "footprint": "14m × 8.5m (both greenhouse AND tanks below - SAME SIZE)",
+    "total_height": "5.5m from tank bottom to roof peak"
+  },
+
+  "roof_structure": {
+    "shape": "PARABOLIC CURVE - smooth arc like a ski jump, NOT flat",
+    "geometry": {
+      "south_start": "60° angle at 0.5m stem wall",
+      "north_end": "15° angle at 4.5m peak",
+      "curve": "Smooth continuous parabola bulging outward"
+    },
+    "structural_ribs": {
+      "material": "CURVED WOODEN GLULAM ARCS - NOT METAL",
+      "color": "HONEY-BROWN laminated timber with visible wood grain",
+      "size": "100×200mm curved timber ribs",
+      "spacing": "1.2m apart following the parabolic curve",
+      "importance": "CRITICAL - show clearly as wooden curved framework"
+    },
+    "glazing": {
+      "layers": "TWO separate curved polycarbonate layers with air gap",
+      "outer": "16mm triple-wall polycarbonate",
+      "inner": "10mm twin-wall polycarbonate",
+      "gap": "50-100mm air space between layers",
+      "thermal_blanket": "Rolled cylinder on EXTERIOR at top for night insulation"
+    }
+  },
+
+  "underground_storage": {
+    "type": "PREFAB CONCRETE TANKS (Gozmak, Poland)",
+    "construction": {
+      "walls": "VERTICAL (90°) - NOT sloped",
+      "material": "B25 reinforced concrete, 100mm thick, GRAY color",
+      "waterproofing": "Factory sealed - no EPDM on walls",
+      "insulation": "100mm XPS boards on EXTERIOR - LIGHT BLUE color"
+    },
+    "dimensions": {
+      "depth": "3.0m below ground",
+      "footprint": "SAME as greenhouse above - 14m × 8.5m"
+    },
+    "water_storage": {
+      "volume": "~300 m³",
+      "stratification": {
+        "top": "80-90°C - RED color",
+        "middle": "70-80°C - ORANGE color",
+        "bottom": "50-60°C - YELLOW color"
+      },
+      "diffusers": {
+        "top": "RED pipe at -0.5m depth",
+        "bottom": "BLUE pipe at -2.8m depth"
+      }
+    },
+    "top_seal": {
+      "concrete_lids": "Prefab concrete cover plates",
+      "vapor_barrier": "1.5mm BLACK EPDM membrane ON TOP ONLY - thick visible black line",
+      "air_gap": "200mm ventilated space above EPDM, below timber"
+    }
+  },
+
+  "floor_structure": {
+    "beams": {
+      "type": "GL28h Glulam beams 200×600mm",
+      "material": "HONEY-COLORED laminated timber",
+      "span": "Wall-to-wall (8.5m) - NO supports in water",
+      "support": "Beams rest ON TOP of concrete tank walls"
+    },
+    "floor": {
+      "slab": "100mm concrete with embedded PEX heating (RED serpentine)",
+      "growing_beds": "300mm raised beds with soil and green plants"
+    }
+  },
+
+  "north_wall": {
+    "construction": "600mm EcoCocon strawbale panels (U=0.11)",
+    "exterior": "Lime render, wheat/beige color",
+    "interior_features": [
+      "ORANGE PEX pipes in serpentine pattern (wall heating 35-40°C)",
+      "20m² dark blue solar collectors mounted on interior face"
+    ],
+    "ventilation": "Small pulpit/clerestory at top with operable louvers"
+  },
+
+  "south_wall": {
+    "stem_wall": "300mm insulated concrete to 0.5m height",
+    "glazing": "Dual polycarbonate (same as roof curve)"
+  },
+
+  "solar_collectors": {
+    "ground_mounted": "50m² flat plate collectors at 45° tilt, south of greenhouse",
+    "wall_mounted": "20m² on interior of north wall",
+    "total": "70m²",
+    "color": "DARK BLUE panels"
+  },
+
+  "background": {
+    "houses": {
+      "quantity": 4,
+      "position": "BEHIND greenhouse (north side)",
+      "arrangement": "TWO on LEFT, TWO on RIGHT - symmetrical",
+      "construction": "STRAWBALE with thick walls (400mm+), natural plaster",
+      "color": "Beige/cream earthy tones",
+      "chimneys": "NONE - 100% solar heated, no combustion"
+    },
+    "landscape": "Polish winter, light snow, bare trees",
+    "sky": "Winter sun low on southern horizon (15-25°)"
+  },
+
+  "labels": {
+    "style": "Technical callouts with leader lines",
+    "font": "Large, readable, high contrast",
+    "key_labels": [
+      "CURVED GLULAM ARCS - wooden parabolic ribs",
+      "DUAL POLYCARBONATE - two layers with air gap",
+      "PREFAB CONCRETE TANKS - vertical walls",
+      "XPS INSULATION - blue, on exterior",
+      "EPDM VAPOR SEAL - black line on top only",
+      "THERMAL STORAGE 300m³ - 60-90°C",
+      "GLULAM BEAMS - timber on concrete walls"
+    ]
+  },
+
+  "legend_box": {
+    "position": "Lower right",
+    "content": [
+      "Storage: 300 m³ PTES",
+      "Tanks: Gozmak prefab B25 concrete",
+      "Collectors: 70 m² (50 ground + 20 wall)",
+      "Greenhouse: 119 m²",
+      "Houses: 4 × 150 m² strawbale",
+      "Solar fraction: 100%"
+    ]
+  },
+
+  "critical_requirements": [
+    "Roof ribs MUST be WOODEN (honey-brown glulam), NOT metal/silver",
+    "Roof MUST be PARABOLIC CURVE, NOT flat or angular",
+    "Tank walls MUST be VERTICAL, NOT sloped",
+    "Tanks footprint MUST equal greenhouse footprint - NOT wider",
+    "Houses MUST have NO CHIMNEYS",
+    "Show TWO layers of curved polycarbonate clearly",
+    "EPDM only on TOP of tanks, NOT on vertical walls"
+  ],
+
+  "do_not": [
+    "Metal roof ribs - use WOOD only",
+    "Flat or angular roof - use smooth PARABOLA",
+    "Sloped tank walls - use VERTICAL only",
+    "Tanks wider than greenhouse",
+    "Chimneys on houses",
+    "Single polycarbonate layer",
+    "EPDM on tank walls",
+    "Supports/posts inside water"
+  ]
+}
