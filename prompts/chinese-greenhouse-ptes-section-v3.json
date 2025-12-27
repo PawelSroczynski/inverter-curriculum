@@ -1,5 +1,5 @@
 {
-  "prompt_version": "3.4",
+  "prompt_version": "3.5",
   "prompt_type": "technical_cross_section",
   "image_style": "ultra-realistic architectural rendering",
   "aspect_ratio": "16:9 horizontal",
@@ -12,10 +12,11 @@
 
   "overall_dimensions": {
     "greenhouse_footprint": "14m (east-west) × 8.5m (north-south)",
+    "tank_footprint": "SAME as greenhouse - 14m × 8.5m - tanks are DIRECTLY UNDER greenhouse, NOT wider",
     "pit_depth": "3.0m below grade",
     "total_height": "5.5m from pit bottom to greenhouse peak",
     "north_wall_thickness": "600mm insulated strawbale",
-    "viewing_angle": "true horizontal cross-section, no perspective distortion"
+    "viewing_angle": "Slight perspective (2-5° angle) - NOT pure flat cross-section, gives depth and dimension"
   },
 
   "construction_layers_from_bottom_to_top": [
@@ -188,10 +189,22 @@
         "at_peak": "15° from horizontal (nearly flat at top)",
         "transition": "Smooth gradual transition - NO SHARP CORNERS"
       },
-      "materials": "16mm triple-wall polycarbonate with EXTERIOR thermal blanket",
-      "support_structure": "CURVED glulam ribs 100×200mm at 1.2m spacing - ribs follow the parabolic curve",
-      "visual_cues": "CRITICAL: The south glazing must be a SMOOTH PARABOLIC CURVE like a Chinese solar greenhouse - NOT a flat roof, NOT a gable roof, NOT straight panels. It curves smoothly from steep (60°) at the base to nearly horizontal (15°) at the peak. Show sunlight rays entering and reflecting down to growing beds. Thermal blanket roll visible at peak on OUTSIDE.",
-      "label": "PARABOLIC CURVED GLAZING - Chinese greenhouse style - optimized for winter sun 15-25°"
+      "glazing_layers": {
+        "description": "TWO LAYERS of polycarbonate with air gap between",
+        "outer_layer": "16mm triple-wall polycarbonate - visible curved layer",
+        "inner_layer": "10mm twin-wall polycarbonate - second curved layer inside",
+        "gap_between": "50-100mm air gap between the two curved polycarbonate layers"
+      },
+      "support_structure": {
+        "type": "CURVED GLULAM ARCS/RIBS - wooden, not metal!",
+        "size": "100×200mm curved glulam timber ribs",
+        "spacing": "1.2m apart along the curve",
+        "material": "Honey-colored laminated timber, visible wood grain",
+        "shape": "Each rib follows the PARABOLIC CURVE from base to peak",
+        "visibility": "CRITICAL: Show the curved wooden glulam ribs/arcs clearly - they are the structural skeleton of the curved roof"
+      },
+      "visual_cues": "CRITICAL: Show (1) CURVED GLULAM TIMBER ARCS as the structural ribs - wooden, honey-colored, following the parabola, (2) TWO LAYERS of curved polycarbonate glazing with gap between them. The glulam arcs should be clearly visible as the curved wooden framework supporting the glazing. NOT metal ribs - WOODEN GLULAM ARCS.",
+      "label": "PARABOLIC GLAZING with CURVED GLULAM ARCS + dual polycarbonate layers"
     },
     {
       "layer": 12,
@@ -229,8 +242,13 @@
       "type": "Enklava Prefab Houses - EcoCocon strawbale construction",
       "size": "150 m² each",
       "energy_demand": "20 kWh/m²/year (3,000 kWh/house/year)",
-      "visual": "Four houses CLOSE to the greenhouse (not far away!), clearly showing STRAWBALE construction with thick walls, natural plaster finish, wooden window frames",
-      "distance": "Houses should be NEAR the greenhouse - within 20-30m, clearly visible and detailed",
+      "layout": {
+        "position": "BEHIND the greenhouse (to the north), in the BACKGROUND",
+        "arrangement": "TWO houses on the LEFT, TWO houses on the RIGHT",
+        "spacing": "Symmetrical layout - houses frame the greenhouse from behind"
+      },
+      "visual": "Four houses visible in BACKGROUND behind greenhouse, clearly showing STRAWBALE construction with thick walls, natural plaster finish, wooden window frames",
+      "distance": "Houses should be in background - 20-40m behind greenhouse, clearly visible but not dominant",
       "construction_visible": "Show THICK STRAWBALE WALLS (400mm+), lime/clay plaster exterior, natural earthy colors (beige, cream, light brown)",
       "no_chimneys": "CRITICAL: NO CHIMNEYS on any house - these are 100% solar heated homes with NO combustion!",
       "labels_on_houses": "ENKLAVA PREFAB | 150m² | 20 kWh/m²/yr | 100% SOLAR"
@@ -378,7 +396,11 @@
       "Do NOT show additional concrete walls around the tanks - tanks sit directly in soil with XPS",
       "Do NOT put chimneys on the houses - they are 100% solar heated, NO combustion",
       "Do NOT place houses far away - they should be CLOSE to greenhouse, clearly visible",
-      "Do NOT forget to show glulam beams resting ON TOP of concrete tank walls"
+      "Do NOT forget to show glulam beams resting ON TOP of concrete tank walls",
+      "Do NOT make tanks WIDER than greenhouse - tanks are SAME footprint as greenhouse floor above",
+      "Do NOT use metal ribs for curved roof - use WOODEN GLULAM ARCS (honey-colored timber)",
+      "Do NOT show only single layer polycarbonate - show TWO curved layers with gap between",
+      "Do NOT use pure flat cross-section view - use slight 2-5° perspective angle for depth"
     ]
   }
 }
