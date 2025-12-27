@@ -1,5 +1,5 @@
 {
-  "prompt_version": "3.2",
+  "prompt_version": "3.3",
   "prompt_type": "technical_cross_section",
   "image_style": "ultra-realistic architectural rendering",
   "aspect_ratio": "16:9 horizontal",
@@ -133,18 +133,7 @@
         "PEX pipes shown as RED SERPENTINE PATTERN in concrete",
         "Growing medium: 300mm raised beds with soil"
       ],
-      "people_inside_greenhouse": {
-        "description": "Show 2-3 PEOPLE WORKING inside the greenhouse in natural gardening situations",
-        "activities": [
-          "One person tending to tomato plants, reaching up to check fruits",
-          "One person kneeling at raised bed, planting or harvesting leafy greens",
-          "Optional: One person with wheelbarrow or watering can"
-        ],
-        "clothing": "Light indoor clothing (t-shirts, light sweaters) - it's warm inside (25-30°C)",
-        "scale": "People provide scale reference - average adult height ~1.7m",
-        "positioning": "Naturally distributed among the raised beds, engaged in real gardening tasks"
-      },
-      "visual_cues": "Show PEX loops as red serpentine lines in concrete section, raised wooden bed frames with dark soil. INCLUDE WORKING PEOPLE tending plants - this brings the scene to life and shows the greenhouse in active use.",
+      "visual_cues": "Show PEX loops as red serpentine lines in concrete section, raised wooden bed frames with dark soil, healthy green plants growing",
       "label": "HEATED CONCRETE SLAB + PEX 35-45°C | raised growing beds"
     },
     {
@@ -243,17 +232,6 @@
       "visual": "Four identical houses visible in background, connected by district heating pipes",
       "labels_on_houses": "ENKLAVA PREFAB | 150m² | 20 kWh/m²/yr"
     },
-    "people_near_houses": {
-      "description": "Show 2-3 PEOPLE outside near the houses in natural winter activities",
-      "activities": [
-        "One person walking between houses, carrying firewood or groceries",
-        "One person clearing snow from pathway with shovel",
-        "Optional: Children playing in snow or person with dog"
-      ],
-      "clothing": "Warm winter clothing - coats, hats, boots, gloves (it's cold outside, -5 to -15°C)",
-      "positioning": "Naturally placed near house entrances, on pathways, or in yard areas",
-      "contrast": "Shows CONTRAST between cold winter outside and warm greenhouse inside"
-    },
     "landscape": "Polish winter landscape, light snow cover, bare deciduous trees",
     "sky": "Winter sun low on southern horizon (15-25° altitude)"
   },
@@ -328,16 +306,6 @@
       "instruction": "Show rolled-up insulating blanket as a VISIBLE CYLINDER at the top of the glazing, positioned on the OUTER/EXTERIOR side of the polycarbonate. Include deployment tracks on outside."
     },
     {
-      "element": "PEOPLE IN GREENHOUSE",
-      "importance": "MEDIUM",
-      "instruction": "Show 2-3 people INSIDE the greenhouse working with plants - tending tomatoes, harvesting greens, natural gardening activities. Light clothing (warm inside). Provides human scale."
-    },
-    {
-      "element": "PEOPLE NEAR HOUSES",
-      "importance": "MEDIUM",
-      "instruction": "Show 2-3 people OUTSIDE near houses in winter activities - carrying firewood, shoveling snow, walking. Warm winter clothing. Creates contrast with warm greenhouse."
-    },
-    {
       "element": "GLULAM BEAM SPANS",
       "importance": "MEDIUM",
       "instruction": "Show beams spanning the FULL WIDTH from north to south, resting on top of vertical concrete tank walls. NO POSTS INSIDE THE TANKS."
@@ -392,7 +360,6 @@
     "detail_level": "Maximum - show all construction layers clearly",
     "label_clarity": "All labels LARGE, READABLE, high contrast",
     "emphasis": "Make VERTICAL concrete tank walls, XPS insulation, and EPDM top seal the most visible elements in the underground portion",
-    "human_element": "IMPORTANT: Include people both INSIDE greenhouse (gardening in light clothes) and OUTSIDE near houses (winter clothes). This adds life and shows the contrast between warm interior and cold exterior.",
     "avoid": [
       "Do NOT show sloped pit walls - walls must be VERTICAL (90°)",
       "Do NOT show EPDM liner on vertical walls - only on top/ceiling",
@@ -401,7 +368,6 @@
       "Do NOT skip the air gap between EPDM and timber",
       "Do NOT make the concrete walls look like earth/soil - they are GRAY CONCRETE",
       "Do NOT put thermal blanket BETWEEN polycarbonate layers - it goes on the OUTSIDE",
-      "Do NOT forget to include people in the scene",
       "Do NOT make the south glazing FLAT - it MUST be a PARABOLIC CURVE",
       "Do NOT use straight roof panels - the glazing curves smoothly like a ski jump",
       "Do NOT use a gable roof or shed roof - use CHINESE GREENHOUSE parabolic shape"
