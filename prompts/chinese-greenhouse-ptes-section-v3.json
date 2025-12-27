@@ -1,5 +1,5 @@
 {
-  "prompt_version": "3.1",
+  "prompt_version": "3.2",
   "prompt_type": "technical_cross_section",
   "image_style": "ultra-realistic architectural rendering",
   "aspect_ratio": "16:9 horizontal",
@@ -186,14 +186,23 @@
     },
     {
       "layer": 11,
-      "name": "SOUTH GLAZING CURVE - PARABOLIC",
-      "geometry": "Parabolic curve from 0.5m stem wall to 4.5m peak",
-      "angle_at_base": "60° from horizontal",
-      "angle_at_peak": "15° from horizontal",
+      "name": "SOUTH GLAZING CURVE - PARABOLIC (NOT FLAT!)",
+      "geometry": {
+        "shape": "PARABOLIC CURVE - NOT FLAT, NOT STRAIGHT - smoothly curved like a ski jump",
+        "start_point": "0.5m stem wall on south side",
+        "end_point": "4.5m peak connecting to north wall",
+        "curve_type": "Smooth continuous parabola, bulging outward (convex from inside)",
+        "span": "8.5m horizontal distance from south to north"
+      },
+      "angles": {
+        "at_base": "60° from horizontal (steep at bottom)",
+        "at_peak": "15° from horizontal (nearly flat at top)",
+        "transition": "Smooth gradual transition - NO SHARP CORNERS"
+      },
       "materials": "16mm triple-wall polycarbonate with EXTERIOR thermal blanket",
-      "support_structure": "Curved glulam ribs 100×200mm at 1.2m spacing",
-      "visual_cues": "Smooth parabolic curve, sunlight rays shown entering and reflecting down to growing beds. Thermal blanket roll visible at peak on OUTSIDE.",
-      "label": "PARABOLIC GLAZING - optimized for winter sun angle 15-25°"
+      "support_structure": "CURVED glulam ribs 100×200mm at 1.2m spacing - ribs follow the parabolic curve",
+      "visual_cues": "CRITICAL: The south glazing must be a SMOOTH PARABOLIC CURVE like a Chinese solar greenhouse - NOT a flat roof, NOT a gable roof, NOT straight panels. It curves smoothly from steep (60°) at the base to nearly horizontal (15°) at the peak. Show sunlight rays entering and reflecting down to growing beds. Thermal blanket roll visible at peak on OUTSIDE.",
+      "label": "PARABOLIC CURVED GLAZING - Chinese greenhouse style - optimized for winter sun 15-25°"
     },
     {
       "layer": 12,
@@ -392,7 +401,10 @@
       "Do NOT skip the air gap between EPDM and timber",
       "Do NOT make the concrete walls look like earth/soil - they are GRAY CONCRETE",
       "Do NOT put thermal blanket BETWEEN polycarbonate layers - it goes on the OUTSIDE",
-      "Do NOT forget to include people in the scene"
+      "Do NOT forget to include people in the scene",
+      "Do NOT make the south glazing FLAT - it MUST be a PARABOLIC CURVE",
+      "Do NOT use straight roof panels - the glazing curves smoothly like a ski jump",
+      "Do NOT use a gable roof or shed roof - use CHINESE GREENHOUSE parabolic shape"
     ]
   }
 }
